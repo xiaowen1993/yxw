@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.mobile.biz.clinic.ClinicRecord">
+	<resultMap id="clinicRecordResultMap" type="com.yxw.commons.entity.mobile.biz.clinic.ClinicRecord">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_CODE" property="hospitalCode" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_NAME" property="hospitalName" jdbcType="VARCHAR" />
+		<result column="BRANCH_ID" property="branchHospitalId" jdbcType="VARCHAR" />
+		<result column="BRANCH_CODE" property="branchHospitalCode" jdbcType="VARCHAR" />
+		<result column="PAY_STATUS" property="payStatus" jdbcType="SMALLINT" />
+		<result column="CARD_TYPE" property="cardType" jdbcType="SMALLINT" />
+		<result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+		<result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+		<result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+		<result column="APP_CODE" property="appCode" jdbcType="VARCHAR" />
+		<result column="IS_EXCEPTION" property="isException" jdbcType="SMALLINT" />
+		<result column="IS_HANDLE_SUCCESS" property="isHandleSuccess" jdbcType="SMALLINT" />
+		<result column="HANDLE_COUNT" property="handleCount" jdbcType="SMALLINT" />
+		<result column="HANDLE_LOG" property="handleLog" jdbcType="VARCHAR" />
+		<result column="PATIENT_NAME" property="patientName" jdbcType="VARCHAR" />
+		<result column="ORDER_NO" property="orderNo" jdbcType="VARCHAR" />
+		<result column="ORDER_NO_HASH_VAL" property="orderNoHashVal" jdbcType="VARCHAR" />
+		<result column="REFUND_ORDER_NO" property="refundOrderNo" jdbcType="VARCHAR" />
+		<result column="REFUND_HISORD_NO" property="refundHisOrdNo" jdbcType="VARCHAR" />
+		<result column="AGT_ORD_NUM" property="agtOrdNum" jdbcType="VARCHAR" />
+		<result column="AGT_REFUND_ORD_NUM" property="agtRefundOrdNum" jdbcType="VARCHAR" />
+		<result column="FEE_DESC" property="feeDesc" jdbcType="VARCHAR" />
+		<result column="IS_HAD_CALL_BACK" property="isHadCallBack" jdbcType="SMALLINT" />
+		<result column="RECORD_TITLE" property="recordTitle" jdbcType="VARCHAR" />
+		<result column="FAILURE_MSG" property="failureMsg" jdbcType="VARCHAR" />
+		<result column="PATIENT_MOBILE" property="patientMobile" jdbcType="VARCHAR" />
+		<result column="IS_VALID" property="isValid" jdbcType="SMALLINT" />
+		<result column="CLINIC_STATUS" property="clinicStatus" jdbcType="SMALLINT" />
+		<result column="MZFEE_ID" property="mzFeeId" jdbcType="VARCHAR" />
+		<result column="PAY_IDS" property="payIds" jdbcType="VARCHAR" />
+		<result column="MEDICARE_TYPE" property="medicareType" jdbcType="VARCHAR" />
+		<result column="TOTAL_FEE" property="totalFee" jdbcType="BIGINT" />
+		<result column="MEDICARE_FEE" property="medicareFee" jdbcType="BIGINT" />
+		<result column="PAY_FEE" property="payFee" jdbcType="BIGINT" />
+		<result column="BARCODE" property="barcode" jdbcType="VARCHAR" />
+		<result column="DOCTOR_NAME" property="doctorName" jdbcType="VARCHAR" />
+		<result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
+		<result column="TRADE_MODE" property="tradeMode" jdbcType="SMALLINT" />
+		<result column="PLATFORM_MODE" property="platformMode" jdbcType="SMALLINT" />
+		<result column="HIS_ORD_NO" property="hisOrdNo" jdbcType="VARCHAR" />
+		<result column="RECEIPT_NUM" property="receiptNum" jdbcType="VARCHAR" />
+		<result column="HIS_MESSAGE" property="hisMessage" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="BIGINT" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="BIGINT" />
+		<result column="PAY_TIME" property="payTime" jdbcType="BIGINT" />
+		<result column="REFUND_TIME" property="refundTime" jdbcType="BIGINT" />
+		<!-- 用于订单下载，对账 只读不写 -->
+		<result column="TRADE_TYPE" property="tradeType" jdbcType="VARCHAR" />
+		<!-- 用于订单下载，对账 只读不写 -->
+		<result column="TRADE_TIME" property="tradeTime" jdbcType="VARCHAR" />
+		<!-- 用于判断是否已理赔 -->
+		<result column="IS_CLAIM" property="isClaim" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="All_Column">
+		ID, HOSPITAL_ID, HOSPITAL_CODE, HOSPITAL_NAME, BRANCH_ID, BRANCH_CODE, APP_ID, APP_CODE,
+		PAY_STATUS,CLINIC_STATUS,
+		CARD_TYPE, CARD_NO, OPEN_ID, IS_EXCEPTION, IS_HANDLE_SUCCESS, HANDLE_COUNT, HANDLE_LOG,
+		PATIENT_NAME, ORDER_NO, ORDER_NO_HASH_VAL, REFUND_ORDER_NO, REFUND_HISORD_NO, AGT_ORD_NUM,
+		AGT_REFUND_ORD_NUM,
+		FEE_DESC, IS_HAD_CALL_BACK, RECORD_TITLE, FAILURE_MSG, IS_VALID, MZFEE_ID,
+		PAY_IDS, MEDICARE_TYPE, TOTAL_FEE,
+		MEDICARE_FEE, PAY_FEE, BARCODE, TRADE_MODE, PLATFORM_MODE, HIS_ORD_NO,
+		RECEIPT_NUM, HIS_MESSAGE, CREATE_TIME, UPDATE_TIME,
+		PAY_TIME, REFUND_TIME, DOCTOR_NAME, DEPT_NAME,
+		PATIENT_MOBILE
+	</sql>
+
+	<sql id="List_Column">
+		ID, HOSPITAL_ID, HOSPITAL_CODE, HOSPITAL_NAME, BRANCH_ID, BRANCH_CODE, APP_ID, APP_CODE,
+		PAY_STATUS,CLINIC_STATUS,
+		CARD_TYPE, CARD_NO, OPEN_ID, PATIENT_NAME, ORDER_NO, REFUND_ORDER_NO, REFUND_HISORD_NO,
+		RECORD_TITLE, MEDICARE_TYPE,
+		PAY_FEE, TRADE_MODE, PLATFORM_MODE, CREATE_TIME, UPDATE_TIME, PAY_TIME, REFUND_TIME, DOCTOR_NAME, DEPT_NAME, PATIENT_MOBILE
+	</sql>
+
+	<sql id="Detail_Column">
+		ID, HOSPITAL_ID, HOSPITAL_CODE, HOSPITAL_NAME, BRANCH_ID, BRANCH_CODE, APP_ID, APP_CODE,
+		PAY_STATUS,CLINIC_STATUS,
+		CARD_TYPE, CARD_NO, OPEN_ID,
+		PATIENT_NAME, ORDER_NO, REFUND_ORDER_NO, FEE_DESC, RECORD_TITLE, MZFEE_ID,
+		PAY_IDS, MEDICARE_TYPE, TOTAL_FEE, MEDICARE_FEE, PAY_FEE,
+		BARCODE, TRADE_MODE, PLATFORM_MODE, HIS_ORD_NO,
+		RECEIPT_NUM, HIS_MESSAGE, CREATE_TIME, UPDATE_TIME, PAY_TIME, REFUND_TIME,
+		DOCTOR_NAME, DEPT_NAME,
+		PATIENT_MOBILE
+	</sql>
+
+	<sql id="Choose_Hash_Table_Name">
+		<choose>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_1'">
+				BIZ_CLINIC_RECORD_1
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_2'">
+				BIZ_CLINIC_RECORD_2
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_3'">
+				BIZ_CLINIC_RECORD_3
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_4'">
+				BIZ_CLINIC_RECORD_4
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_5'">
+				BIZ_CLINIC_RECORD_5
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_6'">
+				BIZ_CLINIC_RECORD_6
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_7'">
+				BIZ_CLINIC_RECORD_7
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_8'">
+				BIZ_CLINIC_RECORD_8
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_9'">
+				BIZ_CLINIC_RECORD_9
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_10'">
+				BIZ_CLINIC_RECORD_10
+			</when>
+		</choose>
+	</sql>
+
+	<!-- 添加 -->
+	<insert id="add" parameterType="com.yxw.commons.entity.mobile.biz.clinic.ClinicRecord">
+		INSERT INTO
+		<include refid="Choose_Hash_Table_Name" />
+		(
+		<include refid="All_Column" />
+		)
+		VALUES
+		(#{id}, #{hospitalId}, #{hospitalCode}, #{hospitalName}, #{branchHospitalId}, #{branchHospitalCode}, #{appId}, #{appCode},
+		#{payStatus}, #{clinicStatus}, #{cardType}, #{cardNo}, #{openId}, #{isException}, #{isHandleSuccess}, #{handleCount},
+		#{handleLog}, #{patientName}, #{orderNo}, #{orderNoHashVal}, #{refundOrderNo}, #{refundHisOrdNo},
+		#{agtOrdNum}, #{agtRefundOrdNum}, #{feeDesc}, #{isHadCallBack}, #{recordTitle}, #{failureMsg},
+		#{isValid}, #{mzFeeId}, #{payIds}, #{medicareType}, #{totalFee}, #{medicareFee}, #{payFee}, #{barcode}, #{tradeMode},
+		#{platformMode}, #{hisOrdNo}, #{receiptNum}, #{hisMessage}, #{createTime}, #{updateTime}, #{payTime}, #{refundTime},
+		#{doctorName}, #{deptName}, #{patientMobile})
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="com.yxw.commons.entity.mobile.biz.clinic.ClinicRecord">
+		update
+		<include refid="Choose_Hash_Table_Name" />
+		<set>
+			<if test="payStatus != null">
+				PAY_STATUS = #{payStatus},
+			</if>
+			<if test="isException != null">
+				IS_EXCEPTION = #{isException},
+			</if>
+			<if test="isHandleSuccess != null">
+				IS_HANDLE_SUCCESS = #{isHandleSuccess},
+			</if>
+			<if test="handleCount != null">
+				HANDLE_COUNT = #{handleCount},
+			</if>
+			<if test="handleLog != null">
+				HANDLE_LOG = #{handleLog},
+			</if>
+			<if test="refundOrderNo != null">
+				REFUND_ORDER_NO = #{refundOrderNo},
+			</if>
+			<if test="refundHisOrdNo != null">
+				REFUND_HISORD_NO = #{refundHisOrdNo},
+			</if>
+			<if test="agtOrdNum != null">
+				AGT_ORD_NUM = #{agtOrdNum},
+			</if>
+			<if test="agtRefundOrdNum != null">
+				AGT_REFUND_ORD_NUM = #{agtRefundOrdNum},
+			</if>
+			<if test="feeDesc != null">
+				FEE_DESC = #{feeDesc},
+			</if>
+			<if test="isHadCallBack != null">
+				IS_HAD_CALL_BACK = #{isHadCallBack},
+			</if>
+			<if test="failureMsg != null">
+				FAILURE_MSG = #{failureMsg},
+			</if>
+			<if test="isValid != null">
+				IS_VALID = #{isValid},
+			</if>
+			<if test="mzFeeId != null">
+				MZFEE_ID = #{mzFeeId},
+			</if>
+			<if test="payIds != null">
+				PAY_IDS = #{payIds},
+			</if>
+			<if test="medicareType != null">
+				MEDICARE_TYPE = #{medicareType},
+			</if>
+			<if test="totalFee != null">
+				TOTAL_FEE = #{totalFee},
+			</if>
+			<if test="medicareFee != null">
+				MEDICARE_FEE = #{medicareFee},
+			</if>
+			<if test="payFee != null">
+				PAY_FEE = #{payFee},
+			</if>
+			<if test="barcode != null">
+				BARCODE = #{barcode},
+			</if>
+			<if test="tradeMode != null">
+				TRADE_MODE = #{tradeMode},
+			</if>
+			<if test="platformMode != null">
+				PLATFORM_MODE = #{platformMode},
+			</if>
+			<if test="hisOrdNo != null">
+				HIS_ORD_NO = #{hisOrdNo},
+			</if>
+			<if test="receiptNum != null">
+				RECEIPT_NUM = #{receiptNum},
+			</if>
+			<if test="hisMessage != null">
+				HIS_MESSAGE = #{hisMessage},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime},
+			</if>
+			<if test="payTime != null">
+				PAY_TIME = #{payTime},
+			</if>
+			<if test="refundTime != null">
+				REFUND_TIME = #{refundTime},
+			</if>
+			<if test="clinicStatus != null">
+				CLINIC_STATUS = #{clinicStatus},
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 更新 -->
+	<update id="updateRecordStatusByOrderNoAndOpenId" parameterType="com.yxw.commons.entity.mobile.biz.clinic.ClinicRecord">
+		update
+		<include refid="Choose_Hash_Table_Name" />
+		<set>
+			<if test="payStatus != null">
+				PAY_STATUS = #{payStatus},
+			</if>
+			<if test="isException != null">
+				IS_EXCEPTION = #{isException},
+			</if>
+			<if test="isHandleSuccess != null">
+				IS_HANDLE_SUCCESS = #{isHandleSuccess},
+			</if>
+			<if test="handleCount != null">
+				HANDLE_COUNT = #{handleCount},
+			</if>
+			<if test="handleLog != null">
+				HANDLE_LOG = #{handleLog},
+			</if>
+			<if test="refundOrderNo != null">
+				REFUND_ORDER_NO = #{refundOrderNo},
+			</if>
+			<if test="refundHisOrdNo != null">
+				REFUND_HISORD_NO = #{refundHisOrdNo},
+			</if>
+			<if test="agtOrdNum != null">
+				AGT_ORD_NUM = #{agtOrdNum},
+			</if>
+			<if test="agtRefundOrdNum != null">
+				AGT_REFUND_ORD_NUM = #{agtRefundOrdNum},
+			</if>
+			<if test="feeDesc != null">
+				FEE_DESC = #{feeDesc},
+			</if>
+			<if test="isHadCallBack != null">
+				IS_HAD_CALL_BACK = #{isHadCallBack},
+			</if>
+			<if test="failureMsg != null">
+				FAILURE_MSG = #{failureMsg},
+			</if>
+			<if test="isValid != null">
+				IS_VALID = #{isValid},
+			</if>
+			<if test="barcode != null">
+				BARCODE = #{barcode},
+			</if>
+			<if test="tradeMode != null">
+				TRADE_MODE = #{tradeMode},
+			</if>
+			<if test="platformMode != null">
+				PLATFORM_MODE = #{platformMode},
+			</if>
+			<if test="hisOrdNo != null">
+				HIS_ORD_NO = #{hisOrdNo},
+			</if>
+			<if test="receiptNum != null">
+				RECEIPT_NUM = #{receiptNum},
+			</if>
+			<if test="hisMessage != null">
+				HIS_MESSAGE = #{hisMessage},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime},
+			</if>
+			<if test="payTime != null">
+				PAY_TIME = #{payTime},
+			</if>
+			<if test="refundTime != null">
+				REFUND_TIME = #{refundTime},
+			</if>
+			<if test="clinicStatus != null">
+				CLINIC_STATUS = #{clinicStatus},
+			</if>
+			<if test="isClaim != null">
+				IS_CLAIM = #{isClaim},
+			</if>
+		</set>
+		where
+		ORDER_NO = #{orderNo,jdbcType=VARCHAR} and OPEN_ID = #{openId, jdbcType=VARCHAR}
+	</update>
+
+	<!-- 查询在该医院绑定的就诊卡 -->
+	<select id="findByOrderNo" resultMap="clinicRecordResultMap" parameterType="com.yxw.commons.entity.mobile.biz.clinic.ClinicRecord">
+		select
+		<include refid="All_Column" />
+		from
+		<include refid="Choose_Hash_Table_Name" />
+		where ORDER_NO = #{orderNo} and ORDER_NO_HASH_VAL = #{orderNoHashVal}
+	</select>
+
+	<update id="updateCoverOrder" parameterType="com.yxw.commons.entity.mobile.biz.clinic.ClinicRecord">
+		update
+		<include refid="Choose_Hash_Table_Name" />
+		<set>
+			<if test="payStatus != null">
+				PAY_STATUS = #{payStatus},
+			</if>
+			<if test="handleLog != null">
+				HANDLE_LOG = #{handleLog},
+			</if>
+			<if test="orderNo != null">
+				ORDER_NO = #{orderNo},
+			</if>
+			<if test="orderNoHashVal != null">
+				ORDER_NO_HASH_VAL = #{orderNoHashVal},
+			</if>
+			<if test="feeDesc != null">
+				FEE_DESC = #{feeDesc},
+			</if>
+			<if test="clinicStatus != null">
+				CLINIC_STATUS = #{clinicStatus},
+			</if>
+			<if test="payIds != null">
+				PAY_IDS = #{payIds},
+			</if>
+			<if test="medicareType != null">
+				MEDICARE_TYPE = #{medicareType},
+			</if>
+			<if test="totalFee != null">
+				TOTAL_FEE = #{totalFee},
+			</if>
+			<if test="medicareFee != null">
+				MEDICARE_FEE = #{medicareFee},
+			</if>
+			<if test="payFee != null">
+				PAY_FEE = #{payFee},
+			</if>
+			<if test="tradeMode != null">
+				TRADE_MODE = #{tradeMode},
+			</if>
+			<if test="platformMode != null">
+				PLATFORM_MODE = #{platformMode},
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 查询在该医院绑定的就诊卡 -->
+	<select id="findByOrderNoAndOpenId" resultMap="clinicRecordResultMap" parameterType="com.yxw.commons.entity.mobile.biz.clinic.ClinicRecord">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_Hash_Table_Name" />
+		where OPEN_ID = #{openId} and PAY_STATUS = #{payStatus} order by PAY_TIME DESC
+	</select>
+
+	<select id="findSavedUnpaidClinicRecord" resultMap="clinicRecordResultMap" parameterType="com.yxw.commons.entity.mobile.biz.clinic.ClinicRecord">
+		SELECT
+		<include refid="All_Column" />
+		FROM
+		<include refid="Choose_Hash_Table_Name" />
+		AS r
+		WHERE r.MZFEE_ID = #{mzFeeId}
+		AND r.OPEN_ID = #{openId}
+		AND r.CARD_NO = #{cardNo}
+		AND r.HOSPITAL_ID = #{hospitalId}
+		AND r.HOSPITAL_CODE = #{hospitalCode}
+		AND r.BRANCH_ID = #{branchHospitalId}
+		AND r.BRANCH_CODE = #{branchHospitalCode}
+		AND r.APP_ID = #{appId}
+		AND r.PAY_STATUS = '1'
+		AND r.CLINIC_STATUS = '0'
+		<!-- AND r.CAN_USE_INSURANCE = #{canUseInsurance} -->
+	</select>
+
+	<!-- 查询已缴费记录 -->
+	<select id="findPaidRecord" resultMap="clinicRecordResultMap" parameterType="com.yxw.commons.entity.mobile.biz.clinic.ClinicRecord">
+		select
+		<include refid="All_Column" />
+		from
+		<include refid="Choose_Hash_Table_Name" />
+		where HOSPITAL_CODE = #{hospitalCode}
+		and CARD_TYPE = #{cardType}
+		and CARD_NO = #{cardNo}
+		and PATIENT_NAME = #{patientName}
+		and OPEN_ID = #{openId}
+		and CLINIC_STATUS != 0
+		and CREATE_TIME &gt;= #{queryBeginTime}
+		and CREATE_TIME &lt;= #{queryEndTime}
+		order by CREATE_TIME desc
+	</select>
+
+	<!-- 查询已缴费记录 -->
+	<select id="findPaidRecords" resultMap="clinicRecordResultMap" parameterType="com.yxw.mobileapp.biz.clinic.vo.ClinicQueryVo">
+		select
+		<choose>
+			<when test="id != null and id != ''">
+				<include refid="Detail_Column" />
+			</when>
+			<otherwise>
+				<include refid="List_Column" />
+			</otherwise>
+		</choose>
+		from
+		<include refid="Choose_Hash_Table_Name" />
+		where
+		OPEN_ID = #{openId}
+		and CLINIC_STATUS != 0
+		<if test="payStatus != null">
+			AND PAY_STATUS = #{payStatus}
+		</if>
+		<if test="clinicStatus != null">
+			AND CLINIC_STATUS = #{clinicStatus}
+		</if>
+		<if test="hospitalId != null and hospitalId != ''">
+			AND HOSPITAL_ID = #{hospitalId}
+		</if>
+		<if test="hospitalCode != null and hospitalCode != ''">
+			AND HOSPITAL_CODE = #{hospitalCode}
+		</if>
+		<if test="orderNo != null and orderNo != ''">
+			AND ORDER_NO = #{orderNo}
+		</if>
+		<if test="mzFeeId != null and mzFeeId != ''">
+			AND MZFEE_ID = #{mzFeeId}
+		</if>
+		<if test="id != null and id != ''">
+			AND ID = #{id}
+		</if>
+		<if test="beginTime != null and beginTime !=0">
+			AND PAY_TIME &gt; #{beginTime}
+		</if>
+		<if test="endTime != null and endTime !=0">
+			AND PAY_TIME &lt; #{endTime}
+		</if>
+		<if test="cardNo != null and cardNo != ''">
+			AND CARD_NO = #{cardNo}
+		</if>
+		order by PAY_TIME desc
+	</select>
+
+	<!-- Openid, IdNo查询已缴费记录 -->
+	<select id="findPaidRecordByOpenIdAndIdNo" resultMap="clinicRecordResultMap" parameterType="com.yxw.commons.entity.mobile.biz.clinic.ClinicRecord">
+		select
+		a.ID, a.HOSPITAL_ID, a.HOSPITAL_CODE, a.HOSPITAL_NAME, a.BRANCH_ID, a.BRANCH_CODE, a.PAY_STATUS, a.CLINIC_STATUS,
+		a.CARD_TYPE, a.CARD_NO, a.OPEN_ID, a.IS_EXCEPTION, a.IS_HANDLE_SUCCESS, a.HANDLE_COUNT, a.HANDLE_LOG,
+		a.PATIENT_NAME, a.ORDER_NO, a.ORDER_NO_HASH_VAL, a.REFUND_ORDER_NO, a.REFUND_HISORD_NO, a.AGT_ORD_NUM,
+		a.AGT_REFUND_ORD_NUM, a.FEE_DESC, a.IS_HAD_CALL_BACK, a.RECORD_TITLE, a.FAILURE_MSG, a.IS_VALID, a.MZFEE_ID,
+		a.PAY_IDS, a.MEDICARE_TYPE, a.TOTAL_FEE, a.MEDICARE_FEE, a.PAY_FEE, a.BARCODE, a.TRADE_MODE, a.PLATFORM_MODE, a.HIS_ORD_NO,
+		a.RECEIPT_NUM, a.HIS_MESSAGE, a.CREATE_TIME, a.UPDATE_TIME, a.PAY_TIME, a.REFUND_TIME, a.DOCTOR_NAME, a.DEPT_NAME,
+		a.PATIENT_MOBILE
+		from
+		<include refid="Choose_Hash_Table_Name" />
+		a,
+		<choose>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_1'">
+				BIZ_MEDICAL_CARD_1
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_2'">
+				BIZ_MEDICAL_CARD_2
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_3'">
+				BIZ_MEDICAL_CARD_3
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_4'">
+				BIZ_MEDICAL_CARD_4
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_5'">
+				BIZ_MEDICAL_CARD_5
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_6'">
+				BIZ_MEDICAL_CARD_6
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_7'">
+				BIZ_MEDICAL_CARD_7
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_8'">
+				BIZ_MEDICAL_CARD_8
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_9'">
+				BIZ_MEDICAL_CARD_9
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_10'">
+				BIZ_MEDICAL_CARD_10
+			</when>
+		</choose>
+		b
+
+		where
+		b.OPEN_ID = #{openId}
+		and b.ID_NO = #{idNo}
+		and b.STATE = 1
+		and b.PLATFORM = 3
+		and a.CARD_NO = b.CARD_NO
+		and a.OPEN_ID = b.OPEN_ID
+		and a.CLINIC_STATUS != 0
+		order by a.CREATE_TIME desc
+	</select>
+
+	<!-- Openid, IdNo查询已缴费记录 -->
+	<select id="findPaidRecordByIdNoAndIdType" resultMap="clinicRecordResultMap" parameterType="com.yxw.commons.entity.mobile.biz.clinic.ClinicRecord">
+		select
+		a.ID, a.HOSPITAL_ID, a.HOSPITAL_CODE, a.HOSPITAL_NAME, a.BRANCH_ID, a.BRANCH_CODE, a.PAY_STATUS, a.CLINIC_STATUS,
+		a.CARD_TYPE, a.CARD_NO, a.OPEN_ID, a.IS_EXCEPTION, a.IS_HANDLE_SUCCESS, a.HANDLE_COUNT, a.HANDLE_LOG,
+		a.PATIENT_NAME, a.ORDER_NO, a.ORDER_NO_HASH_VAL, a.REFUND_ORDER_NO, a.REFUND_HISORD_NO, a.AGT_ORD_NUM,
+		a.AGT_REFUND_ORD_NUM, a.FEE_DESC, a.IS_HAD_CALL_BACK, a.RECORD_TITLE, a.FAILURE_MSG, a.IS_VALID, a.MZFEE_ID,
+		a.PAY_IDS, a.MEDICARE_TYPE, a.TOTAL_FEE, a.MEDICARE_FEE, a.PAY_FEE, a.BARCODE, a.TRADE_MODE, a.PLATFORM_MODE, a.HIS_ORD_NO,
+		a.RECEIPT_NUM, a.HIS_MESSAGE, a.CREATE_TIME, a.UPDATE_TIME, a.PAY_TIME, a.REFUND_TIME, a.DOCTOR_NAME, a.DEPT_NAME,
+		a.PATIENT_MOBILE
+		from
+		<include refid="Choose_Hash_Table_Name" />
+		a,
+		<choose>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_1'">
+				BIZ_MEDICAL_CARD_1
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_2'">
+				BIZ_MEDICAL_CARD_2
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_3'">
+				BIZ_MEDICAL_CARD_3
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_4'">
+				BIZ_MEDICAL_CARD_4
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_5'">
+				BIZ_MEDICAL_CARD_5
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_6'">
+				BIZ_MEDICAL_CARD_6
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_7'">
+				BIZ_MEDICAL_CARD_7
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_8'">
+				BIZ_MEDICAL_CARD_8
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_9'">
+				BIZ_MEDICAL_CARD_9
+			</when>
+			<when test="medicalcardTableName == 'BIZ_MEDICAL_CARD_10'">
+				BIZ_MEDICAL_CARD_10
+			</when>
+		</choose>
+		b
+
+		where
+		b.ID_NO = #{idNo}
+		and b.ID_TYPE = #{idType}
+		and b.STATE = 1
+		and b.PLATFORM = 3
+		and a.CARD_NO = b.CARD_NO
+		and a.OPEN_ID = b.OPEN_ID
+		and a.CLINIC_STATUS != 0
+		order by a.CREATE_TIME desc
+	</select>
+
+	<!-- 查询已缴费记录 -->
+	<select id="findPaidRecordByOrderNo" resultMap="clinicRecordResultMap" parameterType="java.util.Map"
+		statementType="STATEMENT">
+		select
+		<include refid="All_Column" />
+		FROM
+		<foreach item="item" index="index" collection="hashTableName" open="(" separator="UNION" close=")">
+			SELECT * FROM ${item} WHERE ORDER_NO = '${orderNo}'
+		</foreach>
+		AS r
+	</select>
+
+	<!-- 查询需要处理的异常的门诊订单 -->
+	<select id="findAllNeedHandleExceptionRecords" resultMap="clinicRecordResultMap" parameterType="java.util.Map"
+		statementType="STATEMENT">
+		select
+		<include refid="All_Column" />
+		from
+		<include refid="Choose_Hash_Table_Name" />
+		As r
+	    where r.IS_EXCEPTION = 1 and r.IS_HANDLE_SUCCESS = 0 and (HANDLE_COUNT  &lt; 10 or HANDLE_COUNT is null)  and  UPDATE_TIME &gt; 1490976000000
+	</select>
+
+	<!-- 根据订单号、医院代码查询门诊订单 -->
+	<select id="findByOrderNoAndHospitalCode" resultMap="clinicRecordResultMap" parameterType="java.util.Map">
+		select
+		<include refid="All_Column" />
+		from
+		<include refid="Choose_Hash_Table_Name" />
+		where
+		ORDER_NO = #{orderNo}
+		and HOSPITAL_CODE = #{hospitalCode}
+	</select>
+
+
+	<sql id="Down_Paid_Record_Column_List">
+		ID, HOSPITAL_ID, HOSPITAL_CODE, HOSPITAL_NAME ,BRANCH_ID, BRANCH_CODE, AGT_ORD_NUM,AGT_REFUND_ORD_NUM,
+		HIS_ORD_NO,REFUND_HISORD_NO,PAY_STATUS,ORDER_NO,REFUND_ORDER_NO,PAY_FEE,TRADE_MODE,PLATFORM_MODE, PATIENT_MOBILE
+	</sql>
+
+	<select id="findDownPaidRecord" resultMap="clinicRecordResultMap" parameterType="java.util.Map" statementType="STATEMENT">
+		SELECT
+		<include refid="Down_Paid_Record_Column_List" />
+		, '1' TRADE_TYPE,FROM_UNIXTIME(PAY_TIME/1000,'%Y-%m-%d %H:%i:%S') AS TRADE_TIME FROM ${hashTableName} where
+		HOSPITAL_ID = '${hospitalId}' and CLINIC_STATUS in (1,20,30)
+		AND FROM_UNIXTIME(PAY_TIME/1000) BETWEEN '${startTime}' and '${endTime}' AND PAY_TIME > 0
+		<if test="branchCode != null and branchCode != ''">
+			AND BRANCH_CODE = '${branchCode}'
+		</if>
+		<if test="tradeMode != null and tradeMode != ''">
+			AND PLATFORM_MODE = '${tradeMode}'
+		</if>
+		UNION ALL
+		SELECT
+		<include refid="Down_Paid_Record_Column_List" />
+		, '2' TRADE_TYPE,FROM_UNIXTIME(REFUND_TIME/1000,'%Y-%m-%d %H:%i:%S') AS TRADE_TIME FROM ${hashTableName} where
+		HOSPITAL_ID = '${hospitalId}' and CLINIC_STATUS in (1,20)
+		AND FROM_UNIXTIME(PAY_TIME/1000) BETWEEN '${startTime}' and '${endTime}' AND REFUND_TIME > 0
+		<if test="branchCode != null and branchCode != ''">
+			AND BRANCH_CODE = '${branchCode}'
+		</if>
+		<if test="tradeMode != null and tradeMode != ''">
+			AND PLATFORM_MODE = '${tradeMode}'
+		</if>
+		ORDER BY ORDER_NO,TRADE_TYPE DESC
+	</select>
+	<select id="findClinicRecordByIdAndHashTableName" resultMap="clinicRecordResultMap" parameterType="java.util.Map">
+		SELECT
+		<include refid="All_Column" />
+		FROM
+		<include refid="Choose_Hash_Table_Name" />
+		AS r
+		WHERE r.ID = #{id}
+	</select>
+
+	<select id="findPartRefundRecord" resultMap="clinicRecordResultMap" parameterType="java.util.Map">
+		SELECT
+		a.ID, a.HOSPITAL_ID, a.HOSPITAL_CODE, a.HOSPITAL_NAME, a.BRANCH_ID, a.BRANCH_CODE,
+		AGT_ORD_NUM, a.AGT_REFUND_ORD_NUM, a.HIS_ORD_NO, a.REFUND_HIS_ORD_NO as REFUND_HISORD_NO,
+		a.REFUND_STATUS as PAY_STATUS, a.ORDER_NO, a.REFUND_ORDER_NO, a.REFUND_FEE as PAY_FEE,
+		a.REFUND_MODE as PLATFORM_MODE, a.PATIENT_MOBILE, '2' as TRADE_TYPE,
+		FROM_UNIXTIME(a.REFUND_TIME/1000,'%Y-%m-%d %H:%i:%S') AS TRADE_TIME
+		FROM
+		BIZ_CLINIC_PART_REFUND_RECORD a
+		WHERE
+		a.HOSPITAL_ID = #{hospitalId}
+		AND a.REFUND_STATUS = 31
+		AND FROM_UNIXTIME(REFUND_TIME/1000) BETWEEN #{startTime} and #{endTime}
+		AND
+		REFUND_TIME > 0
+		<if test="branchCode != null and branchCode != ''">
+			AND BRANCH_CODE = #{branchCode}
+		</if>
+		<if test="tradeMode != null and tradeMode != ''">
+			AND REFUND_MODE = #{tradeMode}
+		</if>
+		ORDER BY ORDER_NO, TRADE_TYPE DESC
+	</select>
+
+    <select id ="findListByProcedure" resultMap="clinicRecordResultMap" parameterType="java.util.Map" statementType="CALLABLE">
+  		 {call QUERY_CLINIC_ORDER(#{hospitalId,mode=IN,jdbcType=VARCHAR},#{branchCode,mode=IN,jdbcType=VARCHAR},#{tradeMode,mode=IN,jdbcType=VARCHAR}
+  		  ,#{startTime,mode=IN,jdbcType=VARCHAR},#{endTime,mode=IN,jdbcType=VARCHAR},#{scope,mode=IN,jdbcType=VARCHAR})}  
+  	</select>
+  	
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.commons.entity.platform.rule.RulePayment" >
+  <resultMap id="RulePaymentResultMap" type="RulePayment" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+    <result column="TRADE_TYPES" property="tradeTypes" jdbcType="VARCHAR" />
+    <result column="DEFAULT_TRADE_TYPES" property="defaultTradeTypes" jdbcType="VARCHAR" />
+    <result column="VIEW_TYPE" property="viewType" jdbcType="VARCHAR" />
+    <result column="CP" property="cp" jdbcType="VARCHAR" />
+    <result column="CT" property="ct" jdbcType="TIMESTAMP" />
+    <result column="EP" property="ep" jdbcType="VARCHAR" />
+    <result column="ET" property="et" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, HOSPITAL_ID, CP, CT, EP, ET, TRADE_TYPES, DEFAULT_TRADE_TYPES, VIEW_TYPE
+  </sql>
+  <select id="findById" resultMap="RulePaymentResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_RULE_PAYMENT
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findAll" resultMap="RulePaymentResultMap">
+   select * from SYS_RULE_PAYMENT
+  </select>
+  
+  <select id="findByHospitalId" resultMap="RulePaymentResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_RULE_PAYMENT
+    where HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR}
+  </select>
+  
+  <insert id="add" parameterType="RulePayment" >
+    insert into SYS_RULE_PAYMENT (ID, HOSPITAL_ID, 
+      CP, CT, EP, ET, TRADE_TYPES, DEFAULT_TRADE_TYPES, VIEW_TYPE
+    )
+    values (#{id,jdbcType=VARCHAR}, #{hospitalId,jdbcType=VARCHAR}, 
+      #{cp,jdbcType=VARCHAR}, #{ct,jdbcType=TIMESTAMP}, #{ep,jdbcType=VARCHAR}, #{et,jdbcType=TIMESTAMP},
+      #{tradeTypes,jdbcType=VARCHAR},#{defaultTradeTypes,jdbcType=VARCHAR},#{viewType,jdbcType=VARCHAR}
+    )
+  </insert>
+  
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from SYS_RULE_PAYMENT where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="update" parameterType="com.yxw.commons.entity.platform.rule.RulePayment" >
+    update SYS_RULE_PAYMENT
+    <set >
+      <if test="hospitalId != null" >
+        HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+      </if>
+      <if test="cp != null" >
+        CP = #{cp,jdbcType=VARCHAR},
+      </if>
+      <if test="ct != null" >
+        CT = #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ep != null" >
+        EP = #{ep,jdbcType=VARCHAR},
+      </if>
+      <if test="et != null" >
+        ET = #{et,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeTypes != null" >
+        TRADE_TYPES = #{tradeTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultTradeTypes != null" >
+        DEFAULT_TRADE_TYPES = #{defaultTradeTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="viewType != null" >
+        VIEW_TYPE = #{viewType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateById" parameterType="RulePayment" >
+    update SYS_RULE_PAYMENT
+    set HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+      TRADE_TYPES = #{tradeTypes,jdbcType=VARCHAR},
+      DEFAULT_TRADE_TYPES = #{defaultTradeTypes,jdbcType=VARCHAR},
+      VIEW_TYPE = #{viewType,jdbcType=VARCHAR}
+
+      CP = #{cp,jdbcType=VARCHAR},
+      CT = #{ct,jdbcType=TIMESTAMP},
+      EP = #{ep,jdbcType=VARCHAR},
+      ET = #{et,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

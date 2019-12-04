@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.dto.outside.PrescriptionDetailReuslt">
+		<!-- 商保接口服务-获取处方明细接口缺失记录 -->
+	<resultMap id="prescriptionDetailReusltMap"  type="PrescriptionDetailReuslt">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="MZFEE_ID" property="mzFeeId" jdbcType="VARCHAR" />
+		<result column="NAME" property="patName" jdbcType="VARCHAR" />
+		<result column="SEX" property="patSex" jdbcType="VARCHAR" />
+		<result column="BIRTH" property="birthDay" jdbcType="VARCHAR" />
+		<result column="ID_TYPE" property="patIdType" jdbcType="VARCHAR" />
+		<result column="ID_NO" property="patIdNo" jdbcType="VARCHAR" />
+		<result column="ITEM_ID" property="itemId" jdbcType="VARCHAR" />
+		<result column="ITEM_NAME" property="itemName" jdbcType="VARCHAR" />
+		<result column="ITEM_PRICE" property="itemPrice" jdbcType="VARCHAR" />
+		<result column="ITEM_NUMBER" property="itemNumber" jdbcType="VARCHAR" />
+		<result column="ITEM_TYPE" property="itemType" jdbcType="VARCHAR" />
+		<result column="ITEM_TOTAL_FEE" property="itemTotalFee" jdbcType="VARCHAR" />
+		<result column="ITEM_UNIT" property="itemUnit" jdbcType="VARCHAR" />
+		<result column="ITEM_SPEC" property="itemSpec" jdbcType="VARCHAR" />
+		<result column="DOCTOR_NAME" property="doctorName" jdbcType="VARCHAR" />
+		<result column="DOCTOR_CODE" property="doctorCode" jdbcType="VARCHAR" />
+		<result column="ITEM_TIME" property="itemTime" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Choose_Hash_Table_Name">
+		<choose>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_1'">
+				BIZ_CLINIC_RECORD_1
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_2'">
+				BIZ_CLINIC_RECORD_2
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_3'">
+				BIZ_CLINIC_RECORD_3
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_4'">
+				BIZ_CLINIC_RECORD_4
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_5'">
+				BIZ_CLINIC_RECORD_5
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_6'">
+				BIZ_CLINIC_RECORD_6
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_7'">
+				BIZ_CLINIC_RECORD_7
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_8'">
+				BIZ_CLINIC_RECORD_8
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_9'">
+				BIZ_CLINIC_RECORD_9
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_10'">
+				BIZ_CLINIC_RECORD_10
+			</when>
+		</choose>
+	</sql>
+	
+	<sql id="Choose_Hash_Table_Name2">
+		<choose>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_1'">
+				BIZ_MEDICAL_CARD_1
+			</when>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_2'">
+				BIZ_MEDICAL_CARD_2
+			</when>
+			<when test="hashTableName2== 'BIZ_MEDICAL_CARD_3'">
+				BIZ_MEDICAL_CARD_3
+			</when>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_4'">
+				BIZ_MEDICAL_CARD_4
+			</when>
+			<when test="hashTableName2== 'BIZ_MEDICAL_CARD_5'">
+				BIZ_MEDICAL_CARD_5
+			</when>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_6'">
+				BIZ_MEDICAL_CARD_6
+			</when>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_7'">
+				BIZ_MEDICAL_CARD_7
+			</when>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_8'">
+				BIZ_MEDICAL_CARD_8
+			</when>
+		</choose>
+	</sql>
+	
+	<select id="getPrescriptionDetail"  parameterType="com.yxw.commons.dto.inside.PaidMZDetailCommParams"  resultMap="prescriptionDetailReusltMap" >
+		SELECT a.MZFEE_ID,b.ITEM_ID,b.ITEM_NAME,b.ITEM_PRICE,b.ITEM_NUMBER,b.ITEM_TYPE,b.ITEM_TOTAL_FEE,b.ITEM_UNIT,b.ITEM_SPEC,b.DOCTOR_NAME,b.DOCTOR_CODE,b.ITEM_TIME,c.`NAME`,c.`SEX`,c.ID_TYPE,c.ID_NO,c.BIRTH 
+		FROM  
+		<include refid="Choose_Hash_Table_Name" /> a
+		 LEFT JOIN 
+		DATA_PAY_FEE_DETAIL b ON(a.MZFEE_ID=b.MZ_FEE_ID)
+		 LEFT JOIN
+		<include refid="Choose_Hash_Table_Name2" /> c 
+		  ON(a.CARD_NO=c.CARD_NO) 
+		where a.APP_ID=#{appId} and a.APP_CODE=#{appCode} and a.OPEN_ID=#{openId} and  a.HOSPITAL_CODE=#{hospitalCode} and a.ORDER_NO=#{orderNo} and a.MZFEE_ID=#{mzFeeId}
+	</select>
+</mapper>

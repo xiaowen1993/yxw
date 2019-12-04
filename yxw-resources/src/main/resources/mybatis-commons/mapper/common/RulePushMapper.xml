@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.commons.entity.platform.rule.RulePush">
+	<resultMap id="RulePushResultMap" type="com.yxw.commons.entity.platform.rule.RulePush">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="PUSH_MODES" property="pushModes" jdbcType="VARCHAR" />
+		<result column="BIND_CARD_SUC" property="bindCardSuc" />
+		<result column="BIND_CARD_SUC_CODE" property="bindCardSucCode" />
+		<result column="CREATE_CARD_SUC" property="createCardSuc" />
+		<result column="CREATE_CARD_SUC_CODE" property="createCardSucCode" />
+		<result column="PREDAY_VISIT" property="predayVisit" />
+		<result column="PREDAY_VISIT_CODE" property="predayVisitCode" />
+		<result column="CURDAY_VISIT" property="curdayVisit" />
+		<result column="CURDAY_VISIT_CODE" property="curdayVisitCode" />
+		<result column="LOCK_RES_SUC" property="lockResSuc" />
+		<result column="LOCK_RES_SUC_CODE" property="lockResSucCode" />
+		<result column="ON_DUTY_PAY_SUC" property="onDutyPaySuc" />
+		<result column="ON_DUTY_PAY_SUC_CODE" property="onDutyPaySucCode" />
+		<result column="APPOINT_PAY_SUC" property="appointPaySuc" />
+		<result column="APPOINT_PAY_SUC_CODE" property="appointPaySucCode" />
+		<result column="APPOINT_PAY_FAIL" property="appointPayFail" />
+		<result column="APPOINT_PAY_FAIL_CODE" property="appointPayFailCode" />
+		<result column="APPOINT_PAY_EXP" property="appointPayExp" />
+		<result column="APPOINT_PAY_EXP_CODE" property="appointPayExpCode" />
+		<result column="CANCEL_ON_DUTY" property="cancelOnDuty" />
+		<result column="CANCEL_ON_DUTY_CODE" property="cancelOnDutyCode" />
+		<result column="CANCEL_APPOINTMENT" property="cancelAppointment" />
+		<result column="CANCEL_APPOINTMENT_CODE" property="cancelAppointmentCode" />
+		<result column="REFUND_SUCCESS" property="refundSuccess" />
+		<result column="REFUND_SUCCESS_CODE" property="refundSuccessCode" />
+		<result column="REFUND_SUCCESS_APPOINT" property="refundSuccessAppoint" />
+	    <result column="REFUND_SUCCESS_APPOINT_CODE" property="refundSuccessAppointCode" />
+		<result column="REFUND_FAIL" property="refundFail" />
+		<result column="REFUND_FAIL_CODE" property="refundFailCode" />
+		<result column="REFUND_EXCEPTION" property="refundException" />
+		<result column="REFUND_EXCEPTION_CODE" property="refundExceptionCode" />
+		<result column="STOP_VISIT" property="stopVisit" />
+		<result column="STOP_VISIT_CODE" property="stopVisitCode" />
+		<result column="REPLACE_REG_VISIT" property="replaceRegVisit" />
+	    <result column="REPLACE_REG_VISIT_CODE" property="replaceRegVisitCode" />
+		<result column="WAIT_VISIT" property="waitVisit" />
+		<result column="WAIT_VISIT_CODE" property="waitVisitCode" />
+		<result column="CLINIC_PAY_SUC" property="clinicPaySuc" />
+		<result column="CLINIC_PAY_SUC_CODE" property="clinicPaySucCode" />
+		<result column="CLINIC_PAY_FAIL" property="clinicPayFail" />
+		<result column="CLINIC_PAY_FAIL_CODE" property="clinicPayFailCode" />
+		<result column="CLINIC_PAY_EXP" property="clinicPayExp" />
+		<result column="CLINIC_PAY_EXP_CODE" property="clinicPayExpCode" />
+		<result column="PAY_DEPOSIT_SUC" property="payDepositSuc" />
+		<result column="PAY_DEPOSIT_SUC_CODE" property="payDepositSucCode" />
+		<result column="PAY_DEPOSIT_FAIL" property="payDepositFail" />
+		<result column="PAY_DEPOSIT_FAIL_CODE" property="payDepositFailCode" />
+		<result column="PAY_DEPOSIT_EXP" property="payDepositExp" />
+		<result column="PAY_DEPOSIT_EXP_CODE" property="payDepositExpCode" />
+		<result column="GENERATE_REPORT" property="generateReport" />
+		<result column="GENERATE_REPORT_CODE" property="generateReportCode" />
+		<result column="CLINIC_REFUND" property="clinicRefundSuc" />
+		<result column="CLINIC_REFUND_CODE" property="clinicRefundSucCode" />
+		<result column="CLINIC_REFUND_PART" property="clinicPartRefundSuc" />
+		<result column="CLINIC_REFUND_PART_CODE" property="clinicPartRefundSucCode" />
+		<result column="CLINIC_PAY_SUCCESS_COMMENT" property="clinicPaySuccessComment" />
+	    <result column="CLINIC_PAY_SUC_COMMENT_CODE" property="clinicPaySucCommentCode" />
+	    <result column="CLINIC_PAY_SUC_FLOWER" property="clinicPaySuccessFlower" />
+	    <result column="CLINIC_PAY_SUC_FLOWER_CODE" property="clinicPaySuccessFlowerCode" />
+	    <result column="PRESENT_FLOWER_DAY_FLAG" property="presentFlowerDayFlag" />
+	    <result column="PRESENT_FLOWER_BEGIN_TIME" property="presentFlowerBeginTime" />
+	    <result column="PRESENT_FLOWER_END_TIME" property="presentFlowerEndTime" />
+	    <result column="DEPOSIT_REFUND_ALL_SUC" property="depositRefundAllSuccess" />
+	    <result column="DEPOSIT_REFUND_ALL_SUC_CODE" property="depositRefundAllSuccessCode" />
+	    <result column="DEPOSIT_REFUND_PART_SUC" property="depositRefundPartSuccess" />
+	    <result column="DEPOSIT_REFUND_PART_SUC_CODE" property="depositRefundPartSuccessCode" />
+	    <result column="TAKENO_SUCCESS" property="takeNoSuccess" />
+	    <result column="TAKENO_SUCCESSCODE" property="takeNoSuccessCode" />
+		<result column="SEND_COMMENT" property="sendComment" />
+		<result column="SEND_COMMENT_CODE" property="sendCommentCode" />
+		<result column="FINISH_USER_INFO" property="finishUserInfo" />
+		<result column="FINISH_USER_INFO_CODE" property="finishUserInfoCode" />
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+		<result column="PLATFORM_TYPE" property="platformType" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID,HOSPITAL_ID,PUSH_MODES,BIND_CARD_SUC,BIND_CARD_SUC_CODE,CREATE_CARD_SUC,CREATE_CARD_SUC_CODE,
+		PREDAY_VISIT,PREDAY_VISIT_CODE,CURDAY_VISIT,CURDAY_VISIT_CODE,LOCK_RES_SUC,
+		LOCK_RES_SUC_CODE,ON_DUTY_PAY_SUC,ON_DUTY_PAY_SUC_CODE,APPOINT_PAY_SUC,APPOINT_PAY_SUC_CODE,
+		APPOINT_PAY_FAIL,APPOINT_PAY_FAIL_CODE,APPOINT_PAY_EXP,APPOINT_PAY_EXP_CODE,CANCEL_ON_DUTY,
+		CANCEL_ON_DUTY_CODE,CANCEL_APPOINTMENT,CANCEL_APPOINTMENT_CODE,REFUND_SUCCESS,REFUND_SUCCESS_CODE,REFUND_SUCCESS_APPOINT,REFUND_SUCCESS_APPOINT_CODE,
+		REFUND_FAIL,REFUND_FAIL_CODE,REFUND_EXCEPTION,REFUND_EXCEPTION_CODE,STOP_VISIT,
+		STOP_VISIT_CODE,WAIT_VISIT,WAIT_VISIT_CODE,CLINIC_PAY_SUC,CLINIC_PAY_SUC_CODE,
+		CLINIC_PAY_FAIL,CLINIC_PAY_FAIL_CODE,CLINIC_PAY_EXP,CLINIC_PAY_EXP_CODE,PAY_DEPOSIT_SUC,
+		PAY_DEPOSIT_SUC_CODE,PAY_DEPOSIT_FAIL,PAY_DEPOSIT_FAIL_CODE,PAY_DEPOSIT_EXP,
+		PAY_DEPOSIT_EXP_CODE,GENERATE_REPORT,GENERATE_REPORT_CODE,CLINIC_REFUND,CLINIC_REFUND_CODE,
+		CLINIC_REFUND_PART,CLINIC_REFUND_PART_CODE,CP, CT, EP, ET,SEND_COMMENT,SEND_COMMENT_CODE,FINISH_USER_INFO,
+		FINISH_USER_INFO_CODE,REPLACE_REG_VISIT,REPLACE_REG_VISIT_CODE,CLINIC_PAY_SUCCESS_COMMENT,CLINIC_PAY_SUC_COMMENT_CODE,
+		CLINIC_PAY_SUC_FLOWER,CLINIC_PAY_SUC_FLOWER_CODE,PRESENT_FLOWER_DAY_FLAG,PRESENT_FLOWER_BEGIN_TIME,PRESENT_FLOWER_END_TIME,
+		DEPOSIT_REFUND_ALL_SUC,DEPOSIT_REFUND_ALL_SUC_CODE,DEPOSIT_REFUND_PART_SUC,DEPOSIT_REFUND_PART_SUC_CODE,TAKENO_SUCCESS,TAKENO_SUCCESSCODE
+	</sql>
+
+	<select id="findAll" resultMap="RulePushResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		, 'wechat' PLATFORM_TYPE
+		from SYS_RULE_PUSH_WECHAT
+		union all
+		SELECT
+		<include refid="Base_Column_List" />
+		, 'alipay' PLATFORM_TYPE
+		from SYS_RULE_PUSH_ALIPAY
+		union all
+		SELECT
+		<include refid="Base_Column_List" />
+		, 'app' PLATFORM_TYPE
+		from SYS_RULE_PUSH_APP
+		union all
+		SELECT
+		<include refid="Base_Column_List" />
+		, 'innerUnionPay' PLATFORM_TYPE
+		from SYS_RULE_PUSH_INNER_UNIONPAY
+		union all
+		SELECT
+		<include refid="Base_Column_List" />
+		, 'innerChinaLife' PLATFORM_TYPE
+		from SYS_RULE_PUSH_INNER_CHINALIFE
+	</select>
+
+	<!-- 根据id查询 -->
+	<select id="findByHospitalId" resultMap="RulePushResultMap" parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		<if test="platformType=='wechat'">
+			SYS_RULE_PUSH_WECHAT
+		</if>
+		<if test="platformType=='alipay'">
+			SYS_RULE_PUSH_ALIPAY
+		</if>
+		<if test="platformType=='app'"> 
+			SYS_RULE_PUSH_APP 
+		</if>
+		<if test="platformType=='innerUnionPay'">
+			SYS_RULE_PUSH_INNER_UNIONPAY
+		</if>
+		<if test="platformType=='innerChinaLife'">
+			SYS_RULE_PUSH_INNER_CHINALIFE
+		</if>
+		WHERE HOSPITAL_ID = #{hospitalId}
+	</select>
+
+	<!-- 新增 -->
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.rule.RulePush">
+		INSERT INTO
+		<if test="platformType=='wechat'">
+			SYS_RULE_PUSH_WECHAT
+		</if>
+		<if test="platformType=='alipay'">
+			SYS_RULE_PUSH_ALIPAY
+		</if>
+		<if test="platformType=='app'">
+			SYS_RULE_PUSH_APP
+		</if>
+		<if test="platformType=='innerUnionPay'">
+	    	SYS_RULE_PUSH_INNER_UNIONPAY
+	    </if> 
+   		<if test="platformType=='innerChinaLife'">
+			SYS_RULE_PUSH_INNER_CHINALIFE
+		</if>
+		(<include refid="Base_Column_List" />)
+		VALUES(#{id},#{hospitalId},#{pushModes},#{bindCardSuc},#{bindCardSucCode},#{createCardSuc},#{createCardSucCode},
+		#{predayVisit},#{predayVisitCode},#{curdayVisit},#{curdayVisitCode},#{lockResSuc},
+		#{lockResSucCode},#{onDutyPaySuc},#{onDutyPaySucCode},#{appointPaySuc},#{appointPaySucCode},
+		#{appointPayFail},#{appointPayFailCode},#{appointPayExp},#{appointPayExpCode},#{cancelOnDuty},
+		#{cancelOnDutyCode},#{cancelAppointment},#{cancelAppointmentCode},#{refundSuccess},
+		#{refundSuccessCode},#{refundSuccessAppoint},#{refundSuccessAppointCode},#{refundFail},#{refundFailCode},#{refundException},#{refundExceptionCode},
+		#{stopVisit},#{stopVisitCode},#{waitVisit},#{waitVisitCode},#{clinicPaySuc},#{clinicPaySucCode},
+		#{clinicPayFail},#{clinicPayFailCode},
+		#{clinicPayExp},#{clinicPayExpCode},#{payDepositSuc},#{payDepositSucCode},#{payDepositFail},
+		#{payDepositFailCode},#{payDepositExp},#{payDepositExpCode},#{generateReport},#{generateReportCode},
+		#{clinicRefundSuc},#{clinicRefundSucCode},#{clinicPartRefundSuc},#{clinicPartRefundSucCode},#{cp},#{ct},#{ep},#{et},#{sendComment},#{sendCommentCode},
+		#{finishUserInfo},#{finishUserInfoCode},#{replaceRegVisit},#{replaceRegVisitCode},#{clinicPaySuccessComment},#{clinicPaySucCommentCode},
+		#{clinicPaySuccessFlower},#{clinicPaySuccessFlowerCode},#{presentFlowerDayFlag},#{presentFlowerBeginTime},#{presentFlowerEndTime},
+		#{depositRefundAllSuccess},#{depositRefundAllSuccessCode},#{depositRefundPartSuccess},#{depositRefundPartSuccessCode},#{takeNoSuccess},#{takeNoSuccessCode})
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="com.yxw.commons.entity.platform.rule.RulePush">
+		UPDATE
+		<if test="platformType=='wechat'">
+			SYS_RULE_PUSH_WECHAT
+		</if>
+		<if test="platformType=='alipay'">
+			SYS_RULE_PUSH_ALIPAY
+		</if>
+		<if test="platformType=='app'">
+			SYS_RULE_PUSH_APP
+		</if>
+		<if test="platformType=='innerUnionPay'">
+			SYS_RULE_PUSH_INNER_UNIONPAY
+		</if>
+		<if test="platformType=='innerChinaLife'">
+			SYS_RULE_PUSH_INNER_CHINALIFE
+		</if>
+		<set>
+			<if test="pushModes != null">
+				PUSH_MODES = #{pushModes},
+			</if>
+			<if test="bindCardSuc != null">
+				BIND_CARD_SUC = #{bindCardSuc},
+			</if>
+			<if test="bindCardSucCode != null">
+				BIND_CARD_SUC_CODE = #{bindCardSucCode},
+			</if>
+			<if test="createCardSuc != null">
+				CREATE_CARD_SUC = #{createCardSuc},
+			</if>
+			<if test="createCardSucCode != null">
+				CREATE_CARD_SUC_CODE = #{createCardSucCode},
+			</if>
+			<if test="predayVisit != null">
+				PREDAY_VISIT = #{predayVisit},
+			</if>
+			<if test="predayVisitCode != null">
+				PREDAY_VISIT_CODE = #{predayVisitCode},
+			</if>
+			<if test="curdayVisit != null">
+				CURDAY_VISIT = #{curdayVisit},
+			</if>
+			<if test="curdayVisitCode != null">
+				CURDAY_VISIT_CODE = #{curdayVisitCode},
+			</if>
+			<if test="lockResSuc != null">
+				LOCK_RES_SUC = #{lockResSuc},
+			</if>
+			<if test="lockResSucCode != null">
+				LOCK_RES_SUC_CODE = #{lockResSucCode},
+			</if>
+			<if test="onDutyPaySuc != null">
+				ON_DUTY_PAY_SUC = #{onDutyPaySuc},
+			</if>
+			<if test="onDutyPaySucCode != null">
+				ON_DUTY_PAY_SUC_CODE = #{onDutyPaySucCode},
+			</if>
+			<if test="appointPaySuc != null">
+				APPOINT_PAY_SUC = #{appointPaySuc},
+			</if>
+			<if test="appointPaySucCode != null">
+				APPOINT_PAY_SUC_CODE = #{appointPaySucCode},
+			</if>
+			<if test="appointPayFail != null">
+				APPOINT_PAY_FAIL = #{appointPayFail},
+			</if>
+			<if test="appointPayFailCode != null">
+				APPOINT_PAY_FAIL_CODE = #{appointPayFailCode},
+			</if>
+			<if test="appointPayExp!= null">
+				APPOINT_PAY_EXP = #{appointPayExp},
+			</if>
+			<if test="appointPayExpCode != null">
+				APPOINT_PAY_EXP_CODE = #{appointPayExpCode},
+			</if>
+			<if test="cancelOnDuty != null">
+				CANCEL_ON_DUTY = #{cancelOnDuty},
+			</if>
+			<if test="cancelOnDutyCode != null">
+				CANCEL_ON_DUTY_CODE = #{cancelOnDutyCode},
+			</if>
+			<if test="cancelAppointment != null">
+				CANCEL_APPOINTMENT = #{cancelAppointment},
+			</if>
+			<if test="cancelAppointmentCode != null">
+				CANCEL_APPOINTMENT_CODE = #{cancelAppointmentCode},
+			</if>
+			<if test="refundSuccess != null">
+				REFUND_SUCCESS = #{refundSuccess},
+			</if>
+			<if test=" refundSuccessCode!= null">
+				REFUND_SUCCESS_CODE = #{refundSuccessCode},
+			</if>
+			<if test="refundSuccessAppoint != null">
+				REFUND_SUCCESS_APPOINT = #{refundSuccessAppoint},
+			</if>
+			<if test=" refundSuccessAppointCode!= null">
+				REFUND_SUCCESS_APPOINT_CODE = #{refundSuccessAppointCode},
+			</if>
+			<if test="refundFail != null">
+				REFUND_FAIL = #{refundFail},
+			</if>
+			<if test="refundFailCode != null">
+				REFUND_FAIL_CODE = #{refundFailCode},
+			</if>
+			<if test="refundException != null">
+				REFUND_EXCEPTION = #{refundException},
+			</if>
+			<if test=" refundExceptionCode!= null">
+				REFUND_EXCEPTION_CODE = #{refundExceptionCode},
+			</if>
+			<if test=" stopVisit!= null">
+				STOP_VISIT= #{stopVisit},
+			</if>
+			<if test="stopVisitCode != null">
+				STOP_VISIT_CODE = #{stopVisitCode},
+			</if>
+			<if test=" replaceRegVisit!= null">
+				REPLACE_REG_VISIT= #{replaceRegVisit},
+			</if>
+			<if test="replaceRegVisitCode != null">
+				REPLACE_REG_VISIT_CODE = #{replaceRegVisitCode},
+			</if>
+			<if test="waitVisit != null">
+				WAIT_VISIT = #{waitVisit},
+			</if>
+			<if test="waitVisitCode != null">
+				WAIT_VISIT_CODE = #{waitVisitCode},
+			</if>
+			<if test="clinicPaySuc != null">
+				CLINIC_PAY_SUC = #{clinicPaySuc},
+			</if>
+			<if test="clinicPaySucCode != null">
+				CLINIC_PAY_SUC_CODE = #{clinicPaySucCode},
+			</if>
+			<if test="clinicPayFail != null">
+				CLINIC_PAY_FAIL= #{clinicPayFail},
+			</if>
+			<if test="clinicPayFailCode != null">
+				CLINIC_PAY_FAIL_CODE = #{clinicPayFailCode},
+			</if>
+			<if test="clinicPayExp != null">
+				CLINIC_PAY_EXP= #{clinicPayExp},
+			</if>
+			<if test="clinicPayExpCode != null">
+				CLINIC_PAY_EXP_CODE = #{clinicPayExpCode},
+			</if>
+			<if test="payDepositSuc != null">
+				PAY_DEPOSIT_SUC = #{payDepositSuc},
+			</if>
+			<if test="payDepositSucCode != null">
+				PAY_DEPOSIT_SUC_CODE = #{payDepositSucCode},
+			</if>
+			<if test="payDepositFail != null">
+				PAY_DEPOSIT_FAIL = #{payDepositFail},
+			</if>
+			<if test="payDepositFailCode != null">
+				PAY_DEPOSIT_FAIL_CODE = #{payDepositFailCode},
+			</if>
+			<if test="payDepositExp != null">
+				PAY_DEPOSIT_EXP = #{payDepositExp},
+			</if>
+			<if test="payDepositExpCode != null">
+				PAY_DEPOSIT_EXP_CODE = #{payDepositExpCode},
+			</if>
+			<if test="generateReport!= null">
+				GENERATE_REPORT = #{generateReport},
+			</if>
+			<if test="generateReportCode!= null">
+				GENERATE_REPORT_CODE = #{generateReportCode},
+			</if>
+			<if test="clinicRefundSuc!= null">
+				CLINIC_REFUND = #{clinicRefundSuc},
+			</if>
+			<if test="clinicRefundSucCode!= null">
+				CLINIC_REFUND_CODE = #{clinicRefundSucCode},
+			</if>
+			<if test="clinicPartRefundSuc!= null">
+				CLINIC_REFUND_PART = #{clinicPartRefundSuc},
+			</if>
+			<if test="clinicPartRefundSucCode!= null">
+				CLINIC_REFUND_PART_CODE = #{clinicPartRefundSucCode},
+			</if>
+			<if test="clinicPaySuccessComment!= null">
+				CLINIC_PAY_SUCCESS_COMMENT = #{clinicPaySuccessComment},
+			</if>
+			<if test="clinicPaySucCommentCode!= null">
+				CLINIC_PAY_SUC_COMMENT_CODE = #{clinicPaySucCommentCode},
+			</if>
+			<if test="clinicPaySuccessFlower != null">
+				CLINIC_PAY_SUC_FLOWER = #{clinicPaySuccessFlower},
+			</if>
+			<if test="clinicPaySuccessFlowerCode != null">
+				CLINIC_PAY_SUC_FLOWER_CODE = #{clinicPaySuccessFlowerCode},
+			</if>
+			<if test="presentFlowerDayFlag != null">
+				PRESENT_FLOWER_DAY_FLAG = #{presentFlowerDayFlag},
+			</if>
+			<if test="presentFlowerBeginTime != null">
+				PRESENT_FLOWER_BEGIN_TIME = #{presentFlowerBeginTime},
+			</if>
+			<if test="presentFlowerEndTime != null">
+				PRESENT_FLOWER_END_TIME = #{presentFlowerEndTime},
+			</if>
+			<if test="depositRefundAllSuccess != null">
+				DEPOSIT_REFUND_ALL_SUC = #{depositRefundAllSuccess},
+			</if>
+			<if test="depositRefundAllSuccessCode != null">
+				DEPOSIT_REFUND_ALL_SUC_CODE = #{depositRefundAllSuccessCode},
+			</if>
+			<if test="depositRefundPartSuccess != null">
+				DEPOSIT_REFUND_PART_SUC = #{depositRefundPartSuccess},
+			</if>
+			<if test="depositRefundPartSuccessCode != null">
+				DEPOSIT_REFUND_PART_SUC_CODE = #{depositRefundPartSuccessCode},
+			</if>
+			<if test="takeNoSuccess != null">
+				TAKENO_SUCCESS = #{takeNoSuccess},
+			</if>
+			<if test="takeNoSuccessCode != null">
+				TAKENO_SUCCESSCODE = #{takeNoSuccessCode},
+			</if>
+			<if test="sendComment!= null">
+				SEND_COMMENT = #{sendComment},
+			</if>
+			<if test="sendCommentCode!= null">
+				SEND_COMMENT_CODE = #{sendCommentCode},
+			</if>
+			<if test="finishUserInfo!= null">
+				FINISH_USER_INFO = #{finishUserInfo},
+			</if>
+			<if test="finishUserInfoCode!= null">
+				FINISH_USER_INFO_CODE = #{finishUserInfoCode},
+			</if>
+			<if test="cp != null">
+				CP = #{cp},
+			</if>
+			<if test="ct != null">
+				CT = #{ct},
+			</if>
+			<if test="ep != null">
+				EP = #{ep},
+			</if>
+			<if test="et != null">
+				ET = #{et},
+			</if>
+		</set>
+		WHERE HOSPITAL_ID=#{hospitalId} AND ID=#{id}
+	</update>
+</mapper>

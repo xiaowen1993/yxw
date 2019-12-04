@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.msgpush.MsgTemplate">
+
+	<resultMap id="msgTemplateMap" type="com.yxw.commons.entity.platform.msgpush.MsgTemplate">
+		<id column="ID" property="id" />
+		<result column="TEMPLATE_ID" property="templateId" />
+		<result column="LIBRARY_CODE" property="libraryCode" />
+		<result column="CODE" property="code" />
+		<result column="TITLE" property="title" />
+		<result column="TOP_COLOR" property="topColor" />
+		<result column="SOURCE" property="source" />
+		<result column="URL" property="url" />
+		<result column="ICON_NAME" property="iconName" />
+		<result column="ICON_PATH" property="iconPath" />
+		<result column="ANIMATION_NAME" property="animationName" />
+		<result column="ANIMATION_PATH" property="animationPath" />
+		<result column="APP_ID" property="appId" />
+		<result column="HOSPITAL_ID" property="hospitalId" />
+		<result column="MSG_CODE" property="msgCode" />
+		<result column="MSG_TARGET" property="msgTarget" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+		<collection property="msgTemplateContents" ofType="com.yxw.commons.entity.platform.msgpush.MsgTemplateContent" column="id" select="findMsgTemplateContents"></collection>
+		<collection property="msgTemplateFunctions" ofType="com.yxw.commons.entity.platform.msgpush.MsgTemplateFunction" column="id" select="findMsgTemplateFunctions"></collection>
+	</resultMap>
+	
+	<resultMap id="msgTemplateContentMap" type="com.yxw.commons.entity.platform.msgpush.MsgTemplateContent">
+		<id column="ID" property="id" />
+		<result column="SORT" property="sort" />
+		<result column="KEYWORD" property="keyword" />
+		<result column="VALUE" property="value" />
+		<result column="NODE" property="node" />
+		<result column="FONT_COLOR" property="fontColor" />
+		<result column="TEMPLATE_ID" property="templateId" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+	</resultMap>
+	
+	<resultMap id="msgTemplateFunctionMap" type="com.yxw.commons.entity.platform.msgpush.MsgTemplateFunction">
+		<id column="ID" property="id" />
+		<result column="TEMPLATE_ID" property="templateId" />
+		<result column="FUNCTION_NAME" property="functionName"/>
+		<result column="FUNCTION_TYPE" property="functionType" />
+		<result column="FUNCTION_CODE" property="functionCode" />
+		<result column="SORT" property="sort" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+	</resultMap>
+
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.msgpush.MsgTemplate">
+		INSERT INTO SYS_MSG_TEMPLATE(
+		ID,TEMPLATE_ID,LIBRARY_CODE,CODE,TITLE,TOP_COLOR,
+		SOURCE,URL,ICON_NAME,ICON_PATH,ANIMATION_NAME,ANIMATION_PATH,APP_ID,HOSPITAL_ID,MSG_CODE,MSG_TARGET,CP,CT,EP,ET)
+		VALUES
+		(#{id}, #{templateId},#{libraryCode}, #{code}, #{title}, #{topColor}, #{source}, #{url},#{iconName},#{iconPath},#{animationName},#{animationPath},
+		 #{appId}, #{hospitalId}, #{msgCode}, #{msgTarget}, '8b1994dff203407a869161c0946f6e97', now(),'8b1994dff203407a869161c0946f6e97', now());
+	</insert>
+
+	<select id="findById" parameterType="String" resultMap="msgTemplateMap">
+		select * from SYS_MSG_TEMPLATE WHERE ID=#{id} ORDER BY CT
+	</select>
+	
+	<select id="find" parameterType="com.yxw.commons.entity.platform.msgpush.MsgTemplate" resultMap="msgTemplateMap">
+		select from SYS_MSG_TEMPLATE WHERE APP_ID=#{appId} AND CODE=#{code} AND SOURCE=#{source} ORDER BY CT
+	</select>
+	
+	<select id="findMsgTemplateContents" parameterType="string" resultMap="msgTemplateContentMap">
+		SELECT * FROM SYS_MSG_TEMPLATE_CONTENT  WHERE TEMPLATE_ID=#{id} ORDER BY SORT 
+	</select>
+	
+	<select id="findMsgTemplateFunctions" parameterType="string" resultMap="msgTemplateFunctionMap">
+		SELECT * FROM SYS_MSG_TEMPLATE_FUNCTION  WHERE TEMPLATE_ID=#{id} ORDER BY SORT 
+	</select>
+	
+	<select id="findAll"  resultMap="msgTemplateMap">
+		select * from SYS_MSG_TEMPLATE ORDER BY CT
+	</select>
+	
+	<select id="check" parameterType="Map" resultMap="msgTemplateMap">
+		SELECT * FROM SYS_MSG_TEMPLATE h where h.CODE=#{code} AND h.APP_ID=#{appId} AND h.SOURCE=#{source}
+	</select>
+	
+	<delete id="deleteById" parameterType="string">
+		DELETE FROM SYS_MSG_TEMPLATE WHERE ID=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.yxw.commons.entity.platform.msgpush.MsgTemplate">
+		UPDATE SYS_MSG_TEMPLATE
+		<set>
+			<if test="templateId != null">
+				TEMPLATE_ID = #{templateId},
+			</if>
+			<if test="libraryCode != null">
+				LIBRARY_CODE = #{libraryCode},
+			</if>
+			<if test="code != null">
+				CODE = #{code},
+			</if>
+			<if test="title != null">
+				TITLE = #{title},
+			</if>
+			<if test="topColor != null">
+				TOP_COLOR = #{topColor},
+			</if>
+			<if test="source != null">
+				SOURCE = #{source},
+			</if>
+			<if test="url != null">
+				URL = #{url},
+			</if>
+			 <if test="iconName != null" >
+	        ICON_NAME = #{iconName},
+	      </if>
+	      <if test="iconPath != null" >
+	        ICON_PATH = #{iconPath},
+	      </if>
+	      <if test="animationName != null" >
+	        ANIMATION_NAME = #{animationName},
+	      </if>
+	      <if test="animationPath != null" >
+	        ANIMATION_PATH = #{animationPath},
+	      </if>
+			<if test="appId != null">
+				APP_ID = #{appId},
+			</if>
+			<if test="hospitalId != null">
+				HOSPITAL_ID = #{hospitalId},
+			</if>
+			<if test="msgCode != null">
+				MSG_CODE = #{msgCode},
+			</if>
+			<if test="msgTarget != null">
+				MSG_TARGET = #{msgTarget},
+			</if>
+			<if test="cp != null">
+				CP = #{cp},
+			</if>
+			<if test="ct != null">
+				CT = #{ct},
+			</if>
+			<if test="ep != null">
+				EP = #{ep},
+			</if>
+			<if test="et != null">
+				ET = #{et},
+			</if>
+		</set>
+		WHERE ID=#{id}
+	</update>
+	
+	
+	<select id="findHospListByPage" resultMap="hospitalMap" parameterType="Map" >
+			SELECT * FROM SYS_HOSPITAL t WHERE t.STATUS=1
+		<if test="search!=null">
+			AND t.NAME like '%${search}%' 
+		</if>
+		<if test="hospitalIds != null" >
+			and t.ID in
+			<foreach item="item" index="index" collection="hospitalIds" open="(" separator="," close=")">  
+	  			#{item}
+	  		</foreach> 
+		</if>
+	</select>
+	<resultMap id="hospitalMap" type="com.yxw.commons.vo.MsgPushHospitalVo">
+		<id column="ID" property="hospitalid"/>
+		<result column="NAME" property="hospitalname"/>
+		<collection  property="msgPushList"  ofType="com.yxw.commons.vo.MsgPushVo" column="id"  select="getMsgPush"></collection>
+	</resultMap>
+	<select id="getMsgPush" parameterType="string" resultType="com.yxw.commons.vo.MsgPushVo">
+		(SELECT
+			(
+				SELECT
+					s.USER_NAME
+				FROM
+					SYS_USER s
+				WHERE
+					s.ID = t.EP
+			) AS ep,
+			DATE_FORMAT(t.ET, '%Y年%m月%d日 %T') AS et
+		FROM
+			SYS_MSG_TEMPLATE t
+		WHERE
+			t.HOSPITAL_ID = #{id}
+		)
+		UNION 
+		(
+		SELECT
+			(
+				SELECT
+					s.USER_NAME
+				FROM
+					SYS_USER s
+				WHERE
+					s.ID = c.EP
+			) AS ep,
+			DATE_FORMAT(c.ET, '%Y年%m月%d日 %T') AS et
+		FROM
+			SYS_MSG_CUSTOMER c
+		WHERE
+			c.HOSPITAL_ID = #{id}
+		)
+		ORDER BY et desc
+	</select>
+</mapper>

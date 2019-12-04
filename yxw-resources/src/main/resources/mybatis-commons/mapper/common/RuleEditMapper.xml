@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.commons.entity.platform.rule.RuleEdit">
+	<resultMap id="RuleEditResultMap" type="com.yxw.commons.entity.platform.rule.RuleEdit">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="SKIN_WEIXIN_TYPE" property="skinWeixinType" jdbcType="INTEGER" />
+		<result column="SKIN_ALIPAY_TYPE" property="skinAlipayType" jdbcType="INTEGER" />
+		<result column="ADD_VP_NUM" property="addVpNum" jdbcType="INTEGER" />
+		<result column="ACCEPT_STOP_INFO_TYPE" property="acceptStopInfoType" jdbcType="INTEGER" />
+		<!-- <result column="PUSH_INFO_TIME" property="pushInfoTime" jdbcType="TIME" /> -->
+		<result column="PUSH_INFO_TIME" property="pushInfoTime" jdbcType="VARCHAR" />
+		<result column="PUSH_INFO_DAY" property="pushInfoDay" jdbcType="INTEGER" />
+		<result column="PAYMENT_INFO_GET_TYPE" property="paymentInfoGetType" jdbcType="INTEGER" />
+		<result column="INPATIENT_INQUIRY_MODE" property="inpatientInquiryMode" jdbcType="INTEGER" />
+		<result column="IS_HAS_BRANCH" property="isHasBranch" jdbcType="INTEGER" />
+		<result column="IS_SHOW_APP_MENU" property="isShowAppMenu" jdbcType="INTEGER" />
+		<result column="IS_COMPATIBLE_OTHER_PLATFORM" property="isCompatibleOtherPlatform" jdbcType="INTEGER" />
+		<result column="FOOT_LOGO_INFO" property="footLogoInfo" jdbcType="VARCHAR" />
+
+		<result column="CUR_DAY_VISIT_NOTICE_PAY_TYPE" property="curDayVisitNoticeOrderPayType" jdbcType="INTEGER" />
+		<result column="PRE_DAY_VISIT_NOTICE_PAY_TYPE" property="preDayVisitNoticeOrderPayType" jdbcType="INTEGER" />
+		<result column="STOPREG_NEED_INVOKE_ACKREFUND" property="stopRegNeedInvokeAckRefund" jdbcType="INTEGER" />
+		<result column="OVER_BEGINTIME_BANSTOPREG" property="overBeginTimeBanStopReg" jdbcType="INTEGER" />
+		<result column="OPEN_TEMPLATE_MSG_PUSH" property="opentemplateMsgPush" jdbcType="INTEGER" />
+		<result column="HIGH_FREQUENCY_STOPREG" property="highFrequencyStopReg" jdbcType="INTEGER" />
+		<result column="HIGH_FREQUENCY_STOPREG_DAYNUM" property="highFrequencyStopRegDayNum" jdbcType="INTEGER" />
+		<result column="REFUND_WAITING_SECONDS" property="refundWaitingSeconds" jdbcType="INTEGER" />
+
+		<result column="ACCEPT_REPLACE_REG_INFO_TYPE" property="acceptReplaceRegInfoType" jdbcType="INTEGER" />
+		<result column="REPLACE_REG_PUSH_INFO_TIME" property="replaceRegPushInfoTime" jdbcType="TIME" />
+		<result column="REPLACE_REG_PUSH_INFO_DAY" property="replaceRegPushInfoDay" jdbcType="INTEGER" />
+		
+		<result column="RECIPIENTS_FOR_STOP_REG_EXCEPTION" property="recipientsForStopRegException" jdbcType="VARCHAR" />
+		
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, HOSPITAL_ID, SKIN_WEIXIN_TYPE, SKIN_ALIPAY_TYPE, ADD_VP_NUM, ACCEPT_STOP_INFO_TYPE,
+		PUSH_INFO_TIME,PUSH_INFO_DAY, PAYMENT_INFO_GET_TYPE, INPATIENT_INQUIRY_MODE, CP, CT, EP, ET,
+		IS_SHOW_APP_MENU , IS_COMPATIBLE_OTHER_PLATFORM, IS_HAS_BRANCH ,FOOT_LOGO_INFO,
+		CUR_DAY_VISIT_NOTICE_PAY_TYPE,PRE_DAY_VISIT_NOTICE_PAY_TYPE
+		,STOPREG_NEED_INVOKE_ACKREFUND,OPEN_TEMPLATE_MSG_PUSH,ACCEPT_REPLACE_REG_INFO_TYPE,REPLACE_REG_PUSH_INFO_TIME,
+		REPLACE_REG_PUSH_INFO_DAY,HIGH_FREQUENCY_STOPREG,HIGH_FREQUENCY_STOPREG_DAYNUM,OVER_BEGINTIME_BANSTOPREG,REFUND_WAITING_SECONDS,RECIPIENTS_FOR_STOP_REG_EXCEPTION
+	</sql>
+	<select id="findById" resultMap="RuleEditResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_RULE_EDIT
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+
+	<select id="findAll" resultMap="RuleEditResultMap">
+		select * from SYS_RULE_EDIT
+	</select>
+
+	<!-- 根据id查询 -->
+	<select id="findByHospitalId" resultMap="RuleEditResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_RULE_EDIT
+		where HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from SYS_RULE_EDIT
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+	<update id="updateBranchHospital" parameterType="java.util.Map">
+		update SYS_BRANCH_HOSPITAL bh
+		set bh.RULE_EDIT_ID = #{ruleEditId}
+		where bh.id
+		<foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</update>
+
+
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.rule.RuleEdit">
+		insert into SYS_RULE_EDIT (
+		ID,HOSPITAL_ID, SKIN_WEIXIN_TYPE,
+		SKIN_ALIPAY_TYPE, ADD_VP_NUM, ACCEPT_STOP_INFO_TYPE,
+		PUSH_INFO_TIME,PUSH_INFO_DAY,
+		PAYMENT_INFO_GET_TYPE, INPATIENT_INQUIRY_MODE,
+		CP, CT, EP, ET , IS_SHOW_APP_MENU , IS_COMPATIBLE_OTHER_PLATFORM,
+		IS_HAS_BRANCH,FOOT_LOGO_INFO,CUR_DAY_VISIT_NOTICE_PAY_TYPE,PRE_DAY_VISIT_NOTICE_PAY_TYPE,STOPREG_NEED_INVOKE_ACKREFUND,
+		OPEN_TEMPLATE_MSG_PUSH,ACCEPT_REPLACE_REG_INFO_TYPE,REPLACE_REG_PUSH_INFO_TIME,REPLACE_REG_PUSH_INFO_DAY,HIGH_FREQUENCY_STOPREG,HIGH_FREQUENCY_STOPREG_DAYNUM,
+		OVER_BEGINTIME_BANSTOPREG,REFUND_WAITING_SECONDS,RECIPIENTS_FOR_STOP_REG_EXCEPTION
+		)
+		values (
+		#{id,jdbcType=VARCHAR},#{hospitalId,jdbcType=VARCHAR}, #{skinWeixinType,jdbcType=INTEGER},
+		#{skinAlipayType,jdbcType=INTEGER},
+		#{addVpNum,jdbcType=INTEGER}, #{acceptStopInfoType,jdbcType=INTEGER},
+		#{pushInfoTime,jdbcType=VARCHAR},#{pushInfoDay,jdbcType=INTEGER}, #{paymentInfoGetType,jdbcType=INTEGER},
+		#{inpatientInquiryMode,jdbcType=INTEGER},
+		#{cp,jdbcType=INTEGER}, #{ct,jdbcType=TIMESTAMP},
+		#{ep,jdbcType=INTEGER}, #{et,jdbcType=TIMESTAMP},
+		#{isShowAppMenu,jdbcType=INTEGER},
+		#{isCompatibleOtherPlatform,jdbcType=INTEGER}, #{isHasBranch,jdbcType=INTEGER},#{footLogoInfo,jdbcType=VARCHAR},#{curDayVisitNoticeOrderPayType},
+		#{preDayVisitNoticeOrderPayType},#{stopRegNeedInvokeAckRefund},#{opentemplateMsgPush},#{acceptReplaceRegInfoType},
+		#{replaceRegPushInfoTime},#{replaceRegPushInfoDay},#{highFrequencyStopReg},#{highFrequencyStopRegDayNum},#{overBeginTimeBanStopReg},#{refundWaitingSeconds},#{recipientsForStopRegException}
+		)
+	</insert>
+	<update id="update" parameterType="com.yxw.commons.entity.platform.rule.RuleEdit">
+		update SYS_RULE_EDIT
+		<set>
+			<if test="hospitalId != null">
+				HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+			</if>
+			<if test="skinWeixinType != null">
+				SKIN_WEIXIN_TYPE = #{skinWeixinType,jdbcType=INTEGER},
+			</if>
+			<if test="skinAlipayType != null">
+				SKIN_ALIPAY_TYPE = #{skinAlipayType,jdbcType=INTEGER},
+			</if>
+			<if test="addVpNum != null">
+				ADD_VP_NUM = #{addVpNum,jdbcType=INTEGER},
+			</if>
+			<if test="acceptStopInfoType != null">
+				ACCEPT_STOP_INFO_TYPE = #{acceptStopInfoType,jdbcType=INTEGER},
+			</if>
+			<if test="pushInfoTime != null">
+				PUSH_INFO_TIME = #{pushInfoTime,jdbcType=VARCHAR},
+			</if>
+			<if test="pushInfoDay != null">
+				PUSH_INFO_DAY = #{pushInfoDay,jdbcType=INTEGER},
+			</if>
+			<if test="paymentInfoGetType != null">
+				PAYMENT_INFO_GET_TYPE = #{paymentInfoGetType,jdbcType=INTEGER},
+			</if>
+			<if test="inpatientInquiryMode != null">
+				INPATIENT_INQUIRY_MODE = #{inpatientInquiryMode,jdbcType=INTEGER},
+			</if>
+			<if test="footLogoInfo != null">
+				FOOT_LOGO_INFO = #{footLogoInfo,jdbcType=VARCHAR},
+			</if>
+			<if test="cp != null">
+				CP = #{cp,jdbcType=INTEGER},
+			</if>
+			<if test="ct != null">
+				CT = #{ct,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ep != null">
+				EP = #{ep,jdbcType=INTEGER},
+			</if>
+			<if test="et != null">
+				ET = #{et,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isShowAppMenu != null">
+				IS_SHOW_APP_MENU = #{isShowAppMenu,jdbcType=INTEGER},
+			</if>
+			<if test="isCompatibleOtherPlatform != null">
+				IS_COMPATIBLE_OTHER_PLATFORM = #{isCompatibleOtherPlatform,jdbcType=INTEGER},
+			</if>
+			<if test="isHasBranch != null">
+				IS_HAS_BRANCH = #{isHasBranch,jdbcType=INTEGER},
+			</if>
+			<if test="curDayVisitNoticeOrderPayType != null">
+				CUR_DAY_VISIT_NOTICE_PAY_TYPE = #{curDayVisitNoticeOrderPayType,jdbcType=INTEGER},
+			</if>
+			<if test="preDayVisitNoticeOrderPayType != null">
+				PRE_DAY_VISIT_NOTICE_PAY_TYPE = #{preDayVisitNoticeOrderPayType,jdbcType=INTEGER},
+			</if>
+			<if test="stopRegNeedInvokeAckRefund != null">
+				STOPREG_NEED_INVOKE_ACKREFUND = #{stopRegNeedInvokeAckRefund,jdbcType=INTEGER},
+			</if>
+			<if test="opentemplateMsgPush != null">
+				OPEN_TEMPLATE_MSG_PUSH = #{opentemplateMsgPush,jdbcType=INTEGER},
+			</if>
+
+			<if test="acceptReplaceRegInfoType != null">
+				ACCEPT_REPLACE_REG_INFO_TYPE = #{acceptReplaceRegInfoType,jdbcType=INTEGER},
+			</if>
+			<if test="replaceRegPushInfoTime != null">
+				REPLACE_REG_PUSH_INFO_TIME = #{replaceRegPushInfoTime,jdbcType=TIME},
+			</if>
+			<if test="replaceRegPushInfoDay != null">
+				REPLACE_REG_PUSH_INFO_DAY = #{replaceRegPushInfoDay,jdbcType=INTEGER},
+			</if>
+			<if test="highFrequencyStopReg != null">
+				HIGH_FREQUENCY_STOPREG = #{highFrequencyStopReg,jdbcType=INTEGER},
+			</if>
+			<if test="highFrequencyStopRegDayNum != null">
+				HIGH_FREQUENCY_STOPREG_DAYNUM = #{highFrequencyStopRegDayNum,jdbcType=INTEGER},
+			</if>
+			<if test="overBeginTimeBanStopReg != null">
+				OVER_BEGINTIME_BANSTOPREG = #{overBeginTimeBanStopReg,jdbcType=INTEGER},
+			</if>
+			<if test="refundWaitingSeconds != null">
+				REFUND_WAITING_SECONDS = #{refundWaitingSeconds,jdbcType=INTEGER},
+			</if>
+			<if test="recipientsForStopRegException != null">
+				RECIPIENTS_FOR_STOP_REG_EXCEPTION = #{recipientsForStopRegException,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateById" parameterType="com.yxw.commons.entity.platform.rule.RuleEdit">
+		update SYS_RULE_EDIT
+		set HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+		SKIN_WEIXIN_TYPE = #{skinWeixinType,jdbcType=INTEGER},
+		SKIN_ALIPAY_TYPE = #{skinAlipayType,jdbcType=INTEGER},
+		ADD_VP_NUM = #{addVpNum,jdbcType=INTEGER},
+		ACCEPT_STOP_INFO_TYPE = #{acceptStopInfoType,jdbcType=INTEGER},
+		PUSH_INFO_TIME = #{pushInfoTime,jdbcType=VARCHAR},
+		PUSH_INFO_DAY = #{pushInfoDay,jdbcType=INTEGER},
+		PAYMENT_INFO_GET_TYPE = #{paymentInfoGetType,jdbcType=INTEGER},
+		INPATIENT_INQUIRY_MODE = #{inpatientInquiryMode,jdbcType=INTEGER},
+		CP = #{cp,jdbcType=INTEGER},
+		CT = #{ct,jdbcType=TIMESTAMP},
+		EP = #{ep,jdbcType=INTEGER},
+		ET = #{et,jdbcType=TIMESTAMP},
+		IS_SHOW_APP_MENU = #{isShowAppMenu,jdbcType=INTEGER},
+		IS_COMPATIBLE_OTHER_PLATFORM = #{isCompatibleOtherPlatform,jdbcType=INTEGER},
+		IS_HAS_BRANCH = #{isHasBranch,jdbcType=INTEGER},
+		FOOT_LOGO_INFO = #{footLogoInfo,jdbcType=VARCHAR}
+		CUR_DAY_VISIT_NOTICE_PAY_TYPE = #{curDayVisitNoticeOrderPayType,jdbcType=INTEGER},
+		PRE_DAY_VISIT_NOTICE_PAY_TYPE = #{preDayVisitNoticeOrderPayType,jdbcType=INTEGER},
+		STOPREG_NEED_INVOKE_ACKREFUND = #{stopRegNeedInvokeAckRefund,jdbcType=INTEGER},
+		OPEN_TEMPLATE_MSG_PUSH = #{opentemplateMsgPush,jdbcType=INTEGER},
+		ACCEPT_REPLACE_REG_INFO_TYPE = #{acceptReplaceRegInfoType,jdbcType=INTEGER},
+		REPLACE_REG_PUSH_INFO_TIME = #{replaceRegPushInfoTime,jdbcType=TIME},
+		REPLACE_REG_PUSH_INFO_DAY = #{replaceRegPushInfoDay,jdbcType=INTEGER},
+		HIGH_FREQUENCY_STOPREG = #{highFrequencyStopReg,jdbcType=INTEGER},
+		HIGH_FREQUENCY_STOPREG_DAYNUM = #{highFrequencyStopRegDayNum,jdbcType=INTEGER},
+		REFUND_WAITING_SECONDS = #{refundWaitingSeconds,jdbcType=INTEGER},
+		OVER_BEGINTIME_BANSTOPREG = #{overBeginTimeBanStopReg,jdbcType=INTEGER},
+		RECIPIENTS_FOR_STOP_REG_EXCEPTION = #{recipientsForStopRegException,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

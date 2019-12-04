@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.hospital.Optional">
+
+	<resultMap id="optionalResultMap" type="Optional">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="CONTROLLER_PATH" property="controllerPath" jdbcType="VARCHAR" />
+		<result column="BIZ_CODE" property="bizCode" />
+		<!-- <result column="IS_APP" property="isApp" /> -->
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<select id="findAll" resultMap="optionalResultMap">
+		select ID,NAME,CONTROLLER_PATH,BIZ_CODE,CP,CT,EP,ET from SYS_OPTIONAL
+	</select>
+	
+	<select id="findByPlatformSettingsId" resultMap="optionalResultMap">
+		SELECT
+			a.ID,
+			a. NAME,
+			a.CONTROLLER_PATH,
+			a.BIZ_CODE,
+			a.CP,
+			a.CT,
+			a.EP,
+			a.ET
+		FROM
+			SYS_OPTIONAL a,
+			SYS_PLATFORM_OPTIONAL po
+		WHERE
+			po.OPTIONAL_ID = a.ID
+		AND po.PLATFORM_SETTINGS_ID = #{platformSettingsId}
+	</select>
+
+	<select id="findById" resultMap="optionalResultMap">
+		select ID,NAME,CONTROLLER_PATH,BIZ_CODE,CP,CT,EP,ET from SYS_OPTIONAL op where op.ID = #{id}
+	</select>
+
+	<select id="findByIds" resultMap="optionalResultMap" parameterType="java.util.List">
+		select ID,NAME,CONTROLLER_PATH,BIZ_CODE,CP,CT,EP,ET from SYS_OPTIONAL op where op.ID in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+	  			#{item}
+	  	</foreach>  
+	</select>
+	
+	<insert id="add" parameterType="Optional" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		SYS_OPTIONAL(NAME,CONTROLLER_PATH,BIZ_CODE,CP,CT,EP,ET)
+		values
+		(#{name},#{controllerPath},#{bizCode},#{cp},now(),#{ep},#{et})
+	</insert>
+
+	<update id="update" parameterType="Optional">
+		update SYS_OPTIONAL set NAME = #{name}, CONTROLLER_PATH = #{controllerPath},BIZ_CODE = #{bizCode} where ID = #{id}
+	</update>
+
+</mapper>

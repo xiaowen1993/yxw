@@ -1,0 +1,26 @@
+# Project exclude paths
+/yxw-app-biz/target/
+/yxw-base/target/
+/yxw-base-biz/target/
+/yxw-cache/target/
+/yxw-commons/target/
+/yxw-framework/target/
+/yxw-insurance/target/
+/yxw-integration-canal-kafka-elasticsearch/target/
+/yxw-interfaces/target/
+/yxw-interfaces-dispatcher/target/
+/yxw-interfaces-elasticsearch/target/
+/yxw-interfaces-insurance-chinalife/target/
+/yxw-mobile-biz/target/
+/yxw-mobileapp/target/
+/yxw-oauth/target/
+/yxw-payrefund/target/
+/yxw-platform/target/
+/yxw-resources/target/
+/yxw-solr/target/
+/yxw-statistics/target/
+/yxw-stats/target/
+/yxw-stats-solr/target/
+/yxw-stats-task/target/
+/yxw-task/target/
+/yxw-utils/target/

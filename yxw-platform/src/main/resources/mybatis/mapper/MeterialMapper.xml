@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.message.Meterial">
+
+	<select id="findListByPage" resultMap="meterialMap" >
+      SELECT * FROM SYS_MSG_METERIAL t 
+      <where>
+      	t.STATE=1 and t.TYPE=#{type} and t.HOSPITAL_ID=#{hospitalId}
+	  </where>
+	  ORDER By t.ET DESC
+    </select>
+
+	<insert id="add" parameterType="Meterial" >
+		INSERT INTO SYS_MSG_METERIAL(ID,HOSPITAL_ID,NAME,PATH,SIZE,DURATION,
+		COVER_PIC_PATH,TYPE,STATE,CP,EP,CT,ET)
+		VALUES(#{id},#{hospitalId},#{name},#{path},#{size},#{duration},#{coverPicPath}
+		,#{type},#{state},#{cp},#{ep},now(),now())
+	</insert>
+	
+	
+	<select id="findById" parameterType="string" resultMap="meterialMap">
+		SELECT * FROM SYS_MSG_METERIAL t where t.ID=#{id}
+	</select>
+	<resultMap type="Meterial" id="meterialMap">
+		<id column="ID"  property="id" />
+		<result column="HOSPITAL_ID" property="hospitalId"/>
+		<result column="NAME" property="name"/>
+		<result column="PATH" property="path"/>
+		<result column="SIZE" property="size"/>
+		<result column="DURATION" property="duration"/>
+		<result column="COVER_PIC_PATH" property="coverPicPath"/>
+		<result column="TYPE" property="type"/>
+		<result column="STATE" property="state"/>
+	</resultMap>
+	
+	
+	
+	<select id="findByPicPath" parameterType="string" resultMap="meterialMap">
+		SELECT * FROM SYS_MSG_METERIAL t where t.PATH=#{path}
+	</select>
+	
+	<update id="update" parameterType="Meterial">
+		UPDATE SYS_MSG_METERIAL t 
+		<set>
+			<if test="name != null">
+				t.NAME=#{name}
+			</if>
+			<if test="state != null">
+				t.STATE=#{state}
+			</if>
+			<if test="meterialGroupId != null">
+				t.METERIAL_GROUP_ID=#{meterialGroupId}
+			</if>
+		</set>
+		WHERE t.ID=#{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="string">
+		delete from SYS_MSG_METERIAL where id=#{id}
+	</delete>
+	
+	<delete id="deleteByIds" parameterType = "java.util.List">  
+	    <![CDATA[  
+	       delete from SYS_MSG_METERIAL where id in
+	    ]]>  
+	    <foreach collection="list" item = "id" open="(" separator="," close=")">
+		    #{id}  
+	    </foreach>  
+	</delete>  
+
+	<!--=========================== 素材管理主页显示医院消息情况 ===========================-->
+	<select id="findHospListByPage" resultMap="hospitalMap" parameterType="Map" >
+			SELECT * FROM SYS_HOSPITAL t WHERE t.STATUS=1
+		<if test="search!=null">
+			AND t.NAME like '%${search}%' 
+		</if>
+		<if test="hospitalIds != null" >
+			and t.ID in
+			<foreach item="item" index="index" collection="hospitalIds" open="(" separator="," close=")">  
+	  			#{item}
+	  		</foreach> 
+		</if>
+	</select>
+	<resultMap id="hospitalMap" type="com.yxw.platform.vo.MeterialHospitalVO">
+		<id column="ID" property="hospitalid"/>
+		<result column="NAME" property="hospitalname"/>
+		<collection  property="meterialList"  ofType="com.yxw.platform.vo.MeterialVO" column="id"  select="getMeterial"></collection>
+	</resultMap>
+	<select id="getMeterial" parameterType="string" resultType="com.yxw.platform.vo.MeterialVO">
+		(	SELECT
+			(
+				SELECT
+					s1.USER_NAME
+				FROM
+					SYS_USER s1
+				WHERE
+					s1.ID = t1.EP
+			) AS ep,
+			DATE_FORMAT(t1.ET, '%Y年%m月%d日 %T') AS et
+			FROM
+				SYS_MSG_METERIAL t1
+			WHERE
+				t1.HOSPITAL_ID=#{id} AND t1.STATE = 1
+			ORDER BY
+				t1.ET DESC
+		)
+		UNION
+		(
+			SELECT 
+				(
+				SELECT 
+					s2.USER_NAME
+				FROM 
+					SYS_USER s2
+				WHERE
+					s2.ID = t2.EP
+				) AS ep,
+			DATE_FORMAT(t2.ET, '%Y年%m月%d日 %T') AS et
+			FROM
+				SYS_MSG_MIXED_METERIAL t2
+			WHERE
+				t2.HOSPITAL_ID=#{id} AND t2.STATE = 1
+			ORDER BY
+				t2.ET DESC
+		)
+	</select>
+	<!-- end -->
+</mapper>

@@ -1,0 +1,26 @@
+{body={"tradeMode":"10","hospitalCode":"zsdxdsfsyy"}
+subject=test
+sign_type=RSA
+buyer_logon_id=hom***@qq.com
+auth_app_id=2014122400021481
+notify_type=trade_status_sync
+out_trade_no=Y101020170901105414199900000002
+point_amount=0.00
+version=1.0
+fund_bill_list=[{"amount":"0.01","fundChannel":"PCREDIT"}]
+buyer_id=2088302369373165
+total_amount=0.01
+trade_no=2017090121001004160238845234
+notify_time=2017-09-01 10:54:51
+charset=UTF-8
+invoice_amount=0.01
+gmt_payment=2017-09-01 10:54:51
+trade_status=TRADE_SUCCESS
+sign=jfGldUke1lf9V68sbWht51IgDTGB7y0y3nZH5PYtJUDH4syhb/jlaH1lii0X9SNFWXYdmd6KP0xT4y0+4tOFgTu8NMXE01CDYW9MGuBmu/0ZNk+8c4ey5dYX785O0tennfgpO7lCP9TiefmH8s/m8ihduS49m/sqyrxRY0lY/kA=
+gmt_create=2017-09-01 10:54:39
+buyer_pay_amount=0.01
+receipt_amount=0.01
+seller_id=2088811018126125
+app_id=2014122400021481
+notify_id=c8cc3f4e60f85efbf218c6b16b12288h8i
+seller_email=yixiang20141222@163.com}

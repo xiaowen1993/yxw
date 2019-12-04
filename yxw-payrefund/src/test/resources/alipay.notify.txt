@@ -1,0 +1,22 @@
+{buyer_id=2088302369373165
+body={"tradeMode":"22","hospitalCode":"zsdxdsfsyy"}
+trade_no=2017080421001004160298982920
+use_coupon=N
+notify_time=2017-08-04 11:16:43
+subject=测试
+sign_type=0001
+is_total_fee_adjust=N
+notify_type=trade_status_sync
+out_trade_no=Y222220170804111622199900000001
+gmt_payment=2017-08-04 11:16:43
+trade_status=TRADE_SUCCESS
+sign=YbKCMs0lbrYulPcHMnIJXRCqjxbLogxPlBr+IgrYAFkq915duyC6CxLWE8bqMG6xpGDGKHH7QAVyxvR5qlcdotZUa/dhAx+DZQQYCwlTaY8zHoberLxjEhBvmU5BlY+HuSuSoJc+7RbvjKZ75NVrnfjiXN97vcVikEvEY1xySVs=
+gmt_create=2017-08-04 11:16:42
+buyer_email=homer.yang@qq.com
+price=0.01
+total_fee=0.01
+seller_id=2088811018126125
+quantity=1
+notify_id=8997a7f85fe7ba8f2e3552641263c6fh8i
+seller_email=yixiang20141222@163.com
+payment_type=1}

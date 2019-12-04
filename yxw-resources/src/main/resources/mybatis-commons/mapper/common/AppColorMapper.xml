@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.app.color.AppColor">
+
+	<resultMap id="appColorResultMap" type="com.yxw.commons.entity.platform.app.color.AppColor">
+		<id column="ID" property="id" />
+		<result column="APP_NAME" property="appName" />
+		<result column="APP_CODE" property="appCode" />
+		<result column="COLOR" property="color" />
+		<result column="PAY_INFO_VIEW_TYPE" property="payInfoViewType" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+	</resultMap>
+
+	<sql id="All_Column">
+		ID, APP_NAME, APP_CODE, COLOR, PAY_INFO_VIEW_TYPE, CP, CT, EP, ET
+	</sql>
+
+
+	<select id="findById" resultMap="appColorResultMap" parameterType="java.util.Map">
+		select
+			<include refid="All_Column" />
+		from
+			SYS_APP_COLOR
+		where ID = #{id}
+	</select>
+	
+	<select id="findListByPage" resultMap="appColorResultMap">
+		select
+			<include refid="All_Column" />
+		from SYS_APP_COLOR
+			where 1=1
+		ORDER BY ET DESC
+
+	</select>
+
+	<select id="findAll" resultMap="appColorResultMap" parameterType="java.util.Map">
+		select
+		<include refid="All_Column" />
+		from
+			SYS_APP_COLOR
+	</select>
+	
+	<!-- 修改 -->
+	<update id="update" parameterType="com.yxw.commons.entity.platform.app.color.AppColor">
+		UPDATE SYS_APP_COLOR
+		<set>
+			<if test="appName != null">
+				APP_NAME = #{appName},
+			</if>
+			<if test="appCode != null">
+				APP_CODE = #{appCode},
+			</if>
+			<if test="color != null">
+				COLOR = #{color},
+			</if>
+			<if test="payInfoViewType != null">
+				PAY_INFO_VIEW_TYPE = #{payInfoViewType},
+			</if>
+			<if test="et != null">
+				ET = now(),
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 批量插入 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into
+			SYS_APP_COLOR
+		(
+		<include refid="All_Column" />
+		)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.id},#{item.appName},#{item.appCode},#{item.color},#{item.payInfoViewType})
+		</foreach>
+	</insert>
+	
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.app.color.AppColor">
+		insert into
+			SYS_APP_COLOR
+		values
+		(#{id},#{appName},#{appCode},#{color},#{payInfoViewType},#{cp},now(),#{ep},now())
+	</insert>
+
+	<delete id="deleteAll">
+		delete from SYS_APP_COLOR
+	</delete>
+	
+	<delete id="deleteById" parameterType="java.util.Map">
+		delete from SYS_APP_COLOR 
+		where id = #{id}
+	</delete>
+
+</mapper>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE configuration    
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="HospitalInfosVo" type="com.yxw.vo.HospitalInfosVo"/>
+		<typeAlias alias="StatsHospitalInfosVo" type="com.yxw.vo.StatsHospitalInfosVo"/>
+		<typeAlias alias="AreaHospitalInfosVo" type="com.yxw.vo.AreaHospitalInfosVo"/>
+	</typeAliases>
+</configuration>

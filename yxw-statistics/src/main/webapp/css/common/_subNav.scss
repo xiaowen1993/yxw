@@ -1,0 +1,98 @@
+$h:50px;
+#sidebar{
+    li.active{
+
+        a{background: none;}
+        .parentNavItem{
+            &:after{
+                content: "гн";
+                font-weight: bold;
+                position: absolute;
+                right: 10px;
+
+            }
+        }
+        .subNav{
+            display: block;
+        }
+    }
+ .parentNavItem{
+     background-color: #354656;
+     line-height: $h;
+     cursor: pointer;
+     color: #949ea8;
+     padding-left: 60px;
+     &:after{
+         content: "+";
+         font-weight: bold;
+         position: absolute;
+         right: 10px;
+
+     }
+
+ }
+    .subNav{
+        display: none;
+        padding: 0;
+        margin: 0;
+        .subNavItem{
+            padding-left: 67px;
+            background-color: #4f5f6f;
+            line-height: $h;
+            color: #fff;
+            .caret{
+
+                position: absolute;
+                right: 0;
+                top: 36%;
+                display: none;
+                border: none;
+                border-top: 8px solid transparent;
+                border-bottom: 8px solid transparent;
+                border-right: 8px solid #fff;
+
+
+            }
+            &:hover{background-color: #37b494;
+                .caret{
+                    display: block;
+                }
+                a{
+                    color: #fff;
+                }
+                a:before{
+                    background-color: #fff;
+                }
+            }
+            a{display: block;background: none;position: relative;padding-left: 24px;      color: #fff;
+            &:before{
+                content: ' ';
+                display: block;
+                width: 6px;
+                height: 6px;
+                border-radius: 10px;
+                background-color: #8a95a0;
+                line-height: $h;
+                margin-right: 10px;
+                position: absolute;
+                left: 10px;
+                top: 22px;
+            }
+            }
+            &.subNavItem-active{
+                background-color: #37b494;
+                .caret{
+                    display: block;
+                }
+                a{
+                    color: #fff;
+                }
+                a:before{
+                    background-color: #fff;
+                }
+            }
+        }
+    }
+
+}
+

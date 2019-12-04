@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.app.optional.AppOptionalModule">
+	<resultMap id="appOptionalModuleResultMap" type="com.yxw.commons.entity.platform.app.optional.AppOptionalModule">
+		<result column="ID" property="id"></result>
+		<result column="NAME" property="name"></result>
+		<result column="CODE" property="code"></result>
+	</resultMap>
+
+	<select id="findById" resultMap="appOptionalModuleResultMap">
+		select ID, NAME, CODE from SYS_APP_OPTIONAL_MODULE where ID = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="appOptionalModuleResultMap">
+		select ID, NAME, CODE from SYS_APP_OPTIONAL_MODULE order by ID
+	</select>
+
+</mapper>

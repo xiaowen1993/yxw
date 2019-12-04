@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd 
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd 
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd 
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd"
+    default-lazy-init="true">
+    <bean id ="taskExecutor"  class ="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" >
+	    <property name ="corePoolSize" value ="${taskExecutor.corePoolSize}" /> 
+	    <property name ="keepAliveSeconds" value ="${taskExecutor.keepAliveSeconds}" /> 
+	    <property name ="maxPoolSize" value ="${taskExecutor.maxPoolSize}" /> 
+	    <property name ="queueCapacity" value ="${taskExecutor.queueCapacity}" /> 
+    </bean>
+    
+    <!-- =================================== 定义业务逻辑处理类  =================================== -->
+    <!-- 挂号统计 -->
+    <bean id="statsCardsTask" class="com.yxw.solr.task.taskitem.StatsCardsTask" />
+    <!-- 门诊统计 -->
+    <bean id="statsClinicTask" class="com.yxw.solr.task.taskitem.StatsClinicTask" />
+    <!-- 押金统计 -->
+    <bean id="statsDepositTask" class="com.yxw.solr.task.taskitem.StatsDepositTask" />
+    <!-- 订单统计 -->
+    <bean id="statsOrdersTask" class="com.yxw.solr.task.taskitem.StatsOrdersTask" />
+    <!-- 挂号科室统计 -->
+    <bean id="statsRegDeptTask" class="com.yxw.solr.task.taskitem.StatsRegDeptTask" />
+    <!-- 挂号统计 -->
+    <bean id="statsRegisterTask" class="com.yxw.solr.task.taskitem.StatsRegisterTask" />
+    <!-- 标准平台关注统计 -->
+    <bean id="statsSubscribeTask" class="com.yxw.solr.task.taskitem.StatsSubscribeTask" />
+    
+    
+    <!-- =================================== 调度业务逻辑   =================================== -->
+    <!-- 
+                注：
+	  concurrent：对于相同的JobDetail,当指定多个Trigger时,很可能第一个job完成之前,第二个job就开始了.
+	  concurrent设为false,多个job不会并发运行,第二个job将不会在第一个job完成之前开始.默认为true
+     -->
+    <!-- 门诊统计任务 -->
+    <bean id="statsClinicJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="statsClinicTask" />
+        <property name="targetMethod" value="startUp" />
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="statsClinicCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="statsClinicJobDetail" />
+        <property name="cronExpression" value="${task.cron.commom}" />
+    </bean>  
+    
+    <!-- 押金统计任务 -->
+    <bean id="statsDepositJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="statsDepositTask" />
+        <property name="targetMethod" value="startUp" />
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="statsDepositCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="statsDepositJobDetail" />
+        <property name="cronExpression" value="${task.cron.commom}" />
+    </bean>  
+    
+    <!-- 订单统计任务 -->
+    <bean id="statsOrdersJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="statsOrdersTask" />
+        <property name="targetMethod" value="startUp" />
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="statsOrdersCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="statsOrdersJobDetail" />
+        <property name="cronExpression" value="${task.cron.delay}" />
+    </bean>  
+    
+    <!-- 挂号科室统计任务 -->
+    <bean id="statsRegDeptJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="statsRegDeptTask" />
+        <property name="targetMethod" value="startUp" />
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="statsRegDeptCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="statsRegDeptJobDetail" />
+        <property name="cronExpression" value="${task.cron.commom}" />
+    </bean>  
+    
+    <!-- 挂号统计任务 -->
+    <bean id="statsRegisterJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="statsRegisterTask" />
+        <property name="targetMethod" value="startUp" />
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="statsRegisterCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="statsRegisterJobDetail" />
+        <property name="cronExpression" value="${task.cron.commom}" />
+    </bean>  
+    
+    <!--标准平台关注统计任务 -->
+    <bean id="statsSubscribeJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="statsSubscribeTask" />
+        <property name="targetMethod" value="startUp" />
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="statsSubscribeCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="statsSubscribeJobDetail" />
+        <property name="cronExpression" value="${task.cron.commom}" />
+    </bean>  
+    
+    <!-- =================================== 调度设置   =================================== -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	   <property name="triggers">
+		   <list>
+		      <!-- <ref bean="statsCardsCronTrigger" />  -->
+		      <!-- <ref bean="statsClinicCronTrigger" /> 
+		      <ref bean="statsDepositCronTrigger" /> 
+		      <ref bean="statsOrdersCronTrigger" /> 
+		      <ref bean="statsRegDeptCronTrigger" /> 
+		      <ref bean="statsRegisterCronTrigger" />  -->
+		      <!-- <ref bean="statsSubscribeCronTrigger" /> -->
+		   </list>
+	   </property>
+	   <property name="taskExecutor" ref="taskExecutor" />
+	</bean>
+    
+</beans>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.stats.entity.project.AlipaySettings">
+
+  <resultMap id="BaseResultMap" type="com.yxw.stats.entity.project.AlipaySettings" >
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="appid" property="appid" jdbcType="VARCHAR" />
+    <result column="alipay_public_Key" property="alipayPublicKey" jdbcType="VARCHAR" />
+    <result column="sign_charset" property="signCharset" jdbcType="VARCHAR" />
+    <result column="charset" property="charset" jdbcType="VARCHAR" />
+    <result column="sign_type" property="signType" jdbcType="VARCHAR" />
+    <result column="prikey1" property="prikey1" jdbcType="VARCHAR" />
+    <result column="prikey2" property="prikey2" jdbcType="VARCHAR" />
+    <result column="prikey3" property="prikey3" jdbcType="VARCHAR" />
+    <result column="pubkey1" property="pubkey1" jdbcType="VARCHAR" />
+    <result column="pubkey2" property="pubkey2" jdbcType="VARCHAR" />
+    <result column="pubkey3" property="pubkey3" jdbcType="VARCHAR" />
+    <result column="grant_type" property="grantType" jdbcType="VARCHAR" />
+    <result column="alipay_pid" property="alipayPid" jdbcType="VARCHAR" />
+    <result column="key" property="key" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    t.id, t.appid, t.alipay_public_Key, t.sign_charset, t.charset, t.sign_type, t.prikey1, t.prikey2, 
+    t.prikey3, t.pubkey1, t.pubkey2, t.pubkey3, t.grant_type, t.alipay_pid, t.key, t.version
+  </sql>
+  
+  <select id="findAlipaySettingsByAppId" resultMap="BaseResultMap" parameterType="java.lang.String">
+	select 
+	<include refid="Base_Column_List"></include>
+	from tb_alipay t
+	where appid = #{appid, jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

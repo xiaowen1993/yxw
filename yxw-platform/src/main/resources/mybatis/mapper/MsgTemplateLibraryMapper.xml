@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.msgpush.MsgTemplateLibrary">
+
+	<resultMap id="msgTemplateLibraryMap" type="com.yxw.commons.entity.platform.msgpush.MsgTemplateLibrary">
+		<id column="ID" property="id" />
+		<result column="TEMPLATE_ID" property="templateId" />
+		<result column="TEMPLATE_CODE" property="templateCode"/>
+		<result column="TITLE" property="title" />
+		<result column="SOURCE" property="source" />
+		<result column="ICON_NAME" property="iconName" />
+		<result column="ICON_PATH" property="iconPath" />
+		<result column="ANIMATION_NAME" property="animationName" />
+		<result column="ANIMATION_PATH" property="animationPath" />
+		<result column="PRIMARY_INDUSTRY" property="primaryIndustry" />
+		<result column="SECOND_INDUSTRY" property="secondIndustry" />
+		<result column="TOP_COLOR" property="topColor" />
+		<result column="URL" property="url" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+		<collection property="msgLibraryContents" ofType="com.yxw.commons.entity.platform.msgpush.MsgLibraryContent" column="id" select="findSubMsgLibraryContents"></collection>
+		<collection property="msgTemplateLibraryFunctions" ofType="com.yxw.commons.entity.platform.msgpush.MsgTemplateLibraryFunction" column="id" select="findMsgTemplateLibraryFunctions"></collection>
+	</resultMap>
+	<resultMap id="msgLibraryContentMap" type="com.yxw.commons.entity.platform.msgpush.MsgLibraryContent">
+		<id column="ID" property="id" />
+		<result column="SORT" property="sort" />
+		<result column="KEYWORD" property="keyword"/>
+		<result column="VALUE" property="value" />
+		<result column="NODE" property="node" />
+		<result column="FONT_COLOR" property="fontColor" />
+		<result column="TEMP_LIBRARY_ID" property="tempLibraryId" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+	</resultMap>
+	<resultMap id="msgTemplateLibraryFunctionMap" type="com.yxw.commons.entity.platform.msgpush.MsgTemplateLibraryFunction">
+		<id column="ID" property="id" />
+		<result column="TEMP_LIBRARY_ID" property="tempLibraryId" />
+		<result column="FUNCTION_NAME" property="functionName"/>
+		<result column="FUNCTION_TYPE" property="functionType" />
+		<result column="FUNCTION_CODE" property="functionCode" />
+		<result column="SORT" property="sort" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+	</resultMap>
+	<!-- 分页查询模板库列表 -->
+	<select id="findListByPage" parameterType="Map" resultMap="msgTemplateLibraryMap">
+		SELECT * from SYS_MSG_TEMPLATE_LIBRARY h where h.SOURCE= #{source}
+			<if test="search!=null">
+			  AND (h.TEMPLATE_CODE like '%${search}%' or h.TITLE like '%${search}%')
+			</if>
+		order by h.CT
+	</select>
+	
+	<select id="check" parameterType="Map" resultMap="msgTemplateLibraryMap">
+		SELECT * FROM SYS_MSG_TEMPLATE_LIBRARY h where h.TEMPLATE_ID=#{templateId}
+	</select>
+	
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.msgpush.MsgTemplateLibrary">
+		INSERT INTO SYS_MSG_TEMPLATE_LIBRARY(ID,TEMPLATE_ID,TEMPLATE_CODE,TITLE,SOURCE,ICON_NAME,ICON_PATH,ANIMATION_NAME,ANIMATION_PATH,PRIMARY_INDUSTRY,SECOND_INDUSTRY
+		,TOP_COLOR,URL,CP,CT,EP,ET) VALUES 
+		(#{id}, #{templateId},#{templateCode}, #{title}, #{source},#{iconName},#{iconPath},#{animationName},#{animationPath}, #{primaryIndustry}, #{secondIndustry},#{topColor},#{url},'8b1994dff203407a869161c0946f6e97', now(), '8b1994dff203407a869161c0946f6e97', now());
+	</insert>
+	
+	<select id="findById" parameterType="String" resultMap="msgTempLibraryMap">
+		SELECT * FROM SYS_MSG_TEMPLATE_LIBRARY WHERE ID=#{id}
+	</select>
+	<select id="findAll" resultMap="msgTemplateLibraryMap">
+		SELECT * FROM SYS_MSG_TEMPLATE_LIBRARY
+	</select>
+	
+	<select id="findListBySource" parameterType="String" resultMap="msgTemplateLibraryMap">
+		SELECT * FROM SYS_MSG_TEMPLATE_LIBRARY WHERE SOURCE=#{source} 
+	</select>
+	<resultMap id="msgTempLibraryMap" type="com.yxw.commons.entity.platform.msgpush.MsgTemplateLibrary">
+		<id column="ID" property="id" />
+		<result column="TEMPLATE_ID" property="templateId" />
+		<result column="TEMPLATE_CODE" property="templateCode"/>
+		<result column="TITLE" property="title" />
+		<result column="SOURCE" property="source" />
+		<result column="ICON_NAME" property="iconName" />
+		<result column="ICON_PATH" property="iconPath" />
+		<result column="ANIMATION_NAME" property="animationName" />
+		<result column="ANIMATION_PATH" property="animationPath" />
+		<result column="PRIMARY_INDUSTRY" property="primaryIndustry" />
+		<result column="SECOND_INDUSTRY" property="secondIndustry" />
+		<result column="TOP_COLOR" property="topColor" />
+		<result column="URL" property="url" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+		<collection property="msgLibraryContents" ofType="com.yxw.commons.entity.platform.msgpush.MsgLibraryContent" column="id" select="findSubMsgLibraryContents"></collection>
+		<collection property="msgTemplateLibraryFunctions" ofType="com.yxw.commons.entity.platform.msgpush.MsgTemplateLibraryFunction" column="id" select="findMsgTemplateLibraryFunctions"></collection>
+	</resultMap>
+	<select id="findSubMsgLibraryContents" parameterType="string" resultMap="msgLibraryContentMap">
+		SELECT * FROM SYS_MSG_LIBRARY_CONTENT t WHERE t.TEMP_LIBRARY_ID=#{id} ORDER BY t.SORT 
+	</select>
+	
+	<select id="findMsgTemplateLibraryFunctions" parameterType="string" resultMap="msgTemplateLibraryFunctionMap">
+		SELECT * FROM SYS_MSG_TEMPLATE_LIBRARY_FUNCTION t WHERE t.TEMP_LIBRARY_ID=#{id} ORDER BY t.SORT 
+	</select>
+	
+	<update id="update" parameterType="com.yxw.commons.entity.platform.msgpush.MsgTemplateLibrary">
+		UPDATE SYS_MSG_TEMPLATE_LIBRARY
+	  <set >
+	      <if test="templateId != null" >
+	        TEMPLATE_ID = #{templateId},
+	      </if>
+	      <if test="templateCode != null" >
+	        TEMPLATE_CODE = #{templateCode},
+	      </if>
+	      <if test="source != null" >
+	        SOURCE = #{source},
+	      </if>
+	      <if test="iconName != null" >
+	        ICON_NAME = #{iconName},
+	      </if>
+	      <if test="iconPath != null" >
+	        ICON_PATH = #{iconPath},
+	      </if>
+	      <if test="animationName != null" >
+	        ANIMATION_NAME = #{animationName},
+	      </if>
+	      <if test="animationPath != null" >
+	        ANIMATION_PATH = #{animationPath},
+	      </if>
+	      <if test="title != null" >
+	        TITLE = #{title},
+	      </if>
+	      <if test="primaryIndustry != null" >
+	        PRIMARY_INDUSTRY = #{primaryIndustry},
+	      </if>
+	      <if test="secondIndustry != null" >
+	        SECOND_INDUSTRY = #{secondIndustry},
+	      </if>
+	      <if test="topColor != null" >
+	        TOP_COLOR = #{topColor},
+	      </if>
+	      <if test="url != null" >
+	        URL = #{url},
+	      </if>
+	      <if test="cp != null" >
+	        CP = #{cp},
+	      </if>
+	      <if test="ct != null" >
+	        CT = #{ct},
+	      </if>
+	      <if test="ep != null" >
+	        EP = #{ep},
+	      </if>
+	      <if test="et != null" >
+	        ET = #{et},
+	      </if>
+    </set>
+    WHERE ID=#{id}
+	</update>
+</mapper>

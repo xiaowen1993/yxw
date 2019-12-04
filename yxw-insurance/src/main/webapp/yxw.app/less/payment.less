@@ -1,0 +1,40 @@
+/*less*/
+@import "var.less";
+#payment{
+  .yx-list{
+    .pic{
+      float: left;
+      width: 50px;
+      height: 50px;
+      vertical-align: top;
+      margin-right: 10px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    .title{
+      font-size: 1.6rem;
+    }
+  }
+}
+
+/*门诊缴费*/
+.view-list{ padding-bottom: 70px;}
+  .yx-list{
+    &.fourList{ background: none; padding: 0;
+      &:after{ background:none;}
+      li{ padding: 1em .8em 0; margin-bottom: 10px; background-color: #fff;
+        &.arrow{
+          &:before{ margin-top: -23px; right: .8em;}
+          &:after{content: ' ';  display: block; position: absolute;  width: 100%;  left: 0;  bottom: 0px;  height: 1px;  background-color:@borderColor;  -webkit-transform:translateY(73%);-moz-transform:translateY(73%); transform:translateY(73%);overflow: hidden;}
+        }
+        .boxTable{ padding: 0 15px 0 5px;}
+        .opt-view{ width: 100%; height: 45px; color: @skinbgColor; line-height: 40px; text-align: center; position: relative;
+          &:before{content: ' ';  display: block;  position: absolute;  width: 100%;  left: 0;  top: 0px;  height: 1px;  background-color:@borderColor;  transform: scaleY(0.5);overflow: hidden;}
+        }
+      }
+    }
+    li{
+      .price{color: @orange;}
+    }
+  }
+

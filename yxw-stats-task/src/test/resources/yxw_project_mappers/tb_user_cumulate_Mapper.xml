@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.stats.entity.project.UserStats">
+
+  <resultMap id="BaseResultMap" type="com.yxw.stats.entity.project.UserStats" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="appId" property="appid" jdbcType="VARCHAR" />
+    <result column="hospitalId" property="hospitalid" jdbcType="VARCHAR" />
+    <result column="newUser" property="newuser" jdbcType="BIGINT" />
+    <result column="cancelUser" property="canceluser" jdbcType="BIGINT" />
+    <result column="cumulateUser" property="cumulateuser" jdbcType="BIGINT" />
+    <result column="date" property="date" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, appId, hospitalId, newUser, cancelUser, cumulateUser, date
+  </sql>
+  
+
+ 	<select id="findCurrUserStatsMaxDate" resultType="java.lang.String" parameterType="java.lang.String">
+		select max(DATE) as maxDate from TB_USER_CUMULATE
+		where hospitalId = #{hospitalId, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findUserStatsData" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select 
+			appId, hospitalId, newUser, cancelUser, cumulateUser, date
+		from TB_USER_CUMULATE  
+		where hospitalId = #{hospitalId} and date BETWEEN #{beginDate} and #{endDate} 
+	</select>
+	
+	<insert id="batchInsertUserStatsData" parameterType="java.util.Map" >
+		INSERT INTO 
+			TB_USER_CUMULATE
+			(<include refid="Base_Column_List"></include>)
+			VALUES
+		<foreach collection="userStats" item="item" index="index" separator=",">
+			 ( #{item.id},#{item.appid},#{item.hospitalid},#{item.newuser},#{item.canceluser},#{item.cumulateuser},#{item.date} )
+		</foreach>
+	</insert>
+	
+</mapper>

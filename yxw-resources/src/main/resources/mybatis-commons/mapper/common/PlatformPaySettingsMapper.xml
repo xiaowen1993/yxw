@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.hospital.PlatformPaySettings">
+
+	<resultMap id="platformPaySettingsResultMap" type="PlatformPaySettings">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="PAY_SETTINGS_ID" property="paySettingsId" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="INTEGER" />
+		<result column="PLATFORM_SETTINGS_ID" property="platformSettingsId" jdbcType="VARCHAR" />
+		
+		<!-- <result column="PLATFORM_SETTINGS_ID" property="platformSettingsId" jdbcType="BIGINT" /> 
+		<association column="PLATFORM_SETTINGS_ID" property="platformSettings" javaType="PlatformSettings" select="com.yxw.platform.hospital.entity.PlatformSettings.findById" />
+		-->
+		<association column="PAY_SETTINGS_ID" property="paySettings" javaType="PaySettings" select="com.yxw.commons.entity.platform.hospital.PaySettings.findById" />
+	</resultMap>
+
+	<select id="findByHospital" resultMap="platformPaySettingsResultMap">
+		select ID,PAY_SETTINGS_ID,PLATFORM_SETTINGS_ID,STATUS
+		from SYS_PLATFORM_PAY_SETTINGS hps
+		where hps.PLATFORM_SETTINGS_ID = #{platformSettingsId}
+	</select>
+	
+	<select id="findByPlatformSettingsIdAndPaySettingsId" resultMap="platformPaySettingsResultMap" parameterType="java.util.Map">
+		select ID,PAY_SETTINGS_ID,PLATFORM_SETTINGS_ID,STATUS
+		from SYS_PLATFORM_PAY_SETTINGS hps
+		where hps.PLATFORM_SETTINGS_ID = #{platformSettingsId}
+		AND hps.PAY_SETTINGS_ID = #{paySettingsId}
+	</select>
+
+	<insert id="add" parameterType="PlatformPaySettings">
+		insert into
+		SYS_PLATFORM_PAY_SETTINGS(ID,PAY_SETTINGS_ID,PLATFORM_SETTINGS_ID,STATUS)
+		values
+		(#{id},#{paySettingsId},#{platformSettingsId},1)
+	</insert>
+
+	<!-- 更新支付配置 -->
+	<update id="update" parameterType="PlatformPaySettings">
+		update SYS_PLATFORM_PAY_SETTINGS set PAY_SETTINGS_ID = #{paySettingsId}, PLATFORM_SETTINGS_ID = #{platformSettingsId}, STATUS = #{status} where ID = #{id}
+	</update>
+
+	<delete id="deletePlatformPaySettingsByPlatFormId" parameterType="java.util.Map">
+		DELETE FROM SYS_PLATFORM_PAY_SETTINGS WHERE PLATFORM_SETTINGS_ID = #{platformSettingsId} AND PAY_SETTINGS_ID = #{paySettingsId}
+	</delete>
+</mapper>

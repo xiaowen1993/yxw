@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.insurance.biz.entity.MzFeePayDetail">
+
+	<resultMap id="dataPayFeeDetailResultMap" type="com.yxw.insurance.biz.entity.MzFeePayDetail">
+		<id column="ID" property="id" jdbcType="VARCHAR"/>
+		<result column="ITEM_TIME" property="itemTime" jdbcType="VARCHAR" />
+		<result column="ITEM_ID" property="itemId" jdbcType="VARCHAR" />
+		<result column="ITEM_NAME" property="itemName" jdbcType="VARCHAR" />
+		<result column="ITEM_TYPE" property="itemType" jdbcType="VARCHAR" />
+		<result column="ITEM_UNIT" property="itemUnit" jdbcType="VARCHAR" />
+		<result column="ITEM_PRICE" property="itemPrice" jdbcType="VARCHAR" />
+		<result column="ITEM_SPEC" property="itemSpec" jdbcType="VARCHAR" />
+		<result column="ITEM_NUMBER" property="itemNumber" jdbcType="VARCHAR" />
+		<result column="ITEM_TOTAL_FEE" property="itemTotalFee" jdbcType="VARCHAR" />
+		<result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
+		<result column="DOCTOR_CODE" property="doctorCode" jdbcType="VARCHAR" />
+		<result column="DOCTOR_NAME" property="doctorName" jdbcType="VARCHAR" />
+		<result column="MZ_FEE_ID" property="mzFeeId" jdbcType="VARCHAR" />
+		
+	</resultMap>
+	
+	
+	<sql id="All_Column">
+		ID,MZ_FEE_ID,ITEM_TIME, ITEM_ID, ITEM_NAME, 
+		ITEM_TYPE, ITEM_UNIT, ITEM_PRICE, ITEM_SPEC, ITEM_NUMBER,
+		ITEM_TOTAL_FEE, DEPT_NAME, DOCTOR_CODE, DOCTOR_NAME
+	</sql>
+	
+	<select id="findMzPayDetail"  parameterType="java.util.Map"  resultMap="dataPayFeeDetailResultMap">
+			select 
+			<include refid="All_Column" />
+ 			from  DATA_PAY_FEE_DETAIL
+ 			where MZ_FEE_ID = #{mzFeeId,jdbcType=VARCHAR} order by ITEM_TIME desc
+	</select>
+
+</mapper>

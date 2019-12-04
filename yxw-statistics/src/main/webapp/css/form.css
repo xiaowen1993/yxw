@@ -1,0 +1,165 @@
+@charset "UTF-8";
+/* CSS Document */
+
+
+label {
+	display: inline;
+}
+.regular-checkbox {
+	display: none;
+}
+.regular-checkbox + label {
+	background-color: #fafafa;
+	border: 1px solid #cacece;
+	padding: 6px;
+	border-radius: 3px;
+	display: inline-block;
+	position: relative;
+}
+.regular-checkbox:checked + label {
+	background-color: #e9ecee;
+	border: 1px solid #adb8c0;
+	color: #99a1a7;
+}
+.regular-checkbox:checked + label:after {
+	content: '\2714';
+	font-size: 14px;
+	position: absolute;
+	top: 0px;
+	left: 3px;
+	color: #99a1a7;
+}
+.big-checkbox + label {
+	padding: 18px;
+}
+.big-checkbox:checked + label:after {
+	font-size: 28px;
+	left: 6px;
+}
+.tag {
+	font-family: Arial, sans-serif;
+	width: 200px;
+	position: relative;
+	top: 5px;
+	font-weight: bold;
+	text-transform: uppercase;
+	display: block;
+	float: left;
+}
+.radio-1 {
+	width: 193px;
+}
+.button-holder {
+	float: left;
+}
+/* RADIO */
+
+.regular-radio {
+	display: none;
+}
+.regular-radio + label {
+	-webkit-appearance: none;
+	background-color: #fafafa;
+	border: 1px solid #CCC;
+	padding: 6px;
+	border-radius: 50px;
+	display: inline-block;
+	position: relative;
+}
+.regular-radio:checked + label:after {
+	content: ' ';
+	width: 8px;
+	height: 8px;
+	border-radius: 50px;
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	font-size: 32px;
+}
+.regular-radio:checked + label {
+	background-color: #e9ecee;
+	color: #99a1a7;
+	border: 1px solid #adb8c0;
+}
+.regular-radio + label:active, .regular-radio:checked + label:active {
+}
+.big-radio + label {
+	padding: 16px;
+}
+.big-radio:checked + label:after {
+	width: 24px;
+	height: 24px;
+	left: 4px;
+	top: 4px;
+}
+
+
+
+/*下拉选择框*/
+.dropdown {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  height: 40px;
+  margin-top:5px;
+  line-height:40px;
+  width: 80%;
+  background: #FFF;
+  border: 0px solid;
+  border-color: #f5f5f5;
+  border-radius: 3px;
+}
+.dropdown:before, .dropdown:after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  top: 16px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 5px dashed;
+  border-color: #888 transparent;
+  pointer-events: none;
+}
+.dropdown:before {
+  border-bottom-style: solid;
+  border-top: none;
+}
+.dropdown:after {
+  margin-top: 7px;
+  border-top-style: solid;
+  border-bottom: none;
+}
+
+.dropdown-select {
+  position: relative;
+  width: 130%;
+  margin: 0;
+  padding: 6px 8px 6px 10px;
+  height: 40px;
+  line-height: 40px;
+  text-shadow: 0 1px white;
+  /* Fallback for IE 8 */
+  background: #FFF;
+  /* "transparent" doesn't work with Opera */
+  background: rgba(0, 0, 0, 0) !important;
+  border: 0;
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+.dropdown-select:focus {
+  z-index: 3;
+  width: 100%;
+  color: #394349;
+  outline: 2px solid #49aff2;
+  outline: 2px solid -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.dropdown-select > option {
+  margin: 3px;
+  padding: 6px 8px;
+  text-shadow: none;
+  background: #FFF;
+  border-radius: 3px;
+  cursor: pointer;
+}

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.rule.RuleHisData">
+  <resultMap id="RuleHisDataResultMap" type="com.yxw.commons.entity.platform.rule.RuleHisData">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="HOSPITAL_ID" jdbcType="VARCHAR" property="hospitalId" />
+    <result column="IS_SAME_DEPT_DATA" jdbcType="INTEGER" property="isSameDeptData"/>
+    
+    <result column="IS_SAME_DOCTOR_DATA" jdbcType="INTEGER" property="isSameDoctorData"/>
+    <result column="IS_HAD_CUR_DOCTOR_INTERFACE" jdbcType="INTEGER" property="isHadCurDoctorInterface"/>
+    <result column="IS_HAD_AITT_DOCTOR_INTERFACE" jdbcType="INTEGER" property="isHadAppointmentDoctorInterface"/>
+    
+    <result column="IS_HAD_CUR_REG_SOURCE_INTERFACE" jdbcType="INTEGER" property="isHadCurRegSourceInterface"/>
+    <result column="IS_HAD_AITT_REG_SOURCE_INTERFACE" jdbcType="INTEGER" property="isHadAppointmentRegSourceInterface"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, HOSPITAL_ID,IS_SAME_DEPT_DATA,IS_SAME_DOCTOR_DATA,IS_HAD_CUR_DOCTOR_INTERFACE,IS_HAD_AITT_DOCTOR_INTERFACE,
+    IS_HAD_CUR_REG_SOURCE_INTERFACE,IS_HAD_AITT_REG_SOURCE_INTERFACE
+  </sql>
+  <select id="findById" parameterType="java.lang.String" resultMap="RuleHisDataResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_RULE_HIS_DATA
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findAll" resultMap="RuleHisDataResultMap">
+    select 
+        <include refid="Base_Column_List" /> 
+    from SYS_RULE_HIS_DATA
+  </select>
+  
+  <select id="findByHospitalId" resultMap="RuleHisDataResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_RULE_HIS_DATA
+    where HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteById" parameterType="java.lang.String">
+    delete from SYS_RULE_HIS_DATA
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="add" parameterType="com.yxw.commons.entity.platform.rule.RuleHisData">
+    insert into SYS_RULE_HIS_DATA ( 
+        ID, HOSPITAL_ID,IS_SAME_DEPT_DATA,IS_SAME_DOCTOR_DATA,IS_HAD_CUR_DOCTOR_INTERFACE,IS_HAD_AITT_DOCTOR_INTERFACE,
+        IS_HAD_CUR_REG_SOURCE_INTERFACE,IS_HAD_AITT_REG_SOURCE_INTERFACE
+    )
+    values (#{id,jdbcType=VARCHAR},#{hospitalId,jdbcType=VARCHAR}, 
+      #{isSameDeptData,jdbcType=INTEGER},#{isSameDoctorData,jdbcType=INTEGER},
+      #{isHadCurDoctorInterface,jdbcType=INTEGER},#{isHadAppointmentDoctorInterface,jdbcType=INTEGER},
+      #{isHadCurRegSourceInterface,jdbcType=INTEGER},#{isHadAppointmentRegSourceInterface,jdbcType=INTEGER}
+    )
+  </insert>
+  
+  <update id="update" parameterType="com.yxw.commons.entity.platform.rule.RuleHisData">
+    update SYS_RULE_HIS_DATA
+    <set>
+      <if test="hospitalId != null">
+        HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+      </if>
+      <if test="isSameDeptData != null">
+        IS_SAME_DEPT_DATA = #{isSameDeptData,jdbcType=INTEGER},
+      </if>
+      <if test="isSameDoctorData != null">
+        IS_SAME_DOCTOR_DATA = #{isSameDoctorData,jdbcType=INTEGER},
+      </if>
+      <if test="isHadCurDoctorInterface != null">
+        IS_HAD_CUR_DOCTOR_INTERFACE = #{isHadCurDoctorInterface,jdbcType=INTEGER},
+      </if>
+      <if test="isHadAppointmentDoctorInterface != null">
+        IS_HAD_AITT_DOCTOR_INTERFACE = #{isHadAppointmentDoctorInterface,jdbcType=INTEGER},
+      </if>
+       <if test="isHadCurRegSourceInterface != null">
+        IS_HAD_CUR_REG_SOURCE_INTERFACE = #{isHadCurRegSourceInterface,jdbcType=INTEGER},
+      </if>
+      <if test="isHadAppointmentRegSourceInterface != null">
+        IS_HAD_AITT_REG_SOURCE_INTERFACE = #{isHadAppointmentRegSourceInterface,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateById" parameterType="com.yxw.commons.entity.platform.rule.RuleHisData">
+    update SYS_RULE_HIS_DATA
+    set HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+      IS_SAME_DEPT_DATA = #{isSameDeptData,jdbcType=INTEGER},
+      IS_SAME_DOCTOR_DATA = #{isSameDoctorData,jdbcType=INTEGER},
+      IS_HAD_CUR_DOCTOR_INTERFACE = #{isHadCurDoctorInterface,jdbcType=INTEGER},
+      IS_HAD_AITT_DOCTOR_INTERFACE = #{isHadAppointmentDoctorInterface,jdbcType=INTEGER},
+      IS_HAD_CUR_REG_SOURCE_INTERFACE = #{isHadCurRegSourceInterface,jdbcType=INTEGER},
+      IS_HAD_AITT_REG_SOURCE_INTERFACE = #{isHadAppointmentRegSourceInterface,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

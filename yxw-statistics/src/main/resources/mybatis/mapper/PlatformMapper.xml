@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.statistics.biz.hospitalmanager.entity.Platform">
+	<resultMap id="platform" type="Platform">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="SHORT_NAME" property="shortName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="findAll" resultMap="platform">
+		SELECT
+		ID, NAME, CODE, SHORT_NAME
+		FROM SYS_PLATFORM
+		ORDER BY CODE ASC
+	</select>
+
+</mapper>

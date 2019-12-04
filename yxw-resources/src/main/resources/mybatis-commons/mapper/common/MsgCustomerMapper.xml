@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.msgpush.MsgCustomer">
+
+	<resultMap id="msgCustomerMap" type="com.yxw.commons.entity.platform.msgpush.MsgCustomer">
+		<id column="ID" property="id" />
+		<result column="CODE" property="code" />
+		<result column="TITLE" property="title" />
+		<result column="CONTENT" property="content" />
+		<result column="SOURCE" property="source" />
+		<result column="TYPE" property="type" />
+		<result column="APP_ID" property="appId" />
+		<result column="HOSPITAL_ID" property="hospitalId" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+	</resultMap>
+
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.msgpush.MsgCustomer">
+		INSERT INTO SYS_MSG_CUSTOMER
+		VALUES
+		(#{id}, #{code}, #{title}, #{content}, #{source}, #{type},#{appId}, #{hospitalId},'8b1994dff203407a869161c0946f6e97', now(),'8b1994dff203407a869161c0946f6e97', now());
+	</insert>
+
+	<select id="findById" parameterType="String" resultMap="msgCustomerMap">
+		SELECT * FROM SYS_MSG_CUSTOMER WHERE ID=#{id}
+	</select>
+	
+	<select id="find" parameterType="com.yxw.commons.entity.platform.msgpush.MsgCustomer" resultMap="msgCustomerMap">
+		SELECT * FROM SYS_MSG_CUSTOMER h WHERE h.CODE=#{code} AND h.APP_ID=#{appId}
+	</select>
+	
+	<select id="findAll"  resultMap="msgCustomerMap">
+		SELECT * FROM SYS_MSG_CUSTOMER
+	</select>
+	
+	<select id="check" parameterType="Map" resultMap="msgCustomerMap">
+		SELECT * FROM SYS_MSG_CUSTOMER h where h.CODE=#{code} AND h.APP_ID=#{appId} AND h.SOURCE=#{source}
+	</select>
+	
+	<delete id="deleteById" parameterType="string">
+		DELETE FROM SYS_MSG_CUSTOMER WHERE ID=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.yxw.commons.entity.platform.msgpush.MsgTemplate">
+		UPDATE SYS_MSG_CUSTOMER
+		<set>
+			<if test="code != null">
+				CODE = #{code},
+			</if>
+			<if test="title != null">
+				TITLE = #{title},
+			</if>
+			<if test="content != null">
+				CONTENT = #{content},
+			</if>
+			<if test="source != null">
+				SOURCE = #{source},
+			</if>
+			<if test="type != null">
+				TYPE = #{type},
+			</if>
+			<if test="appId != null">
+				APP_ID = #{appId},
+			</if>
+			<if test="hospitalId != null">
+				HOSPITAL_ID = #{hospitalId},
+			</if>
+			<if test="cp != null">
+				CP = #{cp},
+			</if>
+			<if test="ct != null">
+				CT = #{ct},
+			</if>
+			<if test="ep != null">
+				EP = #{ep},
+			</if>
+			<if test="et != null">
+				ET = #{et},
+			</if>
+		</set>
+		WHERE ID=#{id}
+	</update>
+</mapper>

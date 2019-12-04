@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>UPSDK 动态加载</title>
+</head>
+
+<body>
+
+<script type="text/javascript" src="./zepto.min.js"></script>
+<script type="text/javascript" src="./require.js"></script>
+
+<script type="text/javascript">
+
+    requirejs(['https://open.95516.com/s/open/js/upsdk.js'], function(sdk) {
+        // 你应用后台签名返回的数据, 样本如下
+        var resp = {
+            "appId":"a5949221470c4059b9b0b45a90c81527",
+            "nonceStr":"mAz4VHIxqTThujSH",
+            "timestamp":1479351842,
+            "url":"http:\/\/172.20.38.241\/web\/public\/mchnt\/h5\/html\/sdkDemo.html",
+            "signature":"25646c26fdfc13d1aa0346ccd1dee6b6d09157100e2547db5346d8106890a6ab"
+        };
+
+        // 开发阶段可打开此调试标记, 生产版本请关掉。
+        //resp.debug = true;
+
+        // sdk is ready.
+        sdk.ready(function(){
+            window.upsdk.pay({
+                tn: '9032422455662288'  // tn: Ticket Number 是银联在线后台返回
+            });
+        });
+
+        sdk.error(function(errmsg){
+            alert(errmsg);
+        });
+
+        sdk.config(resp);
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- modify by  Yuce  不要使用多个ResultMap   一个文件里面最好就只用一个-->
+<mapper namespace="com.yxw.commons.entity.mobile.biz.customservice.Feedback">
+	
+	
+	<resultMap id="feedbackMap" type="Feedback">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+		<result column="PLATFORM_TYPE" property="platformType" jdbcType="VARCHAR" />
+		<result column="FEEDBACK_TYPE" property="type" jdbcType="INTEGER" />
+		<result column="FEEDBACK" property="feedback" jdbcType="VARCHAR" />
+		<result column="FEEDBACK_REPLY" property="reply" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="VARCHAR" />
+		
+	</resultMap>
+	
+	
+	<insert id="add" parameterType="Feedback" >
+		INSERT INTO
+		BIZ_CUSTOM_FEEDBACK(ID,OPEN_ID,PLATFORM_TYPE,FEEDBACK_TYPE,FEEDBACK,CT)
+		VALUES 
+		 (#{id},#{openId},#{platformType},#{type},#{feedback},now())
+	</insert> 
+	
+	<select id="findListByPage" resultMap="feedbackMap" parameterType="string">
+		select * from BIZ_CUSTOM_FEEDBACK cf where cf.PLATFORM_TYPE='easyHealth' and cf.FEEDBACK_TYPE=#{type} ORDER BY cf.CT DESC
+    </select>
+    
+	<select id="findByOpenIdAndType" resultMap="feedbackMap" parameterType="map">
+		select * from BIZ_CUSTOM_FEEDBACK cf where cf.PLATFORM_TYPE='easyHealth' and cf.FEEDBACK_TYPE=#{type} and cf.OPEN_ID=#{openId}
+		and cf.FEEDBACK_REPLY is not null
+    </select>
+    
+    <select id="findById" resultMap="feedbackMap" parameterType="string">
+    	select * from  BIZ_CUSTOM_FEEDBACK cf where cf.ID=#{id}
+    </select>
+    
+    <update id="update" parameterType="Feedback">
+    	update BIZ_CUSTOM_FEEDBACK cf set cf.FEEDBACK_REPLY=#{reply} where cf.ID=#{id} 
+    </update>
+	
+</mapper>

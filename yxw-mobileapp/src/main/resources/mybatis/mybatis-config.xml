@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE configuration    
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="CommunityHealthCenter" type="com.yxw.commons.entity.mobile.biz.community.CommunityHealthCenter"/>
+		<typeAlias alias="CommunityOrganizationSchmag" type="com.yxw.commons.entity.mobile.biz.community.CommunityOrganizationSchmag"/>
+		<typeAlias alias="Disease" type="com.yxw.commons.entity.mobile.biz.smarttriage.Disease"/>
+		<typeAlias alias="Family" type="com.yxw.commons.entity.mobile.biz.usercenter.Family"/>
+		<typeAlias alias="SymptomDisease" type="com.yxw.commons.entity.mobile.biz.smarttriage.SymptomDisease"/>
+		<typeAlias alias="Symptom" type="com.yxw.commons.entity.mobile.biz.smarttriage.Symptom"/>
+		<typeAlias alias="MsgCenter" type="com.yxw.commons.entity.mobile.biz.msgcenter.MsgCenter"/>
+		<typeAlias alias="RegisterOrder" type="com.yxw.easyhealth.biz.register.entity.RegisterOrder"/>
+		<typeAlias alias="DataPayFee" type="com.yxw.easyhealth.biz.datastorage.clinic.entity.DataPayFee"/>
+		<typeAlias alias="DataPayFeeDetail" type="com.yxw.easyhealth.biz.datastorage.clinic.entity.DataPayFeeDetail"/>
+		<typeAlias alias="DataMzFee" type="com.yxw.easyhealth.biz.datastorage.clinic.entity.DataMzFee"/>
+		<typeAlias alias="DataMzFeeDetail" type="com.yxw.easyhealth.biz.datastorage.clinic.entity.DataMzFeeDetail"/>
+		<typeAlias alias="DataInspect" type="com.yxw.easyhealth.biz.datastorage.reports.entity.DataInspect"/>
+		<typeAlias alias="DataInspectDetail" type="com.yxw.easyhealth.biz.datastorage.reports.entity.DataInspectDetail"/>
+		<typeAlias alias="DataExamine" type="com.yxw.easyhealth.biz.datastorage.reports.entity.DataExamine"/>
+		<typeAlias alias="PaidMZDetailReuslt" type="com.yxw.commons.dto.outside.PaidMZDetailReuslt"/>
+		<typeAlias alias="PrescriptionDetailReuslt" type="com.yxw.commons.dto.outside.PrescriptionDetailReuslt"/>
+		<typeAlias alias="MedicalSettlementReuslt" type="com.yxw.commons.dto.outside.MedicalSettlementReuslt"/>
+		
+	</typeAliases>
+</configuration>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.dto.outside.MedicalSettlementReuslt">
+		<!-- 1.3 商保接口服务-就医结算交易 -->
+	<resultMap id="medicalSettlementResultMap"  type="MedicalSettlementReuslt">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="MZ_FEE_ID" property="mzFeeId" jdbcType="VARCHAR" />
+		<result column="NAME" property="patName" jdbcType="VARCHAR" />
+		<result column="SEX" property="patSex" jdbcType="VARCHAR" />
+		<result column="ID_TYPE" property="patIdType" jdbcType="VARCHAR" />
+		<result column="ID_NO" property="patIdNo" jdbcType="VARCHAR" />
+		<result column="HIS_ORD_NUM" property="hisOrdNum" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="time" jdbcType="VARCHAR" />
+		<result column="PAY_TIME" property="payTime" jdbcType="VARCHAR" />
+		<result column="TOTAL_FEE" property="totalAmout" jdbcType="VARCHAR" />
+		<result column="MEDICARE_TYPE" property="payType" jdbcType="VARCHAR" />
+		<result column="MEDICARE_AMOUNT" property="medicareAmout" jdbcType="VARCHAR" />
+		<result column="BIRTH" property="birthDay" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	
+	<sql id="Choose_Hash_Table_Name">
+		<choose>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_1'">
+				BIZ_CLINIC_RECORD_1
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_2'">
+				BIZ_CLINIC_RECORD_2
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_3'">
+				BIZ_CLINIC_RECORD_3
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_4'">
+				BIZ_CLINIC_RECORD_4
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_5'">
+				BIZ_CLINIC_RECORD_5
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_6'">
+				BIZ_CLINIC_RECORD_6
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_7'">
+				BIZ_CLINIC_RECORD_7
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_8'">
+				BIZ_CLINIC_RECORD_8
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_9'">
+				BIZ_CLINIC_RECORD_9
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_10'">
+				BIZ_CLINIC_RECORD_10
+			</when>
+		</choose>
+	</sql>
+	
+	<sql id="Choose_Hash_Table_Name2">
+		<choose>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_1'">
+				BIZ_MEDICAL_CARD_1
+			</when>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_2'">
+				BIZ_MEDICAL_CARD_2
+			</when>
+			<when test="hashTableName2== 'BIZ_MEDICAL_CARD_3'">
+				BIZ_MEDICAL_CARD_3
+			</when>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_4'">
+				BIZ_MEDICAL_CARD_4
+			</when>
+			<when test="hashTableName2== 'BIZ_MEDICAL_CARD_5'">
+				BIZ_MEDICAL_CARD_5
+			</when>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_6'">
+				BIZ_MEDICAL_CARD_6
+			</when>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_7'">
+				BIZ_MEDICAL_CARD_7
+			</when>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_8'">
+				BIZ_MEDICAL_CARD_8
+			</when>
+		</choose>
+	</sql>
+	
+
+	<select id="getMedicalSettlement"  parameterType="com.yxw.commons.dto.inside.PaidMZDetailCommParams"  resultMap="medicalSettlementResultMap" >
+	    select dpf.MZ_FEE_ID ,bmc1.NAME ,bmc1.SEX ,
+		bmc1.ID_TYPE ,bmc1.ID_NO ,
+		dpf.HIS_ORD_NUM,bcr1.CREATE_TIME,dpf.PAY_TIME,bmc1.BIRTH,
+		bcr1.TOTAL_FEE,bcr1.MEDICARE_TYPE,bcr1.MEDICARE_AMOUNT
+		from DATA_PAY_FEE  dpf
+		LEFT JOIN  
+		<include refid="Choose_Hash_Table_Name" /> bcr1 
+		on bcr1.MZFEE_ID= dpf.MZ_FEE_ID
+		LEFT JOIN  
+		<include refid="Choose_Hash_Table_Name2" /> bmc1  
+		on bmc1.CARD_NO= bcr1.CARD_NO
+		where bcr1.APP_ID=#{appId} and bcr1.APP_CODE=#{appCode} and bcr1.OPEN_ID=#{openId} and  bcr1.HOSPITAL_CODE=#{hospitalCode} and bcr1.ORDER_NO=#{orderNo} and bcr1.MZFEE_ID=#{mzFeeId}
+	</select>
+</mapper>

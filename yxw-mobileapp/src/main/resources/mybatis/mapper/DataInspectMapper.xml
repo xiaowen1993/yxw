@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.easyhealth.biz.datastorage.reports.entity.DataInspect">
+
+	<resultMap id="dataInspectResultMap" type="DataInspect">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_CODE" property="hospitalCode" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_NAME" property="hospitalName" jdbcType="VARCHAR" />
+		<result column="BRANCH_ID" property="branchHospitalId" jdbcType="VARCHAR" />
+		<result column="BRANCH_CODE" property="branchHospitalCode" jdbcType="VARCHAR" />
+		<result column="BRANCH_NAME" property="branchHospitalName" jdbcType="VARCHAR" />
+		<result column="STORAGE_TIME" property="storageTime" jdbcType="BIGINT" />
+		<result column="PATIENT_NAME" property="name" jdbcType="VARCHAR" />
+		<result column="CARD_TYPE" property="cardType" jdbcType="SMALLINT" />
+		<result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+		<result column="ID_NO" property="idNo" jdbcType="VARCHAR" />
+		<result column="INSPECT_ID" property="inspectId" jdbcType="VARCHAR" />
+		<result column="INSPECT_NAME" property="inspectName" jdbcType="VARCHAR" />
+		<result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
+		<result column="DOCTOR_NAME" property="doctorName" jdbcType="VARCHAR" />
+		<result column="DOCTOR_CODE" property="doctorCode" jdbcType="VARCHAR" />
+		<result column="INSPECT_TIME" property="inspectTime" jdbcType="VARCHAR" />
+		<result column="VERIFY_DOCTOR" property="verifyDoctor" jdbcType="VARCHAR" />
+		<result column="VERIFY_TIME" property="verifyTime" jdbcType="VARCHAR" />
+		<result column="INSPECT_DOCTOR" property="inspectDoctor" jdbcType="VARCHAR" />
+		<result column="PROVING_TIME" property="provingTime" jdbcType="VARCHAR" />
+		<result column="REPORT_TIME" property="reportTime" jdbcType="VARCHAR" />
+		<result column="FILE_ADDRESS" property="fileAddress" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="All_Column">
+		ID, HOSPITAL_ID, HOSPITAL_CODE, HOSPITAL_NAME, BRANCH_ID, BRANCH_CODE, BRANCH_NAME, STORAGE_TIME, PATIENT_NAME, CARD_TYPE, CARD_NO, ID_NO,
+		INSPECT_ID, INSPECT_NAME, DEPT_NAME, DOCTOR_NAME, DOCTOR_CODE, INSPECT_TIME, VERIFY_DOCTOR, VERIFY_TIME, INSPECT_DOCTOR, PROVING_TIME,
+		REPORT_TIME, FILE_ADDRESS
+	</sql>
+	
+	<select id="findByBranchHospitalCodeAndInspectId" resultMap="dataInspectResultMap" parameterType="map">
+		SELECT
+			<include refid="All_Column"></include>
+		FROM
+			DATA_INSPECT DI
+		WHERE
+			DI.BRANCH_CODE = #{branchHospitalCode}
+		AND DI.INSPECT_ID = #{inspectId}
+	</select>
+	
+	<select id="findByBranchHospitalCodeAndInspectIds" resultType="java.lang.String" parameterType="map">
+		SELECT
+			DI.INSPECT_ID
+		FROM
+			DATA_INSPECT DI
+		WHERE
+			DI.HOSPITAL_CODE = #{hospitalCode}
+		<!-- AND	DI.BRANCH_CODE = #{branchHospitalCode} -->
+		AND DI.INSPECT_ID in
+			<foreach collection="inspectIds" item="item" index="index" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+	</select>
+	
+	<select id="findByIdNo" resultMap="dataInspectResultMap" parameterType="map">
+		SELECT
+			<include refid="All_Column"></include>
+		FROM
+			DATA_INSPECT DI
+		WHERE
+			DI.ID_NO = #{idNo}
+		ORDER BY REPORT_TIME DESC
+	</select>
+	
+	<!-- 批量插入 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		 INSERT INTO 
+		 DATA_INSPECT(<include refid="All_Column"></include>)
+		 VALUES
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (
+	         #{item.id}, #{item.hospitalId}, #{item.hospitalCode}, #{item.hospitalName}, #{item.branchHospitalId}, 
+	         #{item.branchHospitalCode}, #{item.branchHospitalName}, #{item.storageTime}, #{item.name}, #{item.cardType},
+	         #{item.cardNo}, #{item.idNo}, #{item.inspectId}, #{item.inspectName}, #{item.deptName}, #{item.doctorName}, 
+	         #{item.doctorCode}, #{item.inspectTime}, #{item.verifyDoctor}, #{item.verifyTime}, #{item.inspectDoctor},
+	         #{item.provingTime}, #{item.reportTime}, #{item.fileAddress}
+	        )
+	    </foreach>  
+	</insert>
+
+	<insert id="add" parameterType="DataInspect" useGeneratedKeys="true" keyProperty="id">
+		insert into 
+		DATA_INSPECT(<include refid="All_Column"></include>)
+		 values 
+		(
+		 #{id}, #{hospitalId}, #{hospitalCode}, #{hospitalName}, #{branchHospitalId}, 
+         #{branchHospitalCode}, #{branchHospitalName}, #{storageTime}, #{name}, #{cardType},
+         #{cardNo}, #{idNo}, #{inspectId}, #{inspectName}, #{deptName}, #{doctorName}, 
+         #{doctorCode}, #{inspectTime}, #{verifyDoctor}, #{verifyTime}, #{inspectDoctor},
+         #{provingTime}, #{reportTime}, #{fileAddress}
+		)
+	</insert> 
+
+</mapper>

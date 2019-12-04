@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.hospital.Platform">
+
+	<resultMap id="platformResultMap" type="Platform">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="TARGET_ID" property="targetId" jdbcType="INTEGER" />
+		<result column="STATE" property="state" jdbcType="INTEGER" />
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<resultMap id="platformPayModesResultMap" type="com.yxw.commons.vo.platform.PlatformPaymentVo">
+		<id column="PLATFORM_ID" property="platformId" jdbcType="VARCHAR" />
+		<result column="PLATFORM_NAME" property="platformName" jdbcType="VARCHAR" />
+		<result column="PLATFORM_CODE" property="platformCode" jdbcType="VARCHAR" />
+		<result column="PLATFORM_SETTINGS_ID" property="platformSettingsId" jdbcType="VARCHAR" />
+		<result column="PLATFORM_TARGET" property="targetId" jdbcType="INTEGER" />
+		<result column="STATE" property="state" jdbcType="INTEGER" />
+		<result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+		<collection property="payModes" ofType="com.yxw.commons.entity.platform.hospital.PayMode" column="PLATFORM_ID" select="findAllPayModes">
+		</collection>
+	</resultMap>
+	<resultMap type="com.yxw.commons.entity.platform.hospital.PayMode" id="PayModesResultMap">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="VERSION" property="version" jdbcType="VARCHAR" />
+		<result column="PLATFORM_ID" property="platformId" jdbcType="VARCHAR" />
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="SHOW_NAME" property="showName" jdbcType="VARCHAR" />
+		<result column="TARGET_ID" property="targetId" jdbcType="INTEGER" />
+		<result column="SORT_INDEX" property="sortIndex" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<resultMap id="hospitalPlatformPayModesResultMap" type="com.yxw.commons.vo.platform.PlatformPaymentVo">
+		<id column="PLATFORM_ID" property="platformId" jdbcType="VARCHAR" />
+		<result column="PLATFORM_NAME" property="platformName" jdbcType="VARCHAR" />
+		<result column="PLATFORM_CODE" property="platformCode" jdbcType="VARCHAR" />
+		<result column="PLATFORM_SETTINGS_ID" property="platformSettingsId" jdbcType="VARCHAR" />
+		<result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+		<result column="PLATFORM_TARGET" property="targetId" jdbcType="INTEGER" />
+		<result column="STATE" property="state" jdbcType="INTEGER" />
+		<collection property="payModes" ofType="com.yxw.commons.entity.platform.hospital.PayMode">
+			<id column="ID" property="id" jdbcType="VARCHAR" />
+			<result column="NAME" property="name" jdbcType="VARCHAR" />
+			<result column="VERSION" property="version" jdbcType="VARCHAR" />
+			<result column="PLATFORM_ID" property="platformId" jdbcType="VARCHAR" />
+			<result column="CODE" property="code" jdbcType="VARCHAR" />
+			<result column="SHOW_NAME" property="showName" jdbcType="VARCHAR" />
+			<result column="TARGET_ID" property="targetId" jdbcType="INTEGER" />
+			<result column="SORT_INDEX" property="sortIndex" jdbcType="INTEGER" />
+		</collection>
+	</resultMap>
+	
+	<select id="findAllPlatformPayModesByHospitalId" resultMap="hospitalPlatformPayModesResultMap">
+		SELECT
+			p.ID AS PLATFORM_ID,
+			p.NAME AS PLATFORM_NAME,
+			p.CODE AS PLATFORM_CODE,
+			p.TARGET_ID AS PLATFORM_TARGET,
+			p.STATE,
+			ps.APP_ID AS APP_ID,
+			ps.ID AS PLATFORM_SETTINGS_ID,
+			pm.ID,
+			pm. NAME,
+			pm.SHOW_NAME,
+			pm.TARGET_ID,
+			pm. CODE,
+			pm.PLATFORM_ID,
+			pm.SORT_INDEX
+		FROM
+			SYS_HOSPITAL_PLATFORM_SETTINGS a
+		LEFT JOIN SYS_PLATFORM_SETTINGS ps ON a.PLATFORM_SETTINGS_ID = ps.ID
+		LEFT JOIN SYS_PLATFORM p ON ps.PLATFORM_ID = p.ID
+		LEFT JOIN SYS_PAY_MODE pm ON p.ID = pm.PLATFORM_ID
+		WHERE
+			a.HOSPITAL_ID = #{hospitalId}
+		AND a. STATUS = 1
+		AND p.STATE = 1
+		AND pm.ID IS NOT NULL
+	</select>
+	
+	<select id="findAllPlatformPayModes" resultMap="platformPayModesResultMap">
+		SELECT
+			a.ID AS PLATFORM_ID,
+			a.NAME AS PLATFORM_NAME,
+			a.CODE AS PLATFORM_CODE,
+			a.TARGET_ID AS PLATFORM_TARGET,
+			a.STATE
+		FROM
+			SYS_PLATFORM a
+		WHERE
+			1 = 1
+		AND a.STATE = 1
+	</select>
+	
+	<select id="findAllPayModes" resultMap="PayModesResultMap">
+		SELECT
+			a.ID,
+			a.NAME,
+			a.VERSION,
+			a.CODE,
+			a.PLATFORM_ID,
+			a.SHOW_NAME,
+			a.TARGET_ID,
+			a.SORT_INDEX
+		FROM
+			SYS_PAY_MODE a
+		WHERE
+			a.PLATFORM_ID IS NOT NULL
+		AND a.PLATFORM_ID = #{id}
+		ORDER BY a.SORT_INDEX DESC
+	</select>
+	
+	<select id="findByHospitalId" resultMap="hospitalPlatformPayModesResultMap">
+		SELECT
+			p.ID AS PLATFORM_ID, 
+			p.NAME AS PLATFORM_NAME, 
+			p.CODE AS PLATFORM_CODE, 
+			p.TARGET_ID AS PLATFORM_TARGET,
+			p.STATE,
+			ps.ID AS PLATFORM_SETTINGS_ID,
+			ps.APP_ID AS APP_ID
+		FROM
+			SYS_HOSPITAL_PLATFORM_SETTINGS a
+		LEFT JOIN SYS_PLATFORM_SETTINGS ps ON a.PLATFORM_SETTINGS_ID = ps.ID
+		LEFT JOIN SYS_PLATFORM p ON ps.PLATFORM_ID = p.ID
+		WHERE
+			a.HOSPITAL_ID = #{hospitalId}
+		AND a. STATUS = 1
+		AND p.STATE = 1
+		ORDER BY p.CODE DESC
+	</select>
+
+	<select id="findAll" resultMap="platformResultMap">
+		select ID,NAME,CODE,TARGET_ID,STATE,CP,CT,EP,ET from SYS_PLATFORM ORDER BY CODE ASC
+	</select>
+	
+	<select id="findById" resultMap="platformResultMap">
+		select ID,NAME,CODE,TARGET_ID,STATE,CP,CT,EP,ET from SYS_PLATFORM p where p.ID = #{id}
+	</select>
+
+	<select id="findByState" resultMap="platformResultMap">
+		select ID,NAME,CODE,TARGET_ID,STATE,CP,CT,EP,ET from SYS_PLATFORM p where p.STATE = #{state}  ORDER BY CODE ASC
+	</select>
+	
+	<resultMap id="platformMsgModesResultMap" type="com.yxw.commons.vo.platform.PlatformMsgModeVo">
+		<id column="PLATFORM_ID" property="platformId" jdbcType="VARCHAR" />
+		<result column="PLATFORM_NAME" property="platformName" jdbcType="VARCHAR" />
+		<result column="PLATFORM_CODE" property="platformCode" jdbcType="VARCHAR" />
+		<result column="PLATFORM_SETTINGS_ID" property="platformSettingsId" jdbcType="VARCHAR" />
+		<result column="PLATFORM_TARGET" property="targetId" jdbcType="INTEGER" />
+		<result column="STATE" property="state" jdbcType="INTEGER" />
+		<result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+		<collection property="msgModes" ofType="com.yxw.commons.entity.platform.hospital.MsgMode" column="PLATFORM_ID" select="findAllMsgModes">
+		</collection>
+	</resultMap>
+	<resultMap type="com.yxw.commons.entity.platform.hospital.MsgMode" id="MsgModesResultMap">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="PLATFORM_ID" property="platformId" jdbcType="VARCHAR" />
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="TARGET_ID" property="targetId" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<resultMap id="hospitalPlatformMsgModesResultMap" type="com.yxw.commons.vo.platform.PlatformMsgModeVo">
+		<id column="PLATFORM_ID" property="platformId" jdbcType="VARCHAR" />
+		<result column="PLATFORM_NAME" property="platformName" jdbcType="VARCHAR" />
+		<result column="PLATFORM_CODE" property="platformCode" jdbcType="VARCHAR" />
+		<result column="PLATFORM_SETTINGS_ID" property="platformSettingsId" jdbcType="VARCHAR" />
+		<result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+		<result column="PLATFORM_TARGET" property="targetId" jdbcType="INTEGER" />
+		<result column="STATE" property="state" jdbcType="INTEGER" />
+		<collection property="msgModes" ofType="com.yxw.commons.entity.platform.hospital.MsgMode">
+			<id column="ID" property="id" jdbcType="VARCHAR" />
+			<result column="NAME" property="name" jdbcType="VARCHAR" />
+			<result column="PLATFORM_ID" property="platformId" jdbcType="VARCHAR" />
+			<result column="CODE" property="code" jdbcType="VARCHAR" />
+			<result column="TARGET_ID" property="targetId" jdbcType="INTEGER" />
+		</collection>
+	</resultMap>
+	
+	<select id="findAllPlatformMsgModesByHospitalId" resultMap="hospitalPlatformMsgModesResultMap">
+		SELECT
+			p.ID AS PLATFORM_ID,
+			p.NAME AS PLATFORM_NAME,
+			p.CODE AS PLATFORM_CODE,
+			p.TARGET_ID AS PLATFORM_TARGET,
+			p.STATE,
+			ps.APP_ID AS APP_ID,
+			ps.ID AS PLATFORM_SETTINGS_ID,
+			mm.ID,
+			mm. NAME,
+			mm.TARGET_ID,
+			mm. CODE,
+			mm.PLATFORM_ID
+		FROM
+			SYS_HOSPITAL_PLATFORM_SETTINGS a
+		LEFT JOIN SYS_PLATFORM_SETTINGS ps ON a.PLATFORM_SETTINGS_ID = ps.ID
+		LEFT JOIN SYS_PLATFORM p ON ps.PLATFORM_ID = p.ID
+		LEFT JOIN SYS_MSG_MODE mm ON p.ID = mm.PLATFORM_ID
+		WHERE
+			a.HOSPITAL_ID = #{hospitalId}
+		AND a.STATUS = 1
+		AND p.STATE = 1
+		AND mm.ID IS NOT NULL
+		ORDER BY p.TARGET_ID ASC, mm.TARGET_ID ASC
+	</select>
+	
+	<select id="findAllPlatformMsgModes" resultMap="platformMsgModesResultMap">
+		SELECT
+			a.ID AS PLATFORM_ID,
+			a.NAME AS PLATFORM_NAME,
+			a.CODE AS PLATFORM_CODE,
+			a.TARGET_ID AS PLATFORM_TARGET,
+			a.STATE
+		FROM
+			SYS_PLATFORM a
+		WHERE
+			a.STATE = 1
+		<!-- 自助机除外 -->
+		AND a.CODE != 'autoService'
+		ORDER BY a.TARGET_ID ASC
+	</select>
+	
+	<select id="findAllMsgModes" resultMap="MsgModesResultMap">
+		SELECT
+			a.ID,
+			a.NAME,
+			a.CODE,
+			a.PLATFORM_ID,
+			a.TARGET_ID
+		FROM
+			SYS_MSG_MODE a
+		WHERE
+			a.PLATFORM_ID = #{id}
+		ORDER BY a.TARGET_ID ASC
+	</select>
+	
+	<select id="findMsgModesByHospitalId" resultMap="hospitalPlatformMsgModesResultMap">
+		SELECT
+			p.ID AS PLATFORM_ID, 
+			p.NAME AS PLATFORM_NAME, 
+			p.CODE AS PLATFORM_CODE, 
+			p.TARGET_ID AS PLATFORM_TARGET,
+			p.STATE,
+			ps.ID AS PLATFORM_SETTINGS_ID,
+			ps.APP_ID AS APP_ID
+		FROM
+			SYS_HOSPITAL_PLATFORM_SETTINGS a
+		LEFT JOIN SYS_PLATFORM_SETTINGS ps ON a.PLATFORM_SETTINGS_ID = ps.ID
+		LEFT JOIN SYS_PLATFORM p ON ps.PLATFORM_ID = p.ID
+		WHERE
+			a.HOSPITAL_ID = #{hospitalId}
+		AND a. STATUS = 1
+		AND p.STATE = 1
+		ORDER BY p.TARGET_ID ASC
+	</select>
+</mapper>

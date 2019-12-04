@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.hospital.Menu">
+
+	<resultMap id="menuResultMap" type="Menu">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="CONTENT" property="content" jdbcType="VARCHAR" />
+		<result column="SORT" property="sort" />
+		<result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+		<result column="OPTIONAL_ID" property="optionalId" jdbcType="VARCHAR" />
+		<result column="GRAPHICS_ID" property="grapicsId" jdbcType="VARCHAR" />
+		<result column="MEUN_TYPE" property="meunType" />
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+		
+		<result column="PS_ID" property="psId" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="PLATFORM_ID" property="platformId" jdbcType="VARCHAR" />
+		<result column="CONTROLLER_PATH" property="controllerPath" jdbcType="VARCHAR" />
+		
+	</resultMap>
+
+	<select id="findAll" resultMap="menuResultMap">
+		select ID,NAME,CONTENT,PARENT_ID,OPTIONAL_ID,GRAPHICS_ID,MEUN_TYPE,SORT,CP,CT,EP,ET from SYS_MENU
+	</select>
+
+	<select id="findById" resultMap="menuResultMap">
+		select ID,NAME,CONTENT,PARENT_ID,OPTIONAL_ID,GRAPHICS_ID,MEUN_TYPE,SORT,CP,CT,EP,ET from SYS_MENU m where m.ID = #{id}
+	</select>
+	
+	<select id="findMenuByHospitalIdAndPlatformIds" resultMap="menuResultMap" parameterType="map">
+		SELECT
+			m.ID AS ID,
+			m.`NAME` AS `NAME`,
+			m.PARENT_ID AS PARENT_ID,
+			m.CONTENT AS CONTENT,
+			m.SORT AS SORT,
+			m.CP AS CP,
+			m.CT AS CT,
+			m.EP AS EP,
+			m.ET AS ET,
+			m.OPTIONAL_ID AS OPTIONAL_ID,
+			m.GRAPHICS_ID AS GRAPHICS_ID,
+			m.MEUN_TYPE AS MEUN_TYPE,
+			ps.ID AS PS_ID,
+			hps.HOSPITAL_ID AS HOSPITAL_ID,
+			ps.PLATFORM_ID AS PLATFORM_ID,
+			o.CONTROLLER_PATH as CONTROLLER_PATH
+			FROM
+			SYS_MENU AS m
+			INNER JOIN SYS_PLATFORM_SETTINGS_MENU AS psm ON psm.MENU_ID = m.ID
+			INNER JOIN SYS_PLATFORM_SETTINGS AS ps ON ps.ID = psm.PLATFORM_SETTINGS_ID 
+			INNER JOIN SYS_HOSPITAL_PLATFORM_SETTINGS AS hps on hps.PLATFORM_SETTINGS_ID = ps.ID 
+			LEFT JOIN SYS_OPTIONAL AS o on o.ID = m.OPTIONAL_ID
+			WHERE hps.HOSPITAL_ID = #{hospitalId} and ps.PLATFORM_ID in 
+			<foreach item="item" index="index" collection="platformIds" open="(" separator="," close=")">  
+  				#{item}
+  			</foreach>  ORDER BY m.SORT asc
+	</select>
+	<select id="findSZMenuByHospitalId" resultMap="menuResultMap" parameterType="string">
+		SELECT
+			m.ID AS ID,
+			m.`NAME` AS `NAME`,
+			m.PARENT_ID AS PARENT_ID,
+			m.CONTENT AS CONTENT,
+			m.SORT AS SORT,
+			m.CP AS CP,
+			m.CT AS CT,
+			m.EP AS EP,
+			m.ET AS ET,
+			m.OPTIONAL_ID AS OPTIONAL_ID,
+			m.GRAPHICS_ID AS GRAPHICS_ID,
+			m.MEUN_TYPE AS MEUN_TYPE,
+			ps.ID AS PS_ID,
+			hps.HOSPITAL_ID AS HOSPITAL_ID,
+			ps.PLATFORM_ID AS PLATFORM_ID,
+			o.CONTROLLER_PATH as CONTROLLER_PATH
+			FROM
+			SYS_MENU AS m
+			INNER JOIN SYS_PLATFORM_SETTINGS_MENU AS psm ON psm.MENU_ID = m.ID
+			INNER JOIN SYS_PLATFORM_SETTINGS AS ps ON ps.ID = psm.PLATFORM_SETTINGS_ID 
+			INNER JOIN SYS_HOSPITAL_PLATFORM_SETTINGS AS hps on hps.PLATFORM_SETTINGS_ID = ps.ID 
+			LEFT JOIN SYS_OPTIONAL AS o on o.ID = m.OPTIONAL_ID
+			LEFT JOIN SYS_PLATFORM AS p on p.ID = ps.PLATFORM_ID
+			WHERE hps.HOSPITAL_ID = #{hospitalId} and p.CODE='easyHealth' 
+			ORDER BY m.SORT asc
+	</select>
+	
+
+	<insert id="add" parameterType="Menu" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		SYS_MENU(ID,NAME,CONTENT,PARENT_ID,OPTIONAL_ID,GRAPHICS_ID,MEUN_TYPE,SORT,CP,CT)
+		values
+		(#{id},#{name},#{content},#{parentId},#{optionalId},#{grapicsId},#{meunType},#{sort},#{cp},now())
+	</insert>
+
+	<update id="update" parameterType="Menu">
+		update SYS_MENU set NAME = #{name}, CONTENT = #{content}, PARENT_ID = #{parentId}, OPTIONAL_ID = #{optionalId}, GRAPHICS_ID = #{grapicsId}, MEUN_TYPE = #{meunType}, SORT = #{sort},EP = #{ep},ET = #{et} where ID = #{id}
+	</update>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		DELETE FROM SYS_MENU 
+		WHERE ID IN 
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+	
+	<select id="findDeleteMenuIdByPlatformSettingsId" resultType="String" parameterType="string">
+		SELECT m.ID FROM SYS_MENU m INNER JOIN SYS_PLATFORM_SETTINGS_MENU psm ON psm.MENU_ID = m.ID WHERE psm.PLATFORM_SETTINGS_ID = #{platformSettingsId} 
+			UNION ALL
+		SELECT sm.ID FROM SYS_MENU sm WHERE sm.PARENT_ID in(
+		SELECT m.ID FROM SYS_MENU m INNER JOIN SYS_PLATFORM_SETTINGS_MENU psm ON psm.MENU_ID = m.ID WHERE psm.PLATFORM_SETTINGS_ID = #{platformSettingsId});
+	</select>
+
+</mapper>

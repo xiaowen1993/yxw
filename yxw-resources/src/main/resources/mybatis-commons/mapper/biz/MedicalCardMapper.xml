@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+	<resultMap id="medicalCardResultMap"
+		type="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_CODE" property="hospitalCode"
+			jdbcType="VARCHAR" />
+		<result column="HOSPITAL_NAME" property="hospitalName"
+			jdbcType="VARCHAR" />
+		<result column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
+		<result column="BRANCH_CODE" property="branchCode" jdbcType="VARCHAR" />
+		<result column="BRANCH_NAME" property="branchName" jdbcType="VARCHAR" />
+
+		<result column="PLATFORM_MODE" property="platformMode" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="SEX" property="sex" jdbcType="SMALLINT" />
+		<result column="AGE" property="age" jdbcType="SMALLINT" />
+		<result column="BIRTH" property="birth" jdbcType="VARCHAR" />
+		<result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+		<result column="ID_TYPE" property="idType" jdbcType="SMALLINT" />
+		<result column="ID_NO" property="idNo" jdbcType="VARCHAR" />
+		<result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+		<result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+		<result column="OWNERSHIP" property="ownership" jdbcType="SMALLINT" />
+		<result column="CARD_TYPE" property="cardType" jdbcType="SMALLINT" />
+		<result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+		<result column="ADMISSION_NO" property="admissionNo" jdbcType="VARCHAR" />
+		<result column="GUARD_NAME" property="guardName" jdbcType="VARCHAR" />
+		<result column="GUARD_ID_TYPE" property="guardIdType" jdbcType="SMALLINT" />
+		<result column="GUARD_ID_NO" property="guardIdNo" jdbcType="VARCHAR" />
+		<result column="GUARD_MOBILE" property="guardMobile" jdbcType="VARCHAR" />
+		<result column="IS_MEDICARE" property="isMedicare" jdbcType="SMALLINT" />
+		<result column="MEDICARE_NO" property="medicareNo" jdbcType="VARCHAR" />
+		<result column="MARK" property="mark" jdbcType="VARCHAR" />
+		<result column="STATE" property="state" jdbcType="SMALLINT" />
+		<result column="PATIENT_ID" property="patientId" jdbcType="VARCHAR" />
+		<result column="BIND_WAY" property="bindWay" jdbcType="SMALLINT" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="BIGINT" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="BIGINT" />
+		<result column="FAMILY_ID" property="familyId" jdbcType="VARCHAR" />
+
+		<!-- add by dfw 2016-4-20 11:43:09 -->
+		<result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+		<result column="APP_CODE" property="appCode" jdbcType="VARCHAR" />
+		<result column="AREA_CODE" property="areaCode" jdbcType="SMALLINT" />
+		<result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="All_Column">
+		ID, USER_ID, BRANCH_ID, BRANCH_CODE, HOSPITAL_ID ,
+		HOSPITAL_CODE, PLATFORM_MODE, NAME,
+		SEX, AGE, BIRTH, MOBILE, ID_TYPE,
+		HOSPITAL_NAME, BRANCH_NAME,
+		ID_NO, ADDRESS, OPEN_ID, OWNERSHIP,
+		CARD_TYPE,
+		CARD_NO, ADMISSION_NO, GUARD_NAME, GUARD_ID_TYPE,
+		GUARD_ID_NO, GUARD_MOBILE,
+		IS_MEDICARE, MEDICARE_NO, MARK, STATE,
+		PATIENT_ID,
+		BIND_WAY, CREATE_TIME, UPDATE_TIME, FAMILY_ID, APP_ID,
+		APP_CODE, AREA_CODE, AREA_NAME
+	</sql>
+	<sql id="Choose_HashTable_Name">
+		<choose>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_1'">
+				BIZ_MEDICAL_CARD_1
+			</when>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_2'">
+				BIZ_MEDICAL_CARD_2
+			</when>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_3'">
+				BIZ_MEDICAL_CARD_3
+			</when>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_4'">
+				BIZ_MEDICAL_CARD_4
+			</when>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_5'">
+				BIZ_MEDICAL_CARD_5
+			</when>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_6'">
+				BIZ_MEDICAL_CARD_6
+			</when>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_7'">
+				BIZ_MEDICAL_CARD_7
+			</when>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_8'">
+				BIZ_MEDICAL_CARD_8
+			</when>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_9'">
+				BIZ_MEDICAL_CARD_9
+			</when>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_10'">
+				BIZ_MEDICAL_CARD_10
+			</when>
+		</choose>
+	</sql>
+
+	<!-- 添加 -->
+	<insert id="add"
+		parameterType="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		INSERT INTO
+		<include refid="Choose_HashTable_Name"></include>
+		(
+		<include refid="All_Column"></include>
+		)
+		VALUES
+		(#{id},#{userId},#{branchId},#{branchCode},#{hospitalId},#{hospitalCode},#{platformMode},#{name},
+		#{sex},#{age},#{birth},#{mobile},#{idType},#{hospitalName},#{branchName},#{idNo},
+		#{address},#{openId},#{ownership},#{cardType},#{cardNo},
+		#{admissionNo},
+		#{guardName},#{guardIdType},#{guardIdNo},#{guardMobile},
+		#{isMedicare},#{medicareNo},#{mark},#{state},#{patientId},
+		#{bindWay},#{createTime},#{updateTime},#{familyId},#{appId},#{appCode},#{areaCode},#{areaName})
+	</insert>
+
+	<!-- 批量插入 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO
+		<include refid="Choose_HashTable_Name"></include>
+		(
+		<include refid="All_Column"></include>
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.id},#{item.userId},#{item.branchId},#{item.branchCode},#{item.hospitalId},#{item.hospitalCode},#{item.platformMode},#{item.name},
+			#{item.sex},#{item.age},#{item.birth},#{item.mobile},#{item.idType},#{hospitalName},#{branchName},#{item.idNo},
+			#{item.address},#{item.openId},#{item.ownership},#{item.cardType},#{item.cardNo},
+			#{item.admissionNo}
+			#{item.guardName},#{item.guardIdType},#{item.guardIdNo},#{item.guardMobile},
+			#{item.isMedicare},#{item.medicareNo},#{item.mark},#{item.state},#{item.patientId},
+			#{item.bindWay},#{item.createTime},#{item.updateTime},#{item.familyId},#{item.appId},
+			#{item.appCode},#{item.areaCode},#{item.areaName})
+		</foreach>
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update"
+		parameterType="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		update
+		<include refid="Choose_HashTable_Name"></include>
+		<set>
+			<if test="sex != null">
+				SEX = #{sex,jdbcType=SMALLINT},
+			</if>
+			<if test="hospitalId != null">
+				HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+			</if>
+			<if test="hospitalCode != null">
+				HOSPITAL_CODE = #{hospitalCode,jdbcType=VARCHAR},
+			</if>
+			<if test="hospitalName != null">
+				HOSPITAL_NAME = #{hospitalName,jdbcType=VARCHAR},
+			</if>
+			<if test="branchCode != null">
+				BRANCH_CODE = #{branchCode,jdbcType=VARCHAR},
+			</if>
+			<if test="branchId != null">
+				BRANCH_ID = #{branchId,jdbcType=VARCHAR},
+			</if>
+			<if test="branchName != null">
+				BRANCH_NAME = #{branchName,jdbcType=VARCHAR},
+			</if>
+			<if test="age != null">
+				AGE = #{age,jdbcType=SMALLINT},
+			</if>
+			<if test="birth != null">
+				BIRTH = #{birth,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				MOBILE = #{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="idType != null">
+				ID_TYPE = #{idType,jdbcType=SMALLINT},
+			</if>
+			<if test="idNo != null">
+				ID_NO = #{idNo,jdbcType=VARCHAR},
+			</if>
+			<if test="admissionNo != null">
+				ADMISSION_NO = #{admissionNo,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				ADDRESS = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="openId != null">
+				OPEN_ID = #{openId,jdbcType=VARCHAR},
+			</if>
+			<if test="ownership != null">
+				OWNERSHIP = #{ownership,jdbcType=SMALLINT},
+			</if>
+			<if test="guardName != null">
+				GUARD_NAME = #{guardName,jdbcType=VARCHAR},
+			</if>
+			<if test="guardIdType != null">
+				GUARD_ID_TYPE = #{guardIdType,jdbcType=SMALLINT},
+			</if>
+			<if test="guardIdNo != null">
+				GUARD_ID_NO = #{guardIdNo,jdbcType=VARCHAR},
+			</if>
+			<if test="guardMobile != null">
+				GUARD_MOBILE = #{guardMobile,jdbcType=VARCHAR},
+			</if>
+			<if test="isMedicare != null">
+				IS_MEDICARE = #{isMedicare,jdbcType=SMALLINT},
+			</if>
+			<if test="medicareNo != null">
+				MEDICARE_NO = #{medicareNo,jdbcType=VARCHAR},
+			</if>
+			<if test="mark != null">
+				MARK = #{mark,jdbcType=VARCHAR},
+			</if>
+			<if test="patientId != null">
+				PATIENT_ID = #{patientId,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				STATE = #{state,jdbcType=SMALLINT},
+			</if>
+			<if test="bindWay != null">
+				BIND_WAY = #{bindWay,jdbcType=SMALLINT},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime,jdbcType=BIGINT},
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 更新familyId -->
+	<update id="updateFamilyId"
+		parameterType="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		update
+		<include refid="Choose_HashTable_Name"></include>
+		<set>
+			<if test="familyId != null">
+				FAMILY_ID = #{familyId}
+			</if>
+		</set>
+		where
+		ID = #{id}
+	</update>
+
+	<!-- 更新住院信息 -->
+	<update id="updateAdmissionNo"
+		parameterType="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		update
+		<include refid="Choose_HashTable_Name"></include>
+		<set>
+			<if test="admissionNo != null">
+				ADMISSION_NO = #{admissionNo,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime,jdbcType=BIGINT},
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 解绑 就诊卡 -->
+	<update id="unbindCard"
+		parameterType="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		update
+		<include refid="Choose_HashTable_Name"></include>
+		set
+		STATE = #{state}, UPDATE_TIME = now()
+		where ID=#{id}
+	</update>
+
+	<!-- 查询在该医院绑定的就诊卡 -->
+	<select id="findCardsByOpenIdAndHospitalCode" resultMap="medicalCardResultMap"
+		parameterType="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where
+		OPEN_ID = #{openId}
+		and STATE = 1
+		<if test="hospitalCode != null and hospitalCode != ''">
+			and HOSPITAL_CODE = #{hospitalCode}
+		</if>
+		<if test="branchCode != null and branchCode != ''">
+			and BRANCH_CODE = #{branchCode}
+		</if>
+		<if test="areaCode != null and areaCode != ''">
+			and AREA_CODE = #{areaCode}
+		</if>
+	</select>
+
+	<!-- 通过Id和HashTable找卡 -->
+	<select id="findByIdAndHashTableName" resultMap="medicalCardResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where
+		ID = #{id}
+		and STATE = 1
+	</select>
+
+	<!-- 查询绑卡数 -->
+	<select id="getCardCountByOpenIdAndHospitalCode" resultType="java.lang.Integer"
+		parameterType="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		select
+		count(ID) as cardCount
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where OPEN_ID = #{openId} and HOSPITAL_CODE = #{hospitalCode} and
+		PLATFORM_MODE = #{platformMode} and STATE = 1
+	</select>
+
+	<!-- 通过就诊卡号查找卡(同一分院，就诊卡号唯一) -->
+	<select id="findCardByCardNoAndHospitalCode" resultMap="medicalCardResultMap"
+		parameterType="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where
+		HOSPITAL_CODE = #{hospitalCode}
+		and PLATFORM_MODE = #{platformMode}
+		<if test="cardType != null and cardType != ''">
+			and CARD_TYPE = #{cardType}
+		</if>
+		and CARD_NO = #{cardNo}
+		and STATE = #{state}
+	</select>
+
+	<!-- 通过就诊卡号查找卡(同一分院，就诊卡号唯一) -->
+	<select id="findCardByIdNoAndHospitalCode" resultMap="medicalCardResultMap"
+		parameterType="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where HOSPITAL_CODE = #{hospitalCode} and PLATFORM_MODE = #{platformMode} and
+		ID_TYPE = #{idType} and ID_NO = #{idNo} and STATE = #{state}
+	</select>
+
+	<!-- 通过就诊卡号查找卡(同一分院，就诊卡号唯一) -->
+	<select id="findCardByCardNoAndHospitalCodeAndOpenId" resultMap="medicalCardResultMap"
+		parameterType="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where HOSPITAL_CODE = #{hospitalCode} and PLATFORM_MODE = #{platformMode} and
+		CARD_TYPE = #{cardType} and CARD_NO = #{cardNo} and STATE = #{state}
+		and OPEN_ID = #{openId}
+	</select>
+
+	<!-- 通过住院号、医院代码查找卡(住院号唯一) -->
+	<select id="findCardByAdmissionNOAndHospitalCodeAndOpenIdAndPlatform"
+		resultMap="medicalCardResultMap" parameterType="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where
+		HOSPITAL_CODE = #{hospitalCode}
+		and PLATFORM_MODE = #{platformMode}
+		and
+		ADMISSION_NO = #{admissionNo}
+		and STATE = #{state}
+		<if test="openId != null and openId != ''">
+			and OPEN_ID = #{openId}
+		</if>
+	</select>
+
+	<!-- 通过身份证找卡(同一个分院，同一张身份证只能绑定一个诊疗卡) -->
+	<select id="findCardByIdNoAndHospitalCodeAndOpenId" resultMap="medicalCardResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where
+		HOSPITAL_CODE = #{hospitalCode}
+		and PLATFORM_MODE = #{platformMode}
+		and
+		OPEN_ID = #{openId}
+		and ID_TYPE = #{idType}
+		and ID_NO = #{idNo}
+		and STATE
+		= #{state}
+	</select>
+
+	<select id="findByIdFromHashTable" resultMap="medicalCardResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where ID = #{id}
+	</select>
+
+	<!-- 查找某个人绑的某类卡 -->
+	<select id="findCardsByOpenIdAndHospitalCodeAndOwnership"
+		resultMap="medicalCardResultMap" parameterType="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where HOSPITAL_CODE = #{hospitalCode} and PLATFORM_MODE = #{platformMode} and
+		OPEN_ID = #{openId, jdbcType=VARCHAR} and
+		<choose>
+			<when test="ownership == 1">
+				OWNERSHIP = 1 and
+			</when>
+			<otherwise>
+				OWNERSHIP != 1 and
+			</otherwise>
+		</choose>
+		STATE = #{state}
+	</select>
+
+	<resultMap id="simpleMedicalCardResultMap" type="com.yxw.commons.vo.cache.SimpleMedicalCard">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_CODE" property="hospitalCode"
+			jdbcType="VARCHAR" />
+		<result column="BRANCH_CODE" property="branchCode" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_NAME" property="hospitalName"
+			jdbcType="VARCHAR" />
+		<result column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
+		<result column="BRANCH_NAME" property="branchName" jdbcType="VARCHAR" />
+		<result column="PLATFORM_MODE" property="platformMode" jdbcType="SMALLINT" />
+		<result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+		<result column="CARD_TYPE" property="cardType" jdbcType="SMALLINT" />
+		<result column="OWNERSHIP" property="ownership" jdbcType="SMALLINT" />
+		<result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+		<result column="ADMISSION_NO" property="admissionNo" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="BIGINT" />
+		<result column="SEX" property="sex" jdbcType="SMALLINT" />
+		<result column="AGE" property="age" jdbcType="SMALLINT" />
+		<result column="BIRTH" property="birth" jdbcType="VARCHAR" />
+		<result column="ID_TYPE" property="idType" jdbcType="SMALLINT" />
+		<result column="ID_NO" property="idNo" jdbcType="VARCHAR" />
+		<result column="STATE" property="state" jdbcType="SMALLINT" />
+		<result column="FAMILY_ID" property="familyId" jdbcType="VARCHAR" />
+		<result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+		<result column="APP_CODE" property="appCode" jdbcType="VARCHAR" />
+		<result column="AREA_CODE" property="areaCode" jdbcType="VARCHAR" />
+		<result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- -->
+	<select id="findAllForCache" resultMap="simpleMedicalCardResultMap"
+		parameterType="java.util.Map">
+		select ID, HOSPITAL_CODE, BRANCH_CODE, PLATFORM_MODE, OPEN_ID, HOSPITAL_ID,
+		HOSPITAL_NAME, BRANCH_ID, BRANCH_NAME,
+		NAME, MOBILE, CARD_TYPE,
+		OWNERSHIP, CARD_NO, ADMISSION_NO, CREATE_TIME,
+		SEX , AGE
+		,BIRTH,ID_TYPE,ID_NO,STATE, FAMILY_ID, APP_ID, APP_CODE, AREA_CODE,
+		AREA_NAME
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where
+		STATE = 1
+	</select>
+
+	<!-- 根据openId查询绑卡信息 -->
+	<select id="findCardsByOpenId" resultMap="medicalCardResultMap"
+		parameterType="map">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+
+		where HOSPITAL_ID=#{hospitalId} and PLATFORM_MODE=#{platformMode}
+		and
+		OPEN_ID=#{openId} and STATE=1 and OWNERSHIP=1
+	</select>
+
+	<!-- 根据诊疗卡查openId -->
+	<select id="findOpenIdByCardNo" resultMap="medicalCardResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+
+		where HOSPITAL_ID=#{hospitalId} and PLATFORM_MODE=#{platformType}
+		and
+		CARD_NO=#{cardNo}
+	</select>
+
+	<!-- 根据openId查询绑卡信息 -->
+	<select id="findCardsByOpenIdForEasyHealth" resultMap="medicalCardResultMap"
+		parameterType="map">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+
+		where
+		HOSPITAL_ID=#{hospitalId}
+		and OPEN_ID=#{openId}
+		and
+		PLATFORM_MODE=#{platformMode}
+		and STATE=1
+	</select>
+
+	<select id="findCardForParams" resultMap="medicalCardResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where 1=1
+		<if test="hospitalId != null and hospitalId != ''">
+			and HOSPITAL_ID = #{hospitalId}
+		</if>
+		<if test="hospitalCode != null and hospitalCode != ''">
+			and HOSPITAL_CODE = #{hospitalCode}
+		</if>
+		<if test="appCode != null and appCode != ''">
+			and APP_CODE = #{appCode}
+		</if>
+		<if test="name != null and name != ''">
+			and NAME like #{name}
+		</if>
+		<if test="cardNo != null and cardNo != ''">
+			and CARD_NO = #{cardNo}
+		</if>
+		<if test="idNo != null and idNo != ''">
+			and ID_NO = #{idNo}
+		</if>
+		<if test="mobile != null and mobile != ''">
+			and MOBILE = #{mobile}
+		</if>
+		<if test="familyId != null and familyId != ''">
+			and FAMILY_ID = #{familyId}
+		</if>
+		<if test="state != null and state != ''">
+			and STATE = #{state}
+		</if>
+	</select>
+
+	<!-- 通过openId找到他绑的所有的卡 -->
+	<select id="findAllCardsByOpenId" resultMap="medicalCardResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where
+		OPEN_ID = #{openId}
+		and PLATFORM_MODE = 3
+		and STATE = 1
+		ORDER BY
+		HOSPITAL_CODE
+	</select>
+
+	<!-- 通过openId,cardNo, hospitalId找到他绑的所有的卡 -->
+	<select id="findCardByHospitalIdAndOpenIdAndCardNo" resultMap="medicalCardResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where
+		OPEN_ID = #{openId}
+		and HOSPITAL_ID = #{hospitalId}
+		and CARD_NO =
+		#{cardNo}
+		ORDER BY STATE DESC
+	</select>
+
+	<!-- 通过住院号、医院代码查找卡(住院号唯一) -->
+	<select id="findCardByOpenIdAndHospitalCodeAndIdNo" resultMap="medicalCardResultMap"
+		parameterType="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where
+		OPEN_ID = #{openId}
+		and HOSPITAL_CODE = #{hospitalCode}
+		and ID_TYPE
+		= #{idType}
+		and ID_NO = #{idNo}
+		and STATE = 1
+	</select>
+
+	<!-- 通过openId, familyId找出所有的卡 -->
+	<select id="findCardsByOpenIdAndFamilyId" resultMap="medicalCardResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where
+		OPEN_ID = #{openId}
+		and FAMILY_ID = #{familyId}
+		and STATE = 1
+	</select>
+
+	<!-- 通过openId, familyId, hospitalCode找出医院的所有的卡 -->
+	<select id="findCardsByOpenIdAndFamilyIdAndHospitalCode"
+		resultMap="medicalCardResultMap" parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where
+		OPEN_ID = #{openId}
+		and FAMILY_ID = #{familyId}
+		and HOSPITAL_CODE =
+		#{hospitalCode}
+		and STATE = 1
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findListByPage" resultMap="medicalCardResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		<where>
+			1=1
+			<if test="state!=null">
+				and STATE = #{state}
+			</if>
+			<if test="platformMode!=null">
+				and PLATFORM_MODE = #{platformMode}
+			</if>
+		</where>
+		order by UPDATE_TIME DESC
+	</select>
+
+	<!-- 删除卡 -->
+	<update id="removeCardsByFamilyId" parameterType="java.util.Map">
+		update
+		<include refid="Choose_HashTable_Name"></include>
+		<set>
+			UPDATE_TIME = #{updateTime,jdbcType=BIGINT},
+			STATE = 0
+		</set>
+		where
+		OPEN_ID = #{openId,jdbcType=VARCHAR}
+		and FAMILY_ID = #{familyId}
+	</update>
+
+	<!-- 通过就诊卡号查找卡(同一分院，就诊卡号唯一) -->
+	<select id="findCardByCardNoAndHospitalCodeAndOpenIdAndFamilyId"
+		resultMap="medicalCardResultMap" parameterType="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Choose_HashTable_Name"></include>
+		where
+		HOSPITAL_CODE = #{hospitalCode}
+		and PLATFORM_MODE = #{platformMode}
+		and
+		CARD_TYPE = #{cardType}
+		and CARD_NO = #{cardNo}
+		and STATE = #{state}
+		and
+		OPEN_ID = #{openId}
+		and FAMILY_ID = #{familyId}
+	</select>
+</mapper>

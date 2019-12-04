@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.hospital.PlatformSettingsMenu">
+
+	<resultMap id="platformSettingsMenuResultMap" type="PlatformSettingsMenu">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="PLATFORM_SETTINGS_ID" property="platformSettingsId" jdbcType="VARCHAR" />
+		<result column="MENU_ID" property="menuId" jdbcType="VARCHAR" />
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<select id="findById" resultMap="platformSettingsMenuResultMap">
+		select ID,PLATFORM_SETTINGS_ID,MENU_ID,CP,CT,EP,ET from SYS_PLATFORM_SETTINGS_MENU psm where psm.ID = #{id}
+	</select>
+	
+	<select id="findByPlatformSettingsIds" resultMap="platformSettingsMenuResultMap" parameterType="map">
+		SELECT * FROM SYS_PLATFORM_SETTINGS_MENU psm where psm.PLATFORM_SETTINGS_ID in  
+			<foreach item="item" index="index" collection="platformSettingsIds" open="(" separator="," close=")">  
+  				#{item}
+  			</foreach> 
+	</select>
+	
+	<select id="findByMenuIds" resultMap="platformSettingsMenuResultMap" parameterType="map">
+		SELECT * FROM SYS_PLATFORM_SETTINGS_MENU psm where psm.MENU_ID in  
+			<foreach item="item" index="index" collection="menuIds" open="(" separator="," close=")">  
+  				#{item}
+  			</foreach> 
+	</select>
+
+	<insert id="add" parameterType="PlatformSettingsMenu" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		SYS_PLATFORM_SETTINGS_MENU(ID,PLATFORM_SETTINGS_ID,MENU_ID,CP,CT)
+		values
+		(#{id},#{platformSettingsId},#{menuId},#{cp},now())
+	</insert>
+
+	<!-- 更新分院 -->
+	<update id="update" parameterType="PlatformSettingsMenu">
+		update SYS_PLATFORM_SETTINGS_MENU set PLATFORM_SETTINGS_ID = #{platformSettingsId}, MENU_ID = #{menuId}, EP = #{cp}, ET = now() where ID = #{id}
+	</update>
+	
+	<delete id="deleteByMenuIds" parameterType="map">
+		delete from SYS_PLATFORM_SETTINGS_MENU psm where psm.ID in 
+		<foreach item="item" index="index" collection="menuIds" open="(" separator="," close=")">  
+  			#{item}
+  		</foreach> 
+	</delete>
+	
+	<delete id="deleteByPlatformSettingsId" parameterType="String">
+		delete from SYS_PLATFORM_SETTINGS_MENU where PLATFORM_SETTINGS_ID = #{platformSettingsId} 
+	</delete>
+
+</mapper>

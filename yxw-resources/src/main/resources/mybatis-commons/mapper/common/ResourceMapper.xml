@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- modify by  Yuce  不要使用多个ResultMap   一个文件里面最好就只用一个-->
+<mapper namespace="com.yxw.commons.entity.platform.privilege.Resource">
+
+    <resultMap type="Resource" id="resourceMap">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+         <result column="NAME" property="name" jdbcType="VARCHAR" />
+        <result column="CODE" property="code" jdbcType="VARCHAR" />
+        <result column="ABSTR" property="abstr" jdbcType="VARCHAR" />
+        <result column="TYPE" property="type" jdbcType="INTEGER" />
+        <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+        
+        <result column="CP" property="cp" jdbcType="VARCHAR" />
+	    <result column="CT" property="ct" jdbcType="TIMESTAMP" />
+	    <result column="EP" property="ep" jdbcType="VARCHAR" />
+	    <result column="ET" property="et" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+	<select id="findListByPage" resultMap="resourceMap" >
+      select * from SYS_RESOURCE t 
+      <where>
+		<if test="search!=null">
+			and t.NAME like #{search} 
+		</if>
+	  </where>
+       order by t.ABSTR asc,t.CT desc
+    </select>
+    
+    <select id="findAll"  resultMap="resourceMap">
+		select * from SYS_RESOURCE t 
+		 order by t.NAME asc,t.CT desc
+	</select>
+	
+	<select id="findById" parameterType="string" resultMap="resourceMap">
+		select * from SYS_RESOURCE where id=#{id}
+	</select>
+	
+	<select id="findByName" parameterType="string" resultMap="resourceMap">
+		select * from SYS_RESOURCE where NAME=#{id}
+	</select>
+	
+	<select id="findByCode" parameterType="string" resultMap="resourceMap">
+		select * from SYS_RESOURCE where CODE=#{id}
+	</select>
+	
+	<select id="findByAbstr" parameterType="string" resultMap="resourceMap">
+		select * from SYS_RESOURCE where ABSTR=#{id}
+	</select>
+	
+	<delete id="deleteById" parameterType="string">
+		DELETE FROM SYS_RESOURCE WHERE ID=#{id}
+	</delete>
+	
+	<insert id="add" parameterType="Resource" >
+		INSERT INTO
+		SYS_RESOURCE(ID,NAME,CODE,ABSTR,TYPE,MEMO,CP,CT,EP,ET)
+		VALUES 
+		 (#{id},#{name},#{code},#{abstr},#{type},#{memo},#{cp},#{ct},#{ep},#{et})
+	</insert> 
+	
+	<update id="update" parameterType="Resource">
+		update SYS_RESOURCE t 
+		<trim prefix="SET" suffixOverrides=",">
+				<if test="name!=null">
+					t.NAME=#{name},
+				</if>
+				<if test="code!=null">
+					t.CODE=#{code},
+				</if>
+				<if test="abstr!=null">
+					t.ABSTR=#{abstr},
+				</if>
+				<if test="type!=null">
+					t.TYPE=#{type},
+				</if>
+				<if test="memo!=null">
+					t.MEMO=#{memo},
+				</if>
+				
+				<if test="ep!=null">
+					EP = #{ep},
+				</if>
+				<if test="et!=null">
+					ET = #{et}
+				</if>
+		</trim>
+		where id=#{id}
+	</update>
+	
+	<select id="findByIds" resultMap="resourceMap">
+        select * from SYS_RESOURCE
+        where id in
+        <foreach collection="list"  item="item" index="index" open="(" close=")" separator=",">
+           #{item}
+       </foreach>
+    </select>
+    
+    <delete id="batchDelete" parameterType="java.util.List">
+		delete from SYS_RESOURCE
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		
+	</delete>
+</mapper>

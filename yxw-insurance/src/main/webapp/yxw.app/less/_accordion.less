@@ -1,0 +1,40 @@
+.accordion {
+    &>.li {
+        display: block;
+    }
+    .a-tit {
+        padding: 1em;
+        background: #fff;
+        position: relative;
+        .l-b;
+        &::before {
+            content: '';
+            position: absolute;
+            right: 15px;
+            top: 40%;
+            width: .6em;
+            height: .6em;
+            display: inline-block;
+            border-top: solid 1px #ccc;
+            border-right: solid 1px #ccc;
+            transform: rotate(135deg);
+            transition: transform 0.3s
+        }
+    }
+    .a-main {
+        display: none;
+        
+      
+    }
+    &>.li.active{
+        .a-tit{
+            &::before{
+                transform: rotate(-45deg);
+                transition: transform 0.3s
+            }
+        }
+        .a-main {
+            display: block;
+        }
+    }
+}

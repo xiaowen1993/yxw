@@ -1,0 +1,150 @@
+.ui-textarea,.ui-input{
+  box-sizing: border-box;
+  width: 100%;
+  padding: 5px;
+  border: solid 1px #ddd;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  outline: none;
+
+  resize: none;
+  &.noBorder{
+    border: none;
+  }
+}
+
+.ui-textarea{
+    min-height: 80px;
+}
+
+
+
+.ui-list-radio{
+  .icon-radio{
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: solid 1px #888;
+    border-radius: 50%;
+    position: relative;
+    margin-right: 5px;
+    vertical-align: middle;
+    &:after{
+      border-radius: 50%;
+      display: block;
+      content: '';
+      position: absolute;
+      top:1px;
+      left:1px;
+      right:1px;
+      bottom: 1px;
+      background-color: #fff;
+      transform: scale(0);
+      z-index: 1;
+        transition: all ease 0.3s;
+
+    }
+  }
+  .active{
+    color: @skinbgColor;
+      .icon-radio{
+        border-color: @skinbgColor;
+          &:after{
+              transform: scale(1);
+                background-color: @skinbgColor;
+                  transition: all ease 0.3s;
+          }
+      }
+  }
+}
+
+
+
+/*开关*/
+.mui-switch {
+  vertical-align: middle;
+  width: 46px;
+  height: 24px;
+  position: relative;
+  border: 1px solid #dfdfdf;
+  background-color: #fdfdfd;
+  box-shadow: #dfdfdf 0 0 0 0 inset;
+  border-radius: 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background-clip: content-box;
+  display: inline-block;
+  -webkit-appearance: none;
+  user-select: none;
+  outline: none;
+  transition: all ease 0.3s;
+}
+
+.mui-switch:before {
+  content: '';
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  top: 0px;
+  left: 0;
+  border-radius: 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s;
+    transform: translateX(0%);
+}
+
+.mui-switch:checked {
+  border-color: @skinbgColor;
+  box-shadow: @skinbgColor 0 0 0 16px inset;
+  background-color: @skinbgColor;
+
+}
+.mui-switch:checked:before {
+  left: 0;
+  transform: translateX(100%);
+  transition: transform 0.3s;
+}
+.mui-switch.mui-switch-animbg {
+  transition: background-color ease 0.4s;
+}
+
+.mui-switch.mui-switch-animbg:before {
+  transition: left 0.3s;
+}
+
+.mui-switch.mui-switch-animbg:checked {
+  box-shadow: #dfdfdf 0 0 0 0 inset;
+  background-color: @skinbgColor;
+  transition: border-color 0.4s, background-color ease 0.4s;
+}
+
+.mui-switch.mui-switch-animbg:checked:before {
+  transition: left 0.3s;
+}
+
+.mui-switch.mui-switch-anim {
+  transition: border cubic-bezier(0, 0, 0, 1) 0.4s, box-shadow cubic-bezier(0, 0, 0, 1) 0.4s;
+}
+
+.mui-switch.mui-switch-anim:before {
+  transition: left 0.3s;
+}
+
+.mui-switch.mui-switch-anim:checked {
+  box-shadow: @skinbgColor 0 0 0 16px inset;
+  background-color: @skinbgColor;;
+  transition: border ease 0.4s, box-shadow ease 0.4s, background-color ease 1.2s;
+}
+
+.mui-switch.mui-switch-anim:checked:before {
+  transition: left 0.3s;
+}

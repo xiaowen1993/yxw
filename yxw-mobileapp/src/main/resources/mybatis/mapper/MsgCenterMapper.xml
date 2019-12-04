@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.mobile.biz.msgcenter.MsgCenter">
+
+	<resultMap id="msgCenterMap" type="MsgCenter">
+		<id column="ID" property="id" />
+		<result column="USER_ID" property="userId" />
+		<result column="TEMPLATE_ID" property="templateId"/>
+		<result column="HOSPITAL_ID" property="hospitalId"/>
+		<result column="HOSPITAL_NAME" property="hospitalName" />
+		<result column="MSG_TITLE" property="msgTitle" />
+		<result column="ICON_NAME" property="iconName" />
+		<result column="ICON_PATH" property="iconPath" />
+		<result column="IS_READ" property="isRead" />
+		<result column="MSG_CONTENT" property="msgContent" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+	</resultMap>
+	
+	<sql id="Choose_HashTable_Name">
+	         <choose>
+            <when test="hashTableName == 'SYS_MSG_CENTER_1'">
+                SYS_MSG_CENTER_1 
+            </when>
+            <when test="hashTableName == 'SYS_MSG_CENTER_2'">
+                SYS_MSG_CENTER_2 
+            </when>
+            <when test="hashTableName == 'SYS_MSG_CENTER_3'">
+                SYS_MSG_CENTER_3 
+            </when>
+            <when test="hashTableName == 'SYS_MSG_CENTER_4'">
+                SYS_MSG_CENTER_4 
+            </when>
+            <when test="hashTableName == 'SYS_MSG_CENTER_5'">
+                SYS_MSG_CENTER_5 
+            </when>
+            <when test="hashTableName == 'SYS_MSG_CENTER_6'">
+                SYS_MSG_CENTER_6 
+            </when>
+            <when test="hashTableName == 'SYS_MSG_CENTER_7'">
+                SYS_MSG_CENTER_7 
+            </when>
+            <when test="hashTableName == 'SYS_MSG_CENTER_8'">
+                SYS_MSG_CENTER_8 
+            </when>
+            <when test="hashTableName == 'SYS_MSG_CENTER_9'">
+                SYS_MSG_CENTER_9 
+            </when>
+            <when test="hashTableName == 'SYS_MSG_CENTER_10'">
+                SYS_MSG_CENTER_10
+            </when> 
+        </choose>
+	</sql>
+	
+	<sql id="All_Column">
+		ID,USER_ID,TEMPLATE_ID,HOSPITAL_ID,HOSPITAL_NAME,MSG_TITLE,ICON_NAME,ICON_PATH,IS_READ,MSG_CONTENT,CP,CT,EP,ET
+	</sql>
+	
+	<insert id="add" parameterType="MsgCenter">
+		INSERT INTO 
+		 <include refid="Choose_HashTable_Name"></include>
+		(<include refid="All_Column"></include>)
+		VALUES
+		 (#{id}, #{userId}, #{templateId},#{hospitalId}, #{hospitalName}, #{msgTitle},#{iconName},#{iconPath}, #{isRead},#{msgContent},'8b1994dff203407a869161c0946f6e97', now(), '8b1994dff203407a869161c0946f6e97', now());
+	</insert>
+	<!-- 分页查询模板库列表 -->
+	<select id="findListByPage" parameterType="Map" resultMap="msgCenterMap">
+		SELECT * FROM 
+		<include refid="Choose_HashTable_Name"></include>
+ 		h where h.USER_ID= #{userId} order by h.CT DESC
+	</select>
+	
+	<select id="findById" parameterType="Map" resultMap="msgCenterMap">
+		SELECT * FROM 
+		<include refid="Choose_HashTable_Name"></include>
+ 		WHERE USER_ID=#{userId} AND ID=#{id}
+	</select>
+	
+	<select id="findCountByIsRead" parameterType="Map" resultType="Integer">
+		SELECT COUNT(1) FROM 
+		<include refid="Choose_HashTable_Name"></include>
+ 		WHERE USER_ID=#{userId} and IS_READ=#{isRead}
+	</select>
+	<update id="updateIsRead" parameterType="Map">
+		UPDATE <include refid="Choose_HashTable_Name"></include>
+		set IS_READ = #{isRead} WHERE USER_ID=#{userId} AND ID=#{id}
+	</update>
+</mapper>

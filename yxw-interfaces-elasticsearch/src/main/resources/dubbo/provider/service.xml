@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd 
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+						http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd 
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+						http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- 标准平台内部系统调用接口 -->
+	<dubbo:provider host="192.168.8.160"/>
+	
+	<!-- dubbo 协议、netty 传输、hessian2 序列化 -->
+	<dubbo:protocol name="dubbo" server="netty" port="20023" serialization="hessian2" />
+
+	<!-- WebService协议 jetty传输 -->
+	<!-- <dubbo:protocol name="webservice" port="20024" server="jetty" contextpath="services" /> -->
+
+	<!-- 声明需要暴露的服务接口 -->
+
+	<!-- <dubbo:service interface="com.yxw.interfaces.service.YxwESService" 
+	ref="yxwESService" protocol="webservice" timeout="60000" dynamic="false" version="dev"/> -->
+
+	<bean id="yxwESService" class="com.yxw.interfaces.service.impl.YxwESServiceImpl" />
+	<dubbo:service interface="com.yxw.interfaces.service.YxwESService" 
+	ref="yxwESService" protocol="dubbo" timeout="60000" dynamic="false" version="dev" />
+
+</beans>

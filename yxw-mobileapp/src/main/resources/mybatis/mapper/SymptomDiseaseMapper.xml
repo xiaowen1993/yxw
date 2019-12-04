@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.mobile.biz.smarttriage.SymptomDisease">
+
+	<resultMap id="diseaseResultMap" type="SymptomDisease">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="SYMPTOM_ID" property="symptomId" jdbcType="VARCHAR" />
+		<result column="DISEASE_ID" property="diseaseId" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="getSymptomDiseaseByDiseaseId" resultMap="diseaseResultMap" parameterType="String">
+		SELECT ST_SYMPTOM_DISEASE FROM DISEASE_ID = #{diseaseId}
+	</select>
+
+	<insert id="add" parameterType="SymptomDisease" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		ST_SYMPTOM_DISEASE(ID,SYMPTOM_ID,DISEASE_ID)
+		values
+		(#{id},#{symptomId},#{diseaseId})
+	</insert>
+
+	<insert id="batchInsert" parameterType="java.util.List">
+		 INSERT INTO 
+		 ST_SYMPTOM_DISEASE(ID,SYMPTOM_ID,DISEASE_ID)
+		 VALUES
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (#{item.id},#{item.symptomId},#{item.diseaseId})
+	    </foreach>  
+	</insert> 
+	
+	<delete id="deleteByDiseaseId" parameterType="String">
+		DELETE FROM ST_SYMPTOM_DISEASE WHERE DISEASE_ID = #{diseaseId}
+	</delete>
+
+</mapper>

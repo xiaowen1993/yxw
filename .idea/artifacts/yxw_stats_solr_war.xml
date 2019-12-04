@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="yxw-stats-solr:war">
+    <output-path>$PROJECT_DIR$/yxw-stats-solr/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>yxw-stats-solr</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="yxw-stats-solr.war">
+      <element id="artifact" artifact-name="yxw-stats-solr:war exploded" />
+    </root>
+  </artifact>
+</component>

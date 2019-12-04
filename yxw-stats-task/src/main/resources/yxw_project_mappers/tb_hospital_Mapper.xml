@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.stats.entity.project.Hospital">
+
+	<resultMap id="HospitalResultMap" type="Hospital">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="version" property="version" jdbcType="TIMESTAMP" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="simpleName" property="simplename" jdbcType="VARCHAR" />
+		<result column="accessKey" property="accesskey" jdbcType="VARCHAR" />
+		<result column="accessName" property="accessname" jdbcType="VARCHAR" />
+		<result column="appId" property="appid" jdbcType="VARCHAR" />
+		<result column="platformType" property="platformtype" jdbcType="VARCHAR" />
+		<result column="hospitalTel" property="hospitaltel" jdbcType="VARCHAR" />
+		<result column="hospitalAddress" property="hospitaladdress"
+			jdbcType="VARCHAR" />
+		<result column="amount" property="amount" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Hospital_Column_List">
+		id, version, name, simpleName, accessKey, accessName, appId,
+		platformType, hospitalTel,
+		hospitalAddress, amount
+	</sql>
+
+	<select id="findAllHospital" resultMap="HospitalResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Hospital_Column_List" />
+		from tb_hospital 
+		where appId is not null and accessKey != ''
+		<if test="id != null and id != ''">  
+			and id != #{id}
+		</if>
+	</select>
+
+
+</mapper>

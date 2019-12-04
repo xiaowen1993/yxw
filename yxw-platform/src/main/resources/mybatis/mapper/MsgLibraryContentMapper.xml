@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.msgpush.MsgLibraryContent">
+
+	<resultMap id="msgLibraryContentMap" type="com.yxw.commons.entity.platform.msgpush.MsgLibraryContent">
+		<id column="ID" property="id" />
+		<result column="SORT" property="sort" />
+		<result column="KEYWORD" property="keyword" />
+		<result column="VALUE" property="value" />
+		<result column="NODE" property="node" />
+		<result column="FONT_COLOR" property="fontColor" />
+		<result column="TEMP_LIBRARY_ID" property="tempLibraryId" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+	</resultMap>
+	
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.msgpush.MsgLibraryContent">
+		INSERT INTO SYS_MSG_LIBRARY_CONTENT(ID,TEMP_LIBRARY_ID,SORT,KEYWORD,VALUE,NODE,FONT_COLOR,CP,CT,EP,ET) VALUES
+		 (#{id}, #{tempLibraryId}, #{sort}, #{keyword}, #{value}, #{node}, #{fontColor},'8b1994dff203407a869161c0946f6e97', now(), '8b1994dff203407a869161c0946f6e97', now());
+	</insert>
+
+	<delete id="deleteByTempLibraryId" parameterType="String">
+	 	DELETE FROM  SYS_MSG_LIBRARY_CONTENT where TEMP_LIBRARY_ID=#{tempLibraryId}
+	</delete>
+</mapper>

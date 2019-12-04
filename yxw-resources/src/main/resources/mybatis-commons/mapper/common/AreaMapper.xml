@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.area.Area">
+
+	<resultMap id="areaResult" type="Area">
+		<id column="ID" 						property="id" />
+		<result column="PARENT_ID" 				property="parentId" />
+		<result column="ID_PATH" 				property="idPath" />
+		<result column="NAME"                   property="name"/>
+		<result column="NAME_PATH" 				property="namePath" />
+		<result column="SHORT_NAME"             property="shortName"/>
+		<result column="SHORT_NAME_PATH"        property="shortNamePath"/>
+		<result column="LEVEL"                  property="level"/>
+		<result column="LONGITUDE" 			    property="longitude"/>
+		<result column="LATITUDE" 			    property="latitude"/>
+		<result column="CITY_CODE" 			    property="cityCode"/>
+		<result column="ZIP_CODE" 			    property="zipCode"/>
+		<result column="PINYIN" 			    property="pinyin"/>
+	</resultMap>
+	
+	<sql id="All_Column">
+		ID, PARENT_ID, ID_PATH, NAME, NAME_PATH, SHORT_NAME, SHORT_NAME_PATH, LEVEL, LONGITUDE, LATITUDE, CITY_CODE, ZIP_CODE, PINYIN
+	</sql>
+	
+	<sql id="Table_Name">SYS_AREAS</sql>
+	
+	<select id="findById" resultMap="areaResult" parameterType="java.util.Map">
+    	select <include refid="All_Column"></include> 
+    	from <include refid="Table_Name"></include> 
+    	where ID = #{id}
+  	</select>
+	
+	<!-- 查询所有的一级区域 -->
+	<select id="findOneLevelAreas" resultMap="areaResult" parameterType="java.util.Map">
+    	select <include refid="All_Column"></include> 
+    	from <include refid="Table_Name"></include> 
+    	where LEVEL = 1 and PARENT_ID = '100000' order by PINYIN
+  	</select>
+  	
+	<!-- 根据一级区域ID查询二级区域 -->
+	<select id="findTwoLevelAreasByParentId" resultMap="areaResult" parameterType="java.util.Map">
+    	select <include refid="All_Column"></include> 
+    	from <include refid="Table_Name"></include> 
+    	where LEVEL = 2 and PARENT_ID = #{parentId} order by PINYIN
+  	</select>
+  	
+	<!-- 根据二级区域ID查询三级区域 -->
+	<select id="findThreeLevelAreasByParentId" resultMap="areaResult" parameterType="java.util.Map">
+    	select <include refid="All_Column"></include> 
+    	from <include refid="Table_Name"></include> 
+    	where LEVEL = 3 and PARENT_ID = #{parentId} order by PINYIN
+  	</select>
+
+</mapper>

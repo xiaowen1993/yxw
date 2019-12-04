@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="yxw-statistics:war">
+    <output-path>$PROJECT_DIR$/yxw-statistics/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>yxw-statistics</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="yxw-statistics.war">
+      <element id="artifact" artifact-name="yxw-statistics:war exploded" />
+    </root>
+  </artifact>
+</component>

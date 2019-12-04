@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.message.MeterialGroup">
+
+
+	<insert id="add" parameterType="MeterialGroup" >
+		INSERT INTO SYS_MSG_METERIAL_GROUP(ID,NAME,STATE)
+		VALUES(#{id},#{name},#{state})
+	</insert>
+	
+	<update id="update" parameterType="MeterialGroup">
+		UPDATE SYS_MSG_METERIAL_GROUP t SET t.NAME=#{name} WHERE t.ID=#{id}
+	</update>
+	
+	<update id="logicDelete" parameterType="MeterialGroup">
+		UPDATE SYS_MSG_METERIAL_GROUP t SET t.STATE=0 WHERE t.ID=#{id}
+	</update>
+</mapper>

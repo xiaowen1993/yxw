@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.msgpush.MsgTemp">
+
+	<resultMap id="msgTempMap" type="com.yxw.commons.entity.platform.msgpush.MsgTemp">
+		<id column="ID" property="id" />
+		<result column="TEMPLATE_ID" property="templateId" />
+		<result column="TITLE" property="title" />
+		<result column="MSG_TYPE" property="msgType" />
+		<result column="CODE" property="code" />
+		<result column="SOURCE" property="source" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+	</resultMap>
+
+	<!-- 分页查询模板和客服列表 -->
+	<select id="findListByPage" parameterType="Map" resultMap="msgTempMap">
+		SELECT
+		TEMP.ID,
+		TEMP. CODE,
+		TEMP.TEMPLATE_ID,
+		TEMP.TITLE,
+		TEMP.MSG_TYPE,
+		TEMP.SOURCE
+		FROM
+			(
+				SELECT
+					T.ID AS ID,
+					T. CODE AS CODE,
+					T.TEMPLATE_ID AS TEMPLATE_ID,
+					T.TITLE AS TITLE,
+					'模板' AS MSG_TYPE,
+					(case when T.SOURCE=1 then '微信公众号'  
+					      when T.SOURCE=2 then '支付宝服务窗' 
+					      when T.SOURCE=3 then '健康易' 
+					      when T.SOURCE=20 then '新平台'
+					      when T.SOURCE=21 then '内嵌微信app'
+					      when T.SOURCE=22 then '内嵌支付宝app'
+					      when T.SOURCE=23 then '内嵌银联app'
+					      when T.SOURCE=24 then '内嵌国寿app'
+					 end) AS SOURCE
+				FROM
+					SYS_MSG_TEMPLATE T
+				WHERE
+					T.HOSPITAL_ID = #{hospitalId}
+					<if test="search!=null">
+						AND (T.CODE like '%${search}%' OR T.TITLE like '%${search}%')
+					</if>
+				UNION
+					SELECT
+						C.id AS ID,
+						C. CODE AS CODE,
+						'' AS TEMPLATE_ID,
+						C.TITLE AS TITLE,
+						'客服' AS MSG_TYPE,
+					  (case when C.SOURCE=1 then '微信公众号'  when C.SOURCE=2 then '支付宝服务窗' end) AS SOURCE
+					FROM
+						SYS_MSG_CUSTOMER C
+					WHERE
+						C.HOSPITAL_ID = #{hospitalId}
+						<if test="search!=null">
+						AND (C.CODE like '%${search}%' OR C.TITLE like '%${search}%')
+						</if>
+			) TEMP
+	</select>
+</mapper>

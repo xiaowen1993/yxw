@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd 
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+						http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd 
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+						http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	default-lazy-init="false">
+	
+	<!-- 应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->    
+	<dubbo:application id="yxw_solr" name="www.yxw129.platform.com" owner="www.yxw129.com" organization="www.yxw129.com"/>  
+	
+	<!-- 使用redis暴露服务地址 -->
+    <dubbo:registry address="redis://${redis.connection.host}:${redis.connection.port}?password=${redis.connection.password}" 
+        timeout="60000"/>
+	
+	<dubbo:consumer check="true" />
+	
+	<!--引入需要调用的外部 service  -->
+    <import resource="classpath:/dubbo/consumer/service.xml" />   
+    
+    <!--引入供外部调用 service  -->
+    <import resource="classpath:/dubbo/provider/service.xml" />       
+</beans>

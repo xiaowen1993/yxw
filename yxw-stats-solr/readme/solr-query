@@ -1,0 +1,6 @@
+// 查询各医院数据条数
+http://pt.yx129.cn:6002/statsGender/select?q=*:*&wt=json&indent=true&rows=0&facet=true&facet.field=hospitalCode
+// 查询各区域数据条数
+http://pt.yx129.cn:6002/statsGender/select?q=*:*&wt=json&indent=true&rows=0&facet=true&facet.field=areaCode
+// 双维度查询
+http://pt.yx129.cn:6002/stdRegInfos/select?q=hospitalCode%3Azsdxsyxjnyy+AND+-bizStatus%3A3 +AND+-payStatus%3A1&fq=createDate%3A%5B2017-01-01+TO+2017-01-31%5D&rows=0&wt=json&indent=true&facet=true&facet.pivot=deptCode,platform

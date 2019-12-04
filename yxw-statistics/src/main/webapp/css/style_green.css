@@ -1,0 +1,23 @@
+@charset "UTF-8";
+/*绿色模板*/
+.department_list .active a{ background-color:#FFF; border-left:#72BB21 solid 6px;}
+.date_choice_on { height:4px; width:100%; position:absolute;  background-color:#72BB21; bottom:0;}
+.doctor_rota a { display:inline; color:#72BB21; margin-left:5px;}
+.font_color_important { color:#72BB21;}
+.list_line3{ border-bottom:#EAEAEA solid 1px;}
+.next  { color:#72BB21;}
+.pre   { color:#72BB21;}
+/*绿色按钮*/
+.bnt_1 a{ background-color:#72BB21; color:#FFF; }
+.bnt_1 a:hover{ background-color:#72BB21; color:#FFF;}
+.bnt_1 a:visited { background-color:#72BB21; color:#FFF;}
+.bnt_1 a:active { background-color:#72BB21; color:#FFF;}
+/*白色底按钮*/
+.bnt_2 a{ background-color:#daf5bb; color:#72BB21;}
+.bnt_2 a:hover{ background-color:#F8F8F8; color:#5E9D19;}
+/*灰色底不可用按钮*/
+.bnt_3 a{ background-color:#999; color:#CCC;}
+/*tab激活样式*/
+.active a { border-bottom:#72BB21 solid 2px;  width:100%;}
+/*单选框*/
+.regular-radio:checked + label:after {background: #72BB21;}

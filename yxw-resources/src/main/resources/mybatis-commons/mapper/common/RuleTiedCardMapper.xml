@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.commons.entity.platform.rule.RuleTiedCard" >
+  <resultMap id="RuleTiedCardResultMap" type="RuleTiedCard" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+    <result column="VISITING_PERSON_TYPE" property="visitingPersonType" jdbcType="VARCHAR" />
+    <result column="CERTIFICATES_TYPE" property="certificatesType" jdbcType="VARCHAR" />
+    <result column="CARD_TYPE" property="cardType" jdbcType="VARCHAR" />
+    <result column="IS_SHOW_CARD_NO" property="isShowCardNo" jdbcType="INTEGER" />
+    <result column="TIP_WARM_CONTENT" property="tipWarmContent" jdbcType="VARCHAR" />
+    <result column="IS_SHOW_ONLINE_FILING" property="isShowOnlineFiling" jdbcType="INTEGER" />
+    <result column="VERIFY_CONDITION_TYPE" property="verifyConditionType" jdbcType="VARCHAR" />
+    <result column="INPUT_INCOMPLETE_TIP" property="inputIncompleteTip" jdbcType="VARCHAR" />
+    <result column="INPUT_INCORRECT_TIP" property="inputIncorrectTip" jdbcType="VARCHAR" />
+    <result column="TIED_CARD_TIP" property="tiedCardTip" jdbcType="VARCHAR"/>
+    <result column="INPUT_CARD_NO_TIP" property="inputCardNoTip" jdbcType="VARCHAR"/>
+    <result column="INPUT_CARD_TYPE_REMARK" property="inputCardTypeRemark" jdbcType="VARCHAR"/>
+    <result column="IS_UNBIND_RESTRICTED" property="isUnbindRestricted" jdbcType="INTEGER"/>
+    <result column="UNBIND_RESTRICTED_DAY_NUM" property="unbindRestrictedDayNum" jdbcType="INTEGER"/>
+    <result column="UNBIND_RESTRICTED_TIP" property="unbindRestrictedTip" jdbcType="VARCHAR"/>
+    <result column="CP" property="cp" jdbcType="INTEGER" />
+    <result column="CT" property="ct" jdbcType="TIMESTAMP" />
+    <result column="EP" property="ep" jdbcType="INTEGER" />
+    <result column="ET" property="et" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, HOSPITAL_ID, VISITING_PERSON_TYPE, CERTIFICATES_TYPE , CARD_TYPE, IS_SHOW_CARD_NO, TIP_WARM_CONTENT, 
+    IS_SHOW_ONLINE_FILING, VERIFY_CONDITION_TYPE, INPUT_INCOMPLETE_TIP, INPUT_INCORRECT_TIP, TIED_CARD_TIP,
+    INPUT_CARD_NO_TIP,INPUT_CARD_TYPE_REMARK,IS_UNBIND_RESTRICTED, UNBIND_RESTRICTED_DAY_NUM, UNBIND_RESTRICTED_TIP, 
+    CP, CT, EP, ET
+  </sql>
+  <select id="findById" resultMap="RuleTiedCardResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_RULE_TIED_CARD
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findAll" resultMap="RuleTiedCardResultMap">
+   select * from SYS_RULE_TIED_CARD
+  </select>
+  
+  <select id="findByHospitalId" resultMap="RuleTiedCardResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_RULE_TIED_CARD
+    where HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from SYS_RULE_TIED_CARD
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="add" parameterType="com.yxw.commons.entity.platform.rule.RuleTiedCard" >
+    insert into SYS_RULE_TIED_CARD (ID, HOSPITAL_ID, VISITING_PERSON_TYPE, 
+      CARD_TYPE, IS_SHOW_CARD_NO, TIP_WARM_CONTENT, CERTIFICATES_TYPE,
+      IS_SHOW_ONLINE_FILING, VERIFY_CONDITION_TYPE, INPUT_INCOMPLETE_TIP, 
+      INPUT_INCORRECT_TIP,TIED_CARD_TIP, INPUT_CARD_NO_TIP, INPUT_CARD_TYPE_REMARK,
+      IS_UNBIND_RESTRICTED , UNBIND_RESTRICTED_DAY_NUM ,UNBIND_RESTRICTED_TIP , CP, CT, 
+      EP, ET)
+    values (#{id,jdbcType=VARCHAR}, #{hospitalId,jdbcType=BIGINT}, #{visitingPersonType,jdbcType=VARCHAR}, 
+      #{cardType,jdbcType=VARCHAR}, #{isShowCardNo,jdbcType=INTEGER}, #{tipWarmContent,jdbcType=VARCHAR}, #{certificatesType,jdbcType=VARCHAR},
+      #{isShowOnlineFiling,jdbcType=INTEGER}, #{verifyConditionType,jdbcType=VARCHAR}, #{inputIncompleteTip,jdbcType=VARCHAR}, 
+      #{inputIncorrectTip,jdbcType=VARCHAR},#{tiedCardTip,jdbcType=VARCHAR} ,#{inputCardNoTip,jdbcType=VARCHAR}, #{inputCardTypeRemark,jdbcType=VARCHAR},
+      #{isUnbindRestricted, jdbcType=INTEGER} ,#{unbindRestrictedDayNum, jdbcType=INTEGER}, #{unbindRestrictedTip,jdbcType=VARCHAR}, #{cp,jdbcType=INTEGER}, #{ct,jdbcType=TIMESTAMP}, 
+      #{ep,jdbcType=INTEGER}, #{et,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="update" parameterType="RuleTiedCard" >
+    update SYS_RULE_TIED_CARD
+    <set >
+      <if test="hospitalId != null" >
+        HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+      </if>
+      <if test="visitingPersonType != null" >
+        VISITING_PERSON_TYPE = #{visitingPersonType,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        CARD_TYPE = #{cardType,jdbcType=VARCHAR},
+      </if>
+       <if test="certificatesType != null" >
+        CERTIFICATES_TYPE = #{certificatesType,jdbcType=VARCHAR},
+      </if>
+      <if test="isShowCardNo != null" >
+        IS_SHOW_CARD_NO = #{isShowCardNo,jdbcType=INTEGER},
+      </if>
+      <if test="tipWarmContent != null" >
+        TIP_WARM_CONTENT = #{tipWarmContent,jdbcType=VARCHAR},
+      </if>
+      <if test="isShowOnlineFiling != null" >
+        IS_SHOW_ONLINE_FILING = #{isShowOnlineFiling,jdbcType=INTEGER},
+      </if>
+      <if test="verifyConditionType != null" >
+        VERIFY_CONDITION_TYPE = #{verifyConditionType,jdbcType=VARCHAR},
+      </if>
+      <if test="inputIncompleteTip != null" >
+        INPUT_INCOMPLETE_TIP = #{inputIncompleteTip,jdbcType=VARCHAR},
+      </if>
+      <if test="inputIncorrectTip != null" >
+        INPUT_INCORRECT_TIP = #{inputIncorrectTip,jdbcType=VARCHAR},
+      </if>
+      <if test="tiedCardTip != null" >
+        TIED_CARD_TIP = #{tiedCardTip,jdbcType=VARCHAR},
+      </if>
+      <if test="inputCardNoTip != null" >
+        INPUT_CARD_NO_TIP = #{inputCardNoTip,jdbcType=VARCHAR},
+      </if>
+      <if test="inputCardTypeRemark != null" >
+        INPUT_CARD_TYPE_REMARK = #{inputCardTypeRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isUnbindRestricted != null" >
+        IS_UNBIND_RESTRICTED = #{isUnbindRestricted,jdbcType=INTEGER},
+      </if>
+      <if test="unbindRestrictedDayNum != null" >
+        UNBIND_RESTRICTED_DAY_NUM = #{unbindRestrictedDayNum,jdbcType=INTEGER},
+      </if>
+      <if test="unbindRestrictedTip != null" >
+        UNBIND_RESTRICTED_TIP = #{unbindRestrictedTip,jdbcType=VARCHAR},
+      </if>
+      <if test="cp != null" >
+        CP = #{cp,jdbcType=INTEGER},
+      </if>
+      <if test="ct != null" >
+        CT = #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ep != null" >
+        EP = #{ep,jdbcType=INTEGER},
+      </if>
+      <if test="et != null" >
+        ET = #{et,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateById" parameterType="com.yxw.commons.entity.platform.rule.RuleTiedCard" >
+    update SYS_RULE_TIED_CARD
+    set HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+      VISITING_PERSON_TYPE = #{visitingPersonType,jdbcType=VARCHAR},
+      CARD_TYPE = #{cardType,jdbcType=VARCHAR},
+      CERTIFICATES_TYPE= #{certificatesType,jdbcType=VARCHAR},
+      IS_SHOW_CARD_NO = #{isShowCardNo,jdbcType=INTEGER},
+      TIP_WARM_CONTENT = #{tipWarmContent,jdbcType=VARCHAR},
+      IS_SHOW_ONLINE_FILING = #{isShowOnlineFiling,jdbcType=INTEGER},
+      VERIFY_CONDITION_TYPE = #{verifyConditionType,jdbcType=VARCHAR},
+      INPUT_INCOMPLETE_TIP = #{inputIncompleteTip,jdbcType=VARCHAR},
+      INPUT_INCORRECT_TIP = #{inputIncorrectTip,jdbcType=VARCHAR},
+      TIED_CARD_TIP = #{tiedCardTip,jdbcType=VARCHAR},
+      INPUT_CARD_NO_TIP = #{inputCardNoTip,jdbcType=VARCHAR},
+      INPUT_CARD_TYPE_REMARK = #{inputCardTypeRemark,jdbcType=VARCHAR},
+      IS_UNBIND_RESTRICTED = #{isUnbindRestricted,jdbcType=INTEGER},
+      UNBIND_RESTRICTED_DAY_NUM = #{unbindRestrictedDayNum,jdbcType=INTEGER},
+      UNBIND_RESTRICTED_TIP = #{unbindRestrictedTip,jdbcType=VARCHAR},
+      CP = #{cp,jdbcType=INTEGER},
+      CT = #{ct,jdbcType=TIMESTAMP},
+      EP = #{ep,jdbcType=INTEGER},
+      ET = #{et,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

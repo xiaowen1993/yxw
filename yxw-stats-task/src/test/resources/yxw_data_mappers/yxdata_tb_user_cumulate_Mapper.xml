@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.stats.entity.stats.YxDataUserStats">
+
+  <resultMap id="BaseResultMap" type="com.yxw.stats.entity.stats.YxDataUserStats" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="appId" property="appid" jdbcType="VARCHAR" />
+    <result column="hospitalId" property="hospitalid" jdbcType="VARCHAR" />
+    <result column="newUser" property="newuser" jdbcType="BIGINT" />
+    <result column="cancelUser" property="canceluser" jdbcType="BIGINT" />
+    <result column="cumulateUser" property="cumulateuser" jdbcType="BIGINT" />
+    <result column="newUser_wechat" property="newuserWechat" jdbcType="BIGINT" />
+    <result column="cancelUser_wechat" property="canceluserWechat" jdbcType="BIGINT" />
+    <result column="cumulateUser_wechat" property="cumulateuserWechat" jdbcType="BIGINT" />
+    <result column="newUser_alipay" property="newuserAlipay" jdbcType="BIGINT" />
+    <result column="cancelUser_alipay" property="canceluserAlipay" jdbcType="BIGINT" />
+    <result column="cumulateUser_alipay" property="cumulateuserAlipay" jdbcType="BIGINT" />
+    <result column="date" property="date" jdbcType="DATE" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, appId, hospitalId, newUser, cancelUser, cumulateUser, newUser_wechat, cancelUser_wechat, 
+    cumulateUser_wechat, newUser_alipay, cancelUser_alipay, cumulateUser_alipay, date
+  </sql>
+  
+ 	<select id="findCurrUserStatsMaxDate" resultType="java.lang.String" parameterType="java.lang.String">
+		select max(DATE) as maxDate from TB_USER_CUMULATE
+		where hospitalId = #{hospitalId, jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="batchInsertUserStatsData" parameterType="java.util.Map" >
+		INSERT INTO 
+			TB_USER_CUMULATE
+			(<include refid="Base_Column_List"></include>)
+			VALUES
+		<foreach collection="userStats" item="item" index="index" separator=",">
+			 ( 
+			 	#{item.id},#{item.appid},#{item.hospitalid},#{item.newuser},#{item.canceluser},#{item.cumulateuser},
+			 	#{item.newuserWechat},#{item.canceluserWechat},#{item.cumulateuserWechat},
+			 	#{item.newuserAlipay},#{item.canceluserAlipay},#{item.cumulateuserAlipay},
+			 	#{item.date}
+			  )
+		</foreach>
+	</insert>
+	
+</mapper>

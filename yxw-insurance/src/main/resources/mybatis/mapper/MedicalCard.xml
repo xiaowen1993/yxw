@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+	<resultMap id="cardResultMap" type="com.yxw.commons.entity.mobile.biz.medicalcard.MedicalCard">
+		<id column="ID" property="id" jdbcType="VARCHAR"/>
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="All_Column">
+		ID, NAME, CARD_NO
+	</sql>
+
+  <sql id="Choose_Hash_Table_Name">
+		<choose>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_1'">
+				BIZ_MEDICAL_CARD_1
+			</when>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_2'">
+				BIZ_MEDICAL_CARD_2
+			</when>
+			<when test="hashTableName== 'BIZ_MEDICAL_CARD_3'">
+				BIZ_MEDICAL_CARD_3
+			</when>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_4'">
+				BIZ_MEDICAL_CARD_4
+			</when>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_5'">
+				BIZ_MEDICAL_CARD_5
+			</when>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_6'">
+				BIZ_MEDICAL_CARD_6
+			</when>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_7'">
+				BIZ_MEDICAL_CARD_7
+			</when>
+			<when test="hashTableName == 'BIZ_MEDICAL_CARD_8'">
+				BIZ_MEDICAL_CARD_8
+			</when>
+		</choose>
+	</sql>
+	
+	<!-- 通过openId找人 -->
+	<select id="findAllMedicalCards" parameterType="java.util.Map" resultMap="cardResultMap"> 
+		select  
+			<include refid="All_Column" />
+		from 
+		<include refid="Choose_Hash_Table_Name" />
+       	where 
+       		OPEN_ID = #{openId, jdbcType=VARCHAR}
+       	and STATE = #{state, jdbcType=INTEGER}
+	</select>
+	
+</mapper>

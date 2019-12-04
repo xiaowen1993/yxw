@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd 
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd 
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd 
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd"
+    default-lazy-init="false">
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="${taskExecutor.corePoolSize}" />
+		<property name="keepAliveSeconds" value="${taskExecutor.keepAliveSeconds}" />
+		<property name="maxPoolSize" value="${taskExecutor.maxPoolSize}" />
+		<property name="queueCapacity" value="${taskExecutor.queueCapacity}" />
+	</bean>
+
+	<!-- ===================================定义业务逻辑处理类 start =================================== -->
+	<!-- 科室采集 任务 -->
+	<bean id="hospitalDeptInfoTask" class="com.yxw.task.taskitem.HospitalDeptInfoTask" />
+	<!-- 可挂号医生采集任务 -->
+	<bean id="hospitalDoctorInfoTask" class="com.yxw.task.taskitem.HospitalDoctorInfoTask" />
+	<!-- 号源采集任务 -->
+	<bean id="registerSourceTask" class="com.yxw.task.taskitem.RegisterSourceTask" />
+	<!-- 号源支付超时检查任务 -->
+	<bean id="registerPaymentTimeoutTask" class="com.yxw.task.taskitem.RegisterPaymentTimeoutTask" />
+	<!-- 解锁任务 -->
+	<bean id="registerUnlockTask" class="com.yxw.task.taskitem.RegisterUnlockTask" />
+	<!-- 停诊任务 -->
+	<bean id="stopRegisterTask" class="com.yxw.task.taskitem.StopRegisterTask">
+		<property name="loopTime" value="${task.stopReg.loop.time}"></property>
+	</bean>
+	<!-- 挂号异常处理任务 -->
+	<bean id="handleRegisterExceptionTask" class="com.yxw.task.taskitem.HandleRegisterExceptionTask" />
+	<!-- 门诊异常处理任务 -->
+	<bean id="handleClinicExceptionTask" class="com.yxw.task.taskitem.HandleClinicExceptionTask" />
+	<!-- 押金补缴异常处理任务 -->
+	<bean id="handleDepositExceptionTask" class="com.yxw.task.taskitem.HandleDepositExceptionTask" />
+	<!-- 统计任务 挂号、门诊、绑卡 -->
+	<!-- <bean id="statistcalTask" class="com.yxw.task.taskitem.StatistcalTask" /> -->
+	<!-- 获取AccessToken任务 -->
+	<!-- <bean id="accessTokenTask" class="com.yxw.task.taskitem.AccessTokenTask" /> -->
+	<!-- 就诊前一天的就诊通知任务 -->
+	<bean id="preDayVisitWarnTask" class="com.yxw.task.taskitem.PreDayVisitWarnTask" />
+	<!-- 就诊当天的就诊通知任务 -->
+	<bean id="curDayVisitWarnTask" class="com.yxw.task.taskitem.CurDayVisitWarnTask" />
+	<!-- ===================================定义业务逻辑处理类 end =================================== -->
+
+	<!-- =================================== 调度业务逻辑 start =================================== -->
+	<!-- 注： concurrent：对于相同的JobDetail,当指定多个Trigger时,很可能第一个job完成之前,第二个job就开始了. concurrent设为false,多个job不会并发运行,第二个job将不会在第一个job完成之前开始.默认为true -->
+	<!-- 科室采集 任务 -->
+	<bean id="deptInfoJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="hospitalDeptInfoTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="deptInfoCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="deptInfoJobDetail" />
+		<property name="cronExpression" value="${task.cron.deptInfo}" />
+	</bean>
+
+	<!-- 可挂号医生采集任务 -->
+	<bean id="doctorInfoJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="hospitalDoctorInfoTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="doctorInfoCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="doctorInfoJobDetail" />
+		<property name="cronExpression" value="${task.cron.doctorInfo}" />
+	</bean>
+
+	<!-- 号源采集任务 -->
+	<bean id="regSourceJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="registerSourceTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="regSourceCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="regSourceJobDetail" />
+		<property name="cronExpression" value="${task.cron.regSource}" />
+	</bean>
+
+	<!-- 号源支付超时检查任务 -->
+	<bean id="regPayTimeOutJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="registerPaymentTimeoutTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="regPayTimeOutCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="regPayTimeOutJobDetail" />
+		<property name="cronExpression" value="${task.cron.regPayTimeOut}" />
+	</bean>
+
+	<!-- 解锁任务 -->
+	<bean id="regUnlockJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="registerUnlockTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="regUnlockCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="regUnlockJobDetail" />
+		<property name="cronExpression" value="${task.cron.regUnlock}" />
+	</bean>
+
+	<!-- 停诊任务 -->
+	<bean id="stopRegJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="stopRegisterTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="stopRegCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="stopRegJobDetail" />
+		<property name="cronExpression" value="${task.cron.stopReg}" />
+	</bean>
+
+	<!-- 挂号异常处理任务 -->
+	<bean id="handleRegisterExceptionJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="handleRegisterExceptionTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="handleRegisterExceptionCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="handleRegisterExceptionJobDetail" />
+		<property name="cronExpression" value="${task.cron.handleRegisterException}" />
+	</bean>
+
+	<!-- 门诊异常处理任务 -->
+	<bean id="handleClinicExceptionJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="handleClinicExceptionTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="handleClinicExceptionCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="handleClinicExceptionJobDetail" />
+		<property name="cronExpression" value="${task.cron.handleClinicException}" />
+	</bean>
+
+	<!-- 押金补缴异常处理任务 -->
+	<bean id="handleDepositExceptionJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="handleDepositExceptionTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="handleDepositExceptionCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="handleDepositExceptionJobDetail" />
+		<property name="cronExpression" value="${task.cron.handleDepositException}" />
+	</bean>
+
+	<!-- 统计任务 挂号、门诊、绑卡 -->
+	<!-- <bean id="statistcalJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> <property name="targetObject" ref="statistcalTask" /> <property name="targetMethod" 
+		value="startUp" /> <property name="concurrent" value="false"/> </bean> <bean id="statistcalCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> <property name="jobDetail" 
+		ref="statistcalJobDetail" /> <property name="cronExpression" value="${task.cron.statistcalTask}" /> </bean> -->
+	<!-- 获取AccessToken任务 -->
+	<!-- <bean id="accessTokenJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> <property name="targetObject" ref="accessTokenTask" /> <property name="targetMethod" 
+		value="startUp" /> <property name="concurrent" value="false"/> </bean> <bean id="accessTokenCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> <property name="jobDetail" 
+		ref="accessTokenJobDetail" /> <property name="cronExpression" value="${task.cron.accessToken}" /> </bean> -->
+
+	<!-- 就诊前一天的就诊通知任务 -->
+	<bean id="preDayVisitWarnJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="preDayVisitWarnTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="preDayVisitWarnCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="preDayVisitWarnJobDetail" />
+		<property name="cronExpression" value="${task.cron.preDayVisitWarn}" />
+	</bean>
+
+	<!-- 就诊当天的就诊通知任务 -->
+	<bean id="curDayVisitWarnJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="curDayVisitWarnTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="curDayVisitWarnCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="curDayVisitWarnJobDetail" />
+		<property name="cronExpression" value="${task.cron.curDayVisitWarn}" />
+	</bean>
+
+	<!-- 设置调度 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="false" autowire="no" >
+		<property name="triggers">
+			<list>
+				<ref bean="deptInfoCronTrigger" />
+				<ref bean="doctorInfoCronTrigger" />
+				<ref bean="regSourceCronTrigger" />
+				<!-- 后期需放开 <ref bean="regPayTimeOutCronTrigger" /> <ref bean="regUnlockCronTrigger" /> <ref bean="handleRegisterExceptionCronTrigger" /> <ref bean="handleClinicExceptionCronTrigger" /> <ref bean="stopRegCronTrigger" 
+					/> -->
+				<!-- <ref bean="accessTokenCronTrigger" /> <ref bean="statistcalCronTrigger" /> -->
+				<!-- <ref bean="handleDepositExceptionCronTrigger" /> <ref bean="preDayVisitWarnCronTrigger" /> <ref bean="curDayVisitWarnCronTrigger" /> -->
+			</list>
+		</property>
+		<property name="quartzProperties">
+			<props>
+				<prop key="org.quartz.scheduler.skipUpdateCheck">true</prop>
+			</props>
+		</property>
+		<property name="taskExecutor" ref="taskExecutor" />
+		<property name="autoStartup" value="true" />
+	</bean>
+
+</beans>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+                        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd 
+                        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+                        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd 
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+                        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	<!-- 标准平台内部系统调用接口 -->
+	<dubbo:provider host="" />
+
+	<!-- dubbo 协议、netty 传输、hessian2 序列化 -->
+
+	<dubbo:protocol name="dubbo" server="netty" port="40100" charset="UTF-8" serialization="hessian2" />
+
+	<dubbo:protocol name="webservice" port="40101" server="jetty" contextpath="services" />
+
+	<!-- 绑卡接口 -->
+	<bean id="yxwCardService" class="com.yxw.solr.outside.service.impl.YxwCardServiceImpl" />
+	<dubbo:service interface="com.yxw.solr.outside.service.YxwCardService" ref="yxwCardService" protocol="dubbo"
+		timeout="60000" dynamic="false" version="rc" />
+
+	<!-- 挂号接口 -->
+	<bean id="yxwRegisterService" class="com.yxw.solr.outside.service.impl.YxwRegisterServiceImpl" />
+	<dubbo:service interface="com.yxw.solr.outside.service.YxwRegisterService" ref="yxwRegisterService"
+		protocol="dubbo" timeout="60000" dynamic="false" version="rc" />
+
+	<!-- 挂号科室接口 -->
+	<bean id="yxwRegDeptService" class="com.yxw.solr.outside.service.impl.YxwRegDeptServiceImpl" />
+	<dubbo:service interface="com.yxw.solr.outside.service.YxwRegDeptService" ref="yxwRegDeptService"
+		protocol="dubbo" timeout="60000" dynamic="false" version="rc" />
+
+	<!-- 门诊接口 -->
+	<bean id="yxwClinicService" class="com.yxw.solr.outside.service.impl.YxwClinicServiceImpl" />
+	<dubbo:service interface="com.yxw.solr.outside.service.YxwClinicService" ref="yxwClinicService" protocol="dubbo"
+		timeout="60000" dynamic="false" version="rc" />
+
+	<!-- 押金接口 -->
+	<bean id="yxwDepositService" class="com.yxw.solr.outside.service.impl.YxwDepositServiceImpl" />
+	<dubbo:service interface="com.yxw.solr.outside.service.YxwDepositService" ref="yxwDepositService"
+		protocol="dubbo" timeout="60000" dynamic="false" version="rc" />
+
+	<!-- 订单接口 -->
+	<bean id="yxwOrderService" class="com.yxw.solr.outside.service.impl.YxwOrderServiceImpl" />
+	<dubbo:service interface="com.yxw.solr.outside.service.YxwOrderService" ref="yxwOrderService" protocol="dubbo"
+		timeout="60000" dynamic="false" version="rc" />
+
+	<!-- 数据重建接口 -->
+	<bean id="yxwRebuildService" class="com.yxw.solr.outside.service.impl.YxwRebuildServiceImpl" />
+	<dubbo:service interface="com.yxw.solr.outside.service.YxwRebuildService" ref="yxwRebuildService"
+		protocol="dubbo" timeout="60000" dynamic="false" version="rc" />
+
+	<!-- his外部接口调用 -->
+	<bean id="yxwOutsideService" class="com.yxw.solr.outside.service.impl.YxwOutsideServiceImpl" />
+	<dubbo:service interface="com.yxw.solr.outside.service.YxwOutsideService" ref="yxwOutsideService"
+		protocol="dubbo" timeout="60000" dynamic="false" version="dev" />
+</beans>	

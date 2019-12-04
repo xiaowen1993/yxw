@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.stats.entity.stats.YxDataSysDepositStatistical">
+
+  <resultMap id="BaseResultMap" type="com.yxw.stats.entity.stats.YxDataSysDepositStatistical" >
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DATE" property="date" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+    <result column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
+    <result column="PAYMENT" property="payment" jdbcType="INTEGER" />
+    <result column="NO_PAYMENT" property="noPayment" jdbcType="INTEGER" />
+    <result column="REFUND" property="refund" jdbcType="INTEGER" />
+    <result column="DEPOSIT_PAY_FEE" property="depositPayFee" jdbcType="DOUBLE" />
+    <result column="DEPOSIT_REFUND_FEE" property="depositRefundFee" jdbcType="DOUBLE" />
+    <result column="PART_REFUND" property="partRefund" jdbcType="DOUBLE" />
+    <result column="BIZ_MODE" property="bizMode" jdbcType="INTEGER" />
+    <result column="PAYMENT_WECHAT" property="paymentWechat" jdbcType="INTEGER" />
+    <result column="NO_PAYMENT_WECHAT" property="noPaymentWechat" jdbcType="INTEGER" />
+    <result column="REFUND_WECHAT" property="refundWechat" jdbcType="INTEGER" />
+    <result column="DEPOSIT_PAY_FEE_WECHAT" property="depositPayFeeWechat" jdbcType="DOUBLE" />
+    <result column="DEPOSIT_REFUND_FEE_WECHAT" property="depositRefundFeeWechat" jdbcType="DOUBLE" />
+    <result column="PART_REFUND_WECHAT" property="partRefundWechat" jdbcType="DOUBLE" />
+    <result column="PAYMENT_ALIPAY" property="paymentAlipay" jdbcType="INTEGER" />
+    <result column="NO_PAYMENT_ALIPAY" property="noPaymentAlipay" jdbcType="INTEGER" />
+    <result column="REFUND_ALIPAY" property="refundAlipay" jdbcType="INTEGER" />
+    <result column="DEPOSIT_PAY_FEE_ALIPAY" property="depositPayFeeAlipay" jdbcType="DOUBLE" />
+    <result column="DEPOSIT_REFUND_FEE_ALIPAY" property="depositRefundFeeAlipay" jdbcType="DOUBLE" />
+    <result column="PART_REFUND_ALIPAY" property="partRefundAlipay" jdbcType="DOUBLE" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    ID, DATE, HOSPITAL_ID, BRANCH_ID, PAYMENT, NO_PAYMENT, REFUND, DEPOSIT_PAY_FEE, DEPOSIT_REFUND_FEE, 
+    PART_REFUND, BIZ_MODE, PAYMENT_WECHAT, NO_PAYMENT_WECHAT, REFUND_WECHAT, DEPOSIT_PAY_FEE_WECHAT, 
+    DEPOSIT_REFUND_FEE_WECHAT, PART_REFUND_WECHAT, PAYMENT_ALIPAY, NO_PAYMENT_ALIPAY, 
+    REFUND_ALIPAY, DEPOSIT_PAY_FEE_ALIPAY, DEPOSIT_REFUND_FEE_ALIPAY, PART_REFUND_ALIPAY
+  </sql>
+  
+   <select id="findCurrDepositStatsMaxDate" resultType="java.lang.String" parameterType="java.lang.String">
+		select max(DATE) as maxDate from SYS_DEPOSIT_STATISTICAL
+		where HOSPITAL_ID = #{hospitalId, jdbcType=VARCHAR}
+	</select>
+
+	<insert id="batchInsertDepositStatsData" parameterType="java.util.Map" >
+		INSERT INTO 
+			SYS_DEPOSIT_STATISTICAL
+			(<include refid="Base_Column_List"></include>)
+			VALUES
+		<foreach collection="sysDepositStatistical" item="item" index="index" separator=",">
+			 (
+				 #{item.id},#{item.date},#{item.hospitalId},#{item.branchId},#{item.payment},#{item.noPayment},#{item.refund},#{item.depositPayFee},
+			 	 #{item.depositRefundFee},#{item.partRefund},#{item.bizMode},
+			 	 #{item.paymentWechat}, #{item.noPaymentWechat}, #{item.refundWechat}, #{item.depositPayFeeWechat}, #{item.depositRefundFeeWechat}, #{item.partRefundWechat}, 
+			 	 #{item.paymentAlipay}, #{item.noPaymentAlipay}, #{item.refundAlipay}, #{item.depositPayFeeAlipay}, #{item.depositRefundFeeAlipay}, #{item.partRefundAlipay}
+		 	 )
+		</foreach>
+	</insert>
+  
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.hospital.HospitalPlatformSettings">
+
+	<resultMap id="hospitalPlatformSettingsResultMap" type="HospitalPlatformSettings">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<!-- <result column="PLATFORM_SETTINGS_ID" property="platformSettings" jdbcType="BIGINT" /> -->
+		<!-- <result column="HOSPITAL_ID" property="hospital" jdbcType="BIGINT" /> -->
+
+		<result column="STATUS" property="status" jdbcType="INTEGER" />
+
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<!-- <result column="PLATFORM_SETTINGS_ID" property="platformSettingsId" jdbcType="BIGINT" /> -->
+		<association column="PLATFORM_SETTINGS_ID" property="platformSettings" javaType="PlatformSettings" select="com.yxw.commons.entity.platform.hospital.PlatformSettings.findById" />
+	</resultMap>
+
+	<select id="findByHospital" resultMap="hospitalPlatformSettingsResultMap">
+		select ID,PLATFORM_SETTINGS_ID,HOSPITAL_ID,STATUS
+		from SYS_HOSPITAL_PLATFORM_SETTINGS hps
+		where hps.HOSPITAL_ID = #{hospitaliId}
+	</select>
+
+	<insert id="add" parameterType="HospitalPlatformSettings" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		SYS_HOSPITAL_PLATFORM_SETTINGS(ID,PLATFORM_SETTINGS_ID,HOSPITAL_ID,STATUS)
+		values
+		(#{id},#{platformSettings.id},#{hospitalId},1)
+	</insert>
+
+	<!-- 更新接入平台配置 -->
+	<update id="update" parameterType="PlatformSettings">
+		update SYS_HOSPITAL_PLATFORM_SETTINGS set PLATFORM_SETTINGS_ID = #{platformSettings.id}, HOSPITAL_ID = #{hospitalId}, STATUS = #{status} where ID = #{id}
+	</update>
+	
+	<delete id="deleteByHospitalId" parameterType="String">
+		DELETE FROM SYS_HOSPITAL_PLATFORM_SETTINGS WHERE HOSPITAL_ID = #{hospitalId}
+	</delete>
+
+</mapper>

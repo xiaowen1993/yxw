@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.mobileapp.biz.register.entity.StopRegisterRecord">
+	<resultMap id="StopRegisterRecordResultMap" type="com.yxw.mobileapp.biz.register.entity.StopRegisterRecord">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="LAUNCH_TIME" property="launchTime" jdbcType="BIGINT" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
+		<result column="ORDER_NO" property="orderNo" jdbcType="VARCHAR" />
+		<result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
+		<result column="DOCTOR_NAME" property="doctorName" jdbcType="VARCHAR" />
+		<result column="SCHEDULE_DATE" property="scheduleDate" jdbcType="DATE" />
+		<result column="BEGIN_TIME" property="beginTime" jdbcType="TIME" />
+		<result column="END_TIME" property="endTime" jdbcType="TIME" />
+		<result column="CARD_TYPE" property="cardType" jdbcType="INTEGER" />
+		<result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+		<result column="PATIENT_NAME" property="patientName" jdbcType="VARCHAR" />
+		<result column="PATIENT_MOBILE" property="patientMobile" jdbcType="VARCHAR" />
+		<result column="TABLE_NAME" property="hashTableName" jdbcType="VARCHAR" />
+		<result column="HAS_TRADE" property="hasTrade" jdbcType="TINYINT" />
+		<result column="STATE" property="state" jdbcType="TINYINT" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		ID,TABLE_NAME,LAUNCH_TIME,HOSPITAL_ID,BRANCH_ID,ORDER_NO,DEPT_NAME,DOCTOR_NAME,SCHEDULE_DATE,BEGIN_TIME,END_TIME,
+		CARD_TYPE,CARD_NO,PATIENT_NAME,PATIENT_MOBILE,HAS_TRADE,STATE
+	</sql>
+
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO BIZ_STOP_REGISTER_RECORD(
+			<include refid="Base_Column_List" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{item.id},#{item.hashTableName},#{item.launchTime},#{item.hospitalId},#{item.branchId},#{item.orderNo},
+			#{item.deptName},#{item.doctorName},#{item.scheduleDate},#{item.beginTime},#{item.endTime},#{item.cardType},
+			#{item.cardNo},#{item.patientName},#{item.patientMobile},#{item.hasTrade},#{item.state})
+		</foreach>
+		ON DUPLICATE KEY UPDATE HAS_TRADE = VALUES(HAS_TRADE), STATE = VALUES(STATE)
+	</insert>
+
+	<update id="update" parameterType="com.yxw.mobileapp.biz.register.entity.StopRegisterRecord">
+		update BIZ_STOP_REGISTER_RECORD
+		<set>
+			<if test="launchTime != null">
+				LAUNCH_TIME = #{launchTime},
+			</if>
+			<if test="hasTrade != null">
+				HAS_TRADE = #{hasTrade},
+			</if>
+			<if test="state != null">
+				STATE = #{state}
+			</if>
+		</set>
+		where ORDER_NO = #{orderNo}
+	</update>
+
+	<select id="findListByPage" parameterType="java.util.Map" resultMap="StopRegisterRecordResultMap" >
+		SELECT
+			<include refid="Base_Column_List" />
+		FROM
+			BIZ_STOP_REGISTER_RECORD
+		WHERE
+			1 = 1
+		<if test="hospitalId != null and hospitalId != ''">
+			AND HOSPITAL_ID = #{hospitalId}
+		</if>
+		<if test="branchId != null and branchId != ''">
+			AND BRANCH_ID = #{branchId}
+		</if>
+		<if test="minScheduleDate != null and minScheduleDate != '' and maxScheduleDate != null and maxScheduleDate != ''">
+			AND SCHEDULE_DATE BETWEEN #{minScheduleDate} AND #{maxScheduleDate}
+		</if>
+		<if test="deptName != null and deptName != ''">
+			AND DEPT_NAME = #{deptName}
+		</if>
+		<if test="doctorName != null and doctorName != ''">
+			AND DOCTOR_NAME = #{doctorName}
+		</if>
+		<if test="orderNo != null and orderNo != ''">
+			AND ORDER_NO = #{orderNo}
+		</if>
+		<if test="minState != null and maxState != null">
+			AND STATE BETWEEN #{minState} AND #{maxState}
+		</if>
+		<if test="oneState != null">
+			AND STATE &amp; #{oneState} = #{oneState}
+		</if>
+		<if test="zeroState != null">
+			AND STATE &amp; #{zeroState} = 0
+		</if>
+	</select>
+
+	<delete id="deleteByLaunchTime" parameterType="java.util.Map" >
+		DELETE FROM BIZ_STOP_REGISTER_RECORD
+		WHERE
+			LAUNCH_TIME BETWEEN #{minLaunchTime} AND #{maxLaunchTime}
+	</delete>
+</mapper>

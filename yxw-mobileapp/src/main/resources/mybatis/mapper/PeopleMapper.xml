@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.mobile.biz.usercenter.People">
+	<resultMap id="peopleResultMap" type="com.yxw.commons.entity.mobile.biz.usercenter.People">
+		<id column="ID" property="id" jdbcType="VARCHAR"/>
+		<result column="USER_TYPE" property="userType" jdbcType="SMALLINT" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="SEX" property="sex" jdbcType="SMALLINT" />
+		<result column="BIRTH" property="birth" jdbcType="VARCHAR" />
+		<result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+		<result column="ID_TYPE" property="idType" jdbcType="SMALLINT" />
+		<result column="ID_NO" property="idNo" jdbcType="VARCHAR" />
+		<result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+		<result column="GUARD_ID_TYPE" property="guardIdType" jdbcType="SMALLINT" />
+		<result column="GUARD_ID_NO" property="guardIdNo" jdbcType="VARCHAR" />
+		<result column="GUARD_MOBILE" property="guardMobile" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="BIGINT" />
+	</resultMap>
+	
+	<sql id="All_Column">
+		ID, USER_TYPE, NAME, SEX, BIRTH, MOBILE, ID_TYPE, ID_NO,
+		ADDRESS, GUARD_ID_TYPE, GUARD_ID_NO, GUARD_MOBILE, CREATE_TIME
+	</sql>
+	
+	<sql id="Choose_Hash_Table_Name">
+		<choose>
+			<when test="hashTableName == 'BIZ_PEOPLE_1'">
+	             BIZ_PEOPLE_1 
+	        </when>
+	        <when test="hashTableName == 'BIZ_PEOPLE_2'">
+	             BIZ_PEOPLE_2 
+	        </when>
+	        <when test="hashTableName == 'BIZ_PEOPLE_3'">
+	             BIZ_PEOPLE_3 
+	        </when>
+	        <when test="hashTableName == 'BIZ_PEOPLE_4'">
+	             BIZ_PEOPLE_4 
+	        </when>
+	        <when test="hashTableName == 'BIZ_PEOPLE_5'">
+	             BIZ_PEOPLE_5 
+	        </when>
+	        <when test="hashTableName == 'BIZ_PEOPLE_6'">
+	             BIZ_PEOPLE_6 
+	        </when>
+	        <when test="hashTableName == 'BIZ_PEOPLE_7'">
+	             BIZ_PEOPLE_7 
+	        </when>
+	        <when test="hashTableName == 'BIZ_PEOPLE_8'">
+	             BIZ_PEOPLE_8 
+	        </when>
+	        <when test="hashTableName == 'BIZ_PEOPLE_9'">
+	             BIZ_PEOPLE_9 
+	        </when>
+	        <when test="hashTableName == 'BIZ_PEOPLE_10'">
+	             BIZ_PEOPLE_10 
+	        </when>
+    	</choose>
+  	</sql>
+  
+	<insert id="add" parameterType="com.yxw.commons.entity.mobile.biz.usercenter.People"> 
+		insert into
+    		<include refid="Choose_Hash_Table_Name" />
+    	(<include refid="All_Column" />)
+ 		values 
+ 		(
+	 		#{id, jdbcType=VARCHAR}, #{userType, jdbcType=INTEGER}, #{name, jdbcType=VARCHAR}, #{sex, jdbcType=INTEGER},
+	 		#{birth, jdbcType=VARCHAR}, #{mobile, jdbcType=VARCHAR}, #{idType, jdbcType=INTEGER}, #{idNo, jdbcType=VARCHAR},
+	 		#{address, jdbcType=VARCHAR}, #{guardIdType, jdbcType=INTEGER}, #{guardIdNo, jdbcType=VARCHAR}, #{guardMobile, jdbcType=VARCHAR},
+	 		#{createTime, jdbcType=BIGINT}
+    	)
+  	</insert>
+	
+	<!-- 通过idType和IdNo找人 -->
+	<select id="findByIdTypeAndIdNo" parameterType="java.util.Map" resultMap="peopleResultMap"> 
+		select  
+			<include refid="All_Column" />
+		from 
+   			<include refid="Choose_Hash_Table_Name" />
+       	where 
+       		ID_TYPE = #{idType, jdbcType=INTEGER}
+       	and ID_NO = #{idNo, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 通过name和guardIdType和guardIdNo找人 -->
+	<select id="findByNameAndGuardIdTypeAndGuardIdNo" parameterType="java.util.Map" resultMap="peopleResultMap"> 
+		select  
+			<include refid="All_Column" />
+		from 
+   			<include refid="Choose_Hash_Table_Name" />
+       	where 
+       		NAME = #{idType, jdbcType=VARCHAR}
+       	and GUARD_ID_TYPE = #{guardIdType, jdbcType=INTEGER}
+       	and GUARD_ID_NO = #{guardIdNo, jdbcType=VARCHAR}
+	</select>
+	  
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd 
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+						http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd 
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+						http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	default-lazy-init="false">
+ 
+	<!-- <dubbo:reference id="serveComm" interface="com.yxw.cache.core.serve.ServeComm" 
+		cluster="failover" timeout="3000000" version="rc" /> -->
+
+	<!-- 订单 -->
+	<dubbo:reference id="yxwOrderService"
+		interface="com.yxw.solr.outside.service.YxwOrderService" cluster="failover"
+		timeout="3000000" version="rc" />
+		
+	<!-- 挂号订单 -->
+	<dubbo:reference id="yxwRegisterService"
+		interface="com.yxw.solr.outside.service.YxwRegisterService" cluster="failover"
+		timeout="3000000" version="rc" />
+		
+	<!-- 门诊订单 -->
+	<dubbo:reference id="yxwClinicService"
+		interface="com.yxw.solr.outside.service.YxwClinicService" cluster="failover"
+		timeout="3000000" version="rc" />
+		
+	<!-- 住院订单 -->
+	<dubbo:reference id="yxwDepositService"
+		interface="com.yxw.solr.outside.service.YxwDepositService" cluster="failover"
+		timeout="3000000" version="rc" />
+		
+	<!-- 科室订单 -->
+	<dubbo:reference id="yxwRegDeptService"
+		interface="com.yxw.solr.outside.service.YxwRegDeptService" cluster="failover"
+		timeout="3000000" version="rc" />
+		
+	<!-- 绑卡信息 -->
+	<dubbo:reference id="yxwCardService"
+		interface="com.yxw.solr.outside.service.YxwCardService" cluster="failover"
+		timeout="3000000" version="rc" />
+
+</beans>

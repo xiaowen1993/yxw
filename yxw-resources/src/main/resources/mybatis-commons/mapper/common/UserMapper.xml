@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- modify by  Yuce  不要使用多个ResultMap   一个文件里面最好就只用一个-->
+<mapper namespace="com.yxw.commons.entity.platform.privilege.User">
+
+    <resultMap type="User" id="userResultMap">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="FULL_NAME" property="fullName" jdbcType="VARCHAR" />
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+        
+        <result column="SALT" property="salt" jdbcType="VARCHAR" />
+        <result column="EMAIL" property="email" jdbcType="VARCHAR"/>
+        <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+        <result column="AVAILABLE" property="available" jdbcType="INTEGER" />
+        
+        <result column="ORGANIZATION_ID" property="organizationId" jdbcType="VARCHAR" />
+        <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="VARCHAR" />
+        <result column="LAST_LOGIN_IP" property="lastLoginIp" jdbcType="VARCHAR" />
+        
+        <result column="CP" property="cp" jdbcType="VARCHAR" />
+	    <result column="CT" property="ct" jdbcType="TIMESTAMP" />
+	    <result column="EP" property="ep" jdbcType="VARCHAR" />
+	    <result column="ET" property="et" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <resultMap type="com.yxw.commons.vo.platform.privilege.UserVo" id="userVoResultMap">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="FULL_NAME" property="fullName" jdbcType="VARCHAR" />
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+        
+        <result column="SALT" property="salt" jdbcType="VARCHAR" />
+        <result column="EMAIL" property="email" jdbcType="VARCHAR"/>
+        <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+        <result column="AVAILABLE" property="available" jdbcType="INTEGER" />
+        
+        <result column="ORGANIZATION_ID" property="organizationId" jdbcType="VARCHAR" />
+        <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="VARCHAR" />
+        <result column="LAST_LOGIN_IP" property="lastLoginIp" jdbcType="VARCHAR" />
+        
+        <result column="CP" property="cp" jdbcType="VARCHAR" />
+	    <result column="CT" property="ct" jdbcType="TIMESTAMP" />
+	    <result column="EP" property="ep" jdbcType="VARCHAR" />
+	    <result column="ET" property="et" jdbcType="TIMESTAMP" />
+	    
+	    <result column="ROLENAMES" property="roleNames" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <!-- 账户管理  查询所有账户 分页 -->
+	<select id="findListByPage" resultMap="userVoResultMap" >
+		SELECT u.ID,u.FULL_NAME,u.USER_NAME,u.EMAIL,u.AVAILABLE,u.MEMO,u.LAST_LOGIN_TIME
+			,GROUP_CONCAT(r.`NAME`) ROLENAMES
+		FROM 
+		SYS_USER u 
+			LEFT JOIN SYS_USER_ROLE ur ON u.ID=ur.USER_ID
+			LEFT JOIN SYS_ROLE r ON r.ID = ur.ROLE_ID
+		
+		<where>
+			<if test="search!=null">
+				and u.USER_NAME like #{search} 
+			</if>
+		</where>
+		
+		GROUP BY u.ID,u.FULL_NAME,u.USER_NAME,u.EMAIL,u.AVAILABLE,u.MEMO,u.LAST_LOGIN_TIME
+    </select>
+	<!-- end -->
+	
+	<!-- 根据账户名查询账户 -->
+	<select id="findByUserName" parameterType="string" resultMap="userResultMap" >
+		select * from SYS_USER t where t.USER_NAME=#{userName}
+	</select>
+	<!-- end -->
+	
+	<!-- 批量查询账户 -->
+	<select id="findByIds" resultMap="userResultMap">
+        select * from SYS_USER u
+        where u.id in
+        <foreach collection="list"  item="item" index="index" open="(" close=")" separator=",">
+           #{item}
+       </foreach>
+    </select>
+    <!-- end -->
+    
+    <select id="findAll" resultMap="userResultMap">
+        select * from SYS_USER u
+    </select>
+	
+	<!-- 根据ID查询账户 -->
+	<select id="findById" parameterType="string" resultMap="userResultMap">
+		select * from SYS_USER where id=#{id}
+	</select>
+	<!-- end -->
+	
+	<!-- 修改账户状态 -->
+	<update id="updateAvailable" parameterType="User">
+		UPDATE SYS_USER SET AVAILABLE = #{available}  WHERE ID=#{id}
+	</update> 
+	<!-- end -->
+	
+	<!-- 删除账户 -->
+	<delete id="deleteById" parameterType="string">
+		DELETE FROM SYS_USER WHERE ID=#{id}
+	</delete>
+	<!-- end -->
+	
+	
+	<!-- 新增用户 -->
+	<insert id="add" parameterType="User" >
+		INSERT INTO
+		SYS_USER(ID,FULL_NAME,USER_NAME,PASSWORD,SALT,EMAIL	,MEMO,AVAILABLE,ORGANIZATION_ID,LAST_LOGIN_TIME,LAST_LOGIN_IP
+			,CP,CT,EP,ET)
+		VALUES 
+		 (#{id},#{fullName},#{userName},#{password},#{salt},#{email},#{memo},#{available},#{organizationId},#{lastLoginTime},#{lastLoginIp}
+		 	,#{cp},#{ct},#{ep},#{et})
+	</insert> 
+	<!-- end -->
+	
+	
+	<!-- 修改账户 -->
+	<update id="update" parameterType="User">
+		update SYS_USER t 
+		<trim prefix="SET" suffixOverrides=",">
+				<if test="fullName!=null">
+					t.FULL_NAME=#{fullName},
+				</if>
+				<if test="userName!=null">
+					t.USER_NAME=#{userName},
+				</if>
+				<if test="password!=null">
+					t.PASSWORD=#{password},
+				</if>
+				<if test="salt!=null">
+					t.SALT=#{salt},
+				</if>
+				<if test="email!=null">
+					t.EMAIL=#{email},
+				</if>
+				<if test="available!=null">
+					t.AVAILABLE=#{available},
+				</if>
+				<if test="memo!=null">
+					t.MEMO=#{memo},
+				</if>
+				<if test="organizationId!=null">
+					t.ORGANIZATION_ID=#{organizationId},
+				</if>
+				<if test="lastLoginTime!=null">
+					t.LAST_LOGIN_TIME=#{lastLoginTime},
+				</if>
+				<if test="lastLoginIp!=null">
+					t.LAST_LOGIN_IP=#{lastLoginIp},
+				</if>
+				<if test="ep!=null">
+					EP = #{ep},
+				</if>
+				<if test="et!=null">
+					ET = #{et}
+				</if>
+		</trim>
+		where id=#{id}
+	</update>
+	<!-- end -->
+	
+</mapper>

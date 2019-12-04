@@ -1,0 +1,14 @@
+.Wdate{
+	border:#999 1px solid;
+	height:20px;
+	background:#fff url(datePicker.gif) no-repeat right;
+}
+.Wdate::-ms-clear{display:none;}
+
+.WdateFmtErr{
+	font-weight:bold;
+	color:red;
+}
+/*日期*/
+
+.WdateDiv #dpTitle,.WdateDiv #dpTitle div{background-color: #1ba1e2;}

@@ -1,0 +1,266 @@
+/*less*/
+//3公里
+@import url(var.less);
+
+.threemRange{
+  .pageTitle{
+      padding: 11px 0 4px 0;
+      font-size: 16px;
+      color: #666;
+      text-indent: 1rem;
+      line-height: 25px;
+  }
+}
+
+.btn3kmRefresh{
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -13px;
+  line-height: 1;
+  height: 28px;
+  width: 28px;
+  overflow: hidden;
+  i{
+    font-size: 28px;
+    border-radius: 666px;
+  }
+
+}
+
+#threeKmAdd{
+  .title{
+    color: #999;
+    padding-right: 40px;
+    .threeKmAdd_text{
+      color: #333;
+    }
+  }
+  &.refresh{
+    i{
+      background-color: @bgColor;
+      color: #fff;
+    }
+  }
+}
+
+.pageTitle{
+  text-shadow: 0 -1px 0 #fff;
+  line-height: 40px;
+  padding-left: 1em;
+  font-size: 1.8rem;
+  padding-top: 10px;
+}
+.noDataText{
+    line-height: 5;
+    text-align: center;
+    color: #666;
+  }
+//
+//.threeKmInfo{
+//  .title{
+//    padding: 1em;
+//    background-color: #fff;
+//    position: relative;
+//    &:after{
+//      .li-halfLine(0);
+//    }
+//  }
+//  .centent{
+//    padding: 1em;
+//    background-color: #fafafa;
+//    position: relative;
+//    font-size: 1.6rem;
+//    height: 180px;
+//    overflow: hidden;
+//    p{
+//      margin-bottom: 10px;
+//    }
+//    &:after{
+//      .li-halfLine(0);
+//    }
+//    &.show{
+//      height: auto;
+//      overflow: visible;
+//    }
+//
+//  }
+//  .more{
+//    background-color: #fff;
+//    text-align: center;
+//    font-size: 1.4rem;
+//    line-height: 30px;
+//    position: relative;
+//    text-shadow: 0 1px 0 #ddd;
+//    &:after{
+//      .li-halfLine(0);
+//    }
+//
+//  }
+//}
+@keyframes rotate_an{
+  from{
+    transform:rotate(0deg) translateZ(0);;
+
+  } 
+  to{
+    transform:rotate(360deg) translateZ(0);
+
+    }
+}
+.rotate{
+  backface-visibility:hidden;
+  transform-origin:center center;
+  animation:rotate_an 1s linear;
+
+}
+
+#threemRange-discoveryList{
+  li{
+    display:flex;
+    align-items:center;
+  }
+  .threemRange-discoveryList-info{
+      flex:1;
+  }
+  .hospital-appointment{
+    width: 60px;
+    .guahao{
+      background-color: @skinbgColor;
+    }
+    span{
+      text-align: center;
+      display: block;
+      line-height: 28px;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 2px;
+    }
+  }
+}
+
+
+// 三公里就医圈主导航
+// 
+.threemRange-nav{
+  background-color: #fff;
+  display:table;
+  width:100%;
+  .threemRange-nav-item{
+    display:table-cell;
+    width:25%;
+    text-align: center;
+    padding:0.8rem 0;
+  }
+  i{
+    .iconfont();
+    font-size:52px;
+    line-height: 1;
+  }
+  .threemRange-nav-item:nth-of-type(1) i{
+    color:#fac21e;
+  }
+  .threemRange-nav-item:nth-of-type(2) i{
+    color:#57cbad;
+  }
+  .threemRange-nav-item:nth-of-type(3) i{
+    color:#44b0ed;
+  }
+  .threemRange-nav-item:nth-of-type(4) i{
+    color:#ff9445;
+  }
+  span{
+    display:block;
+    color:@color999;
+    font-size: 16px;
+  }
+}
+
+
+
+.threemRangeLoading{
+  text-align: center;
+  span{
+    display:inline-block;
+    width:5px;
+    height:5px;
+    margin:10px 5px;
+    border-radius: 100%;
+    background-color: #a0a0a0;
+    animation-name:changeBg;
+    animation-duration:2.5s;
+    animation-iteration-count:infinite;
+    animation-fill-mode:backwards;
+    animation-delay:0;
+  }
+  span:nth-of-type(1){
+    animation-name:changeBg;
+  }
+  span:nth-of-type(2){
+    animation-name:changeBg2;
+  }
+   span:nth-of-type(3){
+    animation-name:changeBg3;
+  }
+   span:nth-of-type(4){
+    animation-name:changeBg4;
+  }
+}
+
+
+@keyframes changeBg{
+   0%{
+      background-color: #a0a0a0;
+   }
+   19%{
+      background-color: #a0a0a0;
+   }
+   20%{
+      background-color: #424242;
+   }
+   100%{
+      background-color: #424242;
+   }
+}
+@keyframes changeBg2{
+   0%{
+      background-color: #a0a0a0;
+   }
+   39%{
+      background-color: #a0a0a0;
+   }
+   40%{
+      background-color: #424242;
+   }
+   100%{
+      background-color: #424242;
+   }
+}
+@keyframes changeBg3{
+   0%{
+      background-color: #a0a0a0;
+   }
+   59%{
+      background-color: #a0a0a0;
+   }
+   60%{
+      background-color: #424242;
+   }
+   100%{
+      background-color: #424242;
+   }
+}
+@keyframes changeBg4{
+   0%{
+      background-color: #a0a0a0;
+   }
+   79%{
+      background-color: #a0a0a0;
+   }
+   80%{
+      background-color: #424242;
+   }
+   100%{
+      background-color: #424242;
+   }
+}

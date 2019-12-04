@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.msgpush.MsgTemplateLibraryFunction">
+
+	<resultMap id="msgTemplateLibraryFunctionMap" type="com.yxw.commons.entity.platform.msgpush.MsgTemplateLibraryFunction">
+		<id column="ID" property="id" />
+		<result column="TEMP_LIBRARY_ID" property="tempLibraryId" />
+		<result column="FUNCTION_NAME" property="functionName"/>
+		<result column="FUNCTION_TYPE" property="functionType" />
+		<result column="FUNCTION_CODE" property="functionCode" />
+		<result column="SORT" property="sort" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+	</resultMap>
+	
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.msgpush.MsgTemplateLibraryFunction">
+		INSERT INTO SYS_MSG_TEMPLATE_LIBRARY_FUNCTION(ID,TEMP_LIBRARY_ID,FUNCTION_NAME,FUNCTION_TYPE,FUNCTION_CODE,SORT,CP,CT,EP,ET) VALUES
+		 (#{id}, #{tempLibraryId}, #{functionName}, #{functionType}, #{functionCode}, #{sort},'8b1994dff203407a869161c0946f6e97', now(), '8b1994dff203407a869161c0946f6e97', now());
+	</insert>
+	<select id="findById" parameterType="String" resultMap="msgTemplateLibraryFunctionMap">
+		SELECT * FROM SYS_MSG_TEMPLATE_LIBRARY_FUNCTION WHERE ID=#{id}
+	</select>
+	<delete id="deleteByTempLibraryId" parameterType="String">
+	 	DELETE FROM  SYS_MSG_TEMPLATE_LIBRARY_FUNCTION where TEMP_LIBRARY_ID=#{tempLibraryId}
+	</delete>
+</mapper>

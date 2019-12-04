@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="yxw-insurance:war">
+    <output-path>$PROJECT_DIR$/yxw-insurance/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>yxw-insurance</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="yxw-insurance.war">
+      <element id="artifact" artifact-name="yxw-insurance:war exploded" />
+    </root>
+  </artifact>
+</component>

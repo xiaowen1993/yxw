@@ -1,0 +1,364 @@
+@import 'var.less';
+
+.mod-search{
+	.yx-list li{
+		font-size: 16px;
+	}
+}
+.bottom-border(){
+	position: relative;
+	overflow: hidden;
+	&:after{
+		content:'';
+		position:absolute;
+		left: 0;
+		width:100%;
+		height:1px;
+		font-size: 0;
+		background-color: #ccc;
+	}
+	&:after{
+		bottom: 0;
+		transform:translateY(70%);
+	}
+}
+
+.top-bottom-border(){
+	position: relative;
+	overflow: hidden;
+	&:before,&:after{
+		content:'';
+		position:absolute;
+		left: 0;
+		width:100%;
+		height:1px;
+		font-size: 0;
+		background-color: #ccc;
+	}
+	&:before{
+		top: 0;
+		transform:translateY(-50%);
+	}
+	&:after{
+		bottom: 0;
+		transform:translateY(50%);
+	}
+}
+
+// 搜索模块 模块标题
+.mod-search{
+	.pageTitle{
+		padding:11px 0 4px 0;
+		font-size: 16px;
+		color:#666;
+		text-indent:1rem;
+		line-height: 25px;
+	}
+	.search-load-more{
+		width:100%;
+		color:@colorBlue;
+	}
+}
+// 搜索模块 导航条
+.search-nav{
+	background-color: #fff;
+	.bottom-border;
+}
+.search-nav-ul{
+	display:table;
+	width:100%;
+	li{
+		display:table-cell;
+		width:25%;
+		padding:0.9em 0;
+		text-align: center;
+		color:#333;
+		&:before{
+			.iconfont;
+			display:block;
+			width:56px;
+			height:56px;
+			margin:0 auto;
+			color:#fff;
+			line-height: 1;
+			font-size: 56px;
+		}
+		&.icon-hospital:before{
+			content:'\e63e';
+			color: #4ca9ec;
+		}
+		&.icon-kesi:before{
+			content:'\e63d';
+			color: #ff9445;
+		}
+		&.icon-doctor:before{
+			content:'\e64d';
+			color: #39c29f;
+		}
+		&.icon-zhengzhuang:before{
+			content:'\e611';
+			color: #fabf13;
+		}
+		
+		
+	}
+
+}
+
+// 搜索结果
+.recent-search{
+	background-color: #fff;
+	.top-bottom-border;
+	.recent-search-empty{
+		color:#999;
+		font-size: 14px;
+		line-height: 140px;
+		text-align: center;
+	}
+}
+.search-doctor-result{
+	li{
+		display:flex;
+		align-items:center ;
+	}
+	img{
+		height:63px;
+		width:63px;
+		display:block;
+	}
+	.search-doctor{
+		margin-left: 7px;
+		// margin-right: 50px;
+		flex:1;
+	}
+	
+}
+
+.search-appointment{
+	width:54px;
+	span{
+		text-align: center;
+		display:block;
+		line-height: 28px;
+		color:#fff;
+		font-size: 16px;
+		border-radius: 2px;
+	}
+	.yuyue{
+		background-color: @skinbgColor;
+	}
+	.dangban{
+		background-color: @colorBlue;
+	}
+}
+.search-doctor-name{
+	font-size: 16px;
+	color:#333;
+}
+.search-doctor-keshi,.search-doctor-yiyuan{
+	font-size: @size14;
+	color:#999;
+}
+
+// 搜索选择框
+.search-select{
+	display: flex;
+	align-items:center;
+	.bottom-border;
+	background-color: #fff;
+	padding:0.9em 0;
+	.search-option-box{
+		width:65px;
+		height:30px;
+		margin-right: 10px;
+		margin-left: 5px;
+		// position:relative;
+		i{
+			.iconfont;
+			vertical-align: 1px;
+			width:18px;
+			height:12px;
+			line-height: 12px;
+			// position:absolute;
+			color:@skinbgColor;
+			// content:'\e600';
+			right:5px;
+			font-size: 12px;
+			// top:50%;
+			// margin-top: -6px;
+			// transition:all 0.5s;
+			// transform-origin:50% 0%;
+		}
+		.select-hover{
+			transform: rotateZ(180deg);
+		}
+	}
+	.search-select-option{
+		// width:55px;
+		height:30px;
+		color:@skinbgColor;
+		
+		-webkit-appearance:none;
+		border:none;
+		outline:none;
+		font-family: '微软雅黑';
+		line-height: 32px;
+		font-size: 16px;
+		overflow: hidden;
+	}
+	.search-select-input{
+		height:30px;
+		display:block;
+		flex:1;
+		-webkit-appearance:none;
+		border:none;
+		outline:none;
+		overflow: hidden;
+	}
+	.search-select-btn{
+		font-family: '微软雅黑';
+		height:30px;
+		line-height: 30px;
+		display:block;
+		width:50px;
+		// margin-right: 0.9em;
+		color:@skinbgColor;
+		text-align: center;
+		overflow: hidden;
+		font-size: 16px;
+		-webkit-appearance:none;
+		background:none;
+		border:none;
+		outline:none;
+		padding:0;
+	}
+}
+
+// 搜索结果医院列表
+.result-hospital-list{
+	li{
+		display: flex;
+		align-items:center;
+	}
+	.hospital-name{
+		font-size: 16px;
+		color:#333;
+	}
+	.hospital-address{
+		font-size: @size14;
+		color:#999;
+	}
+	.keshi-info{
+		flex:1;
+	}
+}
+.search-load-more{
+	color:@skinbgColor;
+	display:block;
+	text-align: center;
+}
+
+// // 加载更多
+// .search-more-box{
+// 	padding:0.9em 0;
+// 	background-color: #fff;
+// 	span{
+// 		color:@colorBlue;
+// 	}
+// }
+
+/*搜索首页*/
+#search-wrap{position: relative;}
+#search-wrap,#search-wrap #index_main,#search-wrap #index_main .grid_w{ height: 100%;}
+#search-wrap #index_main .grid_w .grid{ width: 50%; height: 33.3333%;}
+#search-wrap #index_main .grid_w .grid:nth-child(even):before{ background-color: #fff!important;}
+#search-wrap #index_main .grid_w .grid::before{ height: 50%; top: 25%; bottom: auto;}
+#search-wrap #index_main .grid_w .grid .box .picThumb {
+  height: 70px;
+  margin-bottom: 7px;
+  overflow: hidden;
+  width: 70px;
+  &.des{
+	width: 50px; height: 50px;
+  }
+}
+
+#search-wrap{
+  .grid_w{
+	height: 92%; width: 101%; text-align: center; overflow: hidden;
+	box-sizing: border-box;
+	margin-left:1px ;
+	//background-color: #fff;
+	position: relative;
+	&:after{
+	  content: ' ';
+	  display: block;
+	  position: absolute;
+	  width: 100%;
+	  left: 0;
+	  top: 0px;
+	  height:1px;
+	  overflow: hidden;
+	  background-color:  @borderColor;
+	  -webkit-transform: scaleY(0.5);
+	  transform: scaleY(0.5);
+	}
+	.grid{
+	  background-color: #fff;
+	  box-sizing: border-box;
+	  width: 33.3333%;
+	  //width: -moz-calc( 100% / 3 );
+	  //width: calc( 100% / 3 );
+	  //width: -webkit-calc( 100% / 3 );
+	  height: 25%;
+	  float: left;
+	  display: table;
+	  overflow: hidden;;
+	  position: relative;
+	  &:before{
+		content: '';
+		display: block;
+		position: absolute;
+		width: 1px;
+		right: 0;
+		bottom: 0px;
+		height: 100%;
+		background-color:  @borderColor;
+		transform: translateX(70%);
+		overflow: hidden;
+	  }
+	  &:after{
+		.li-halfLine(0)
+	  }
+	  &.fore{
+		&:before{
+		  content: '';
+		  display: block;
+		  position: absolute;
+		  width: 1px;
+		  right: 0;
+		  bottom: 0px;
+		  height: 100%;
+		  background-color: #fff;
+		  -webkit-transform: scaleX(0.5);
+		  transform: scaleX(0.5);
+		  overflow: hidden;
+		}
+	  }
+	  .box{
+		display: table-cell;
+		vertical-align: middle;;
+		text-align: center;
+		line-height: 1;
+		.label{
+		  display: inline-block;
+		  font-size: 16px;
+		  color: #666;
+		}
+		.picThumb{ width:  30px; height:30px; overflow: hidden; }
+
+
+	  }
+	}
+  }
+}

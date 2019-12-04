@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd 
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+						http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd 
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+						http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	<!-- 加载资源文件 -->
+	<bean id="springProperty" class="com.yxw.framework.common.spring.ext.config.YxwPropertyPlaceholderConfigurer">
+		<!-- 设置可以从JVM中取值 -->
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<!-- 忽略不存在的资源文件 -->
+		<property name="ignoreResourceNotFound" value="false" />
+		<property name="locations">
+			<list>
+				<value>classpath*:/cache/redis.properties</value>
+				<!-- <value>classpath*:framework_rc.properties</value> -->
+				<value>classpath*:framework_dev.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 注入spring助手类,以便直接在代码中获取bean对象 -->
+	<bean class="com.yxw.framework.common.spring.ext.SpringContextHolder" />
+
+	<!--引入redis 缓存配置 -->
+	<import resource="classpath:/cache/cache.xml" />
+
+	<!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
+	<context:component-scan base-package="com.yxw">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+		<!-- <context:exclude-filter type="regex" expression="framework\.common\.attach\.[^.]+(Dao|Service)" /> -->
+		<context:exclude-filter type="regex" expression=".*.common.*.dao.*" />
+		<context:exclude-filter type="regex" expression=".*.common.*.service.*" />
+	</context:component-scan>
+
+	<import resource="classpath:/dubbo/dubbo-service.xml" />
+
+</beans>

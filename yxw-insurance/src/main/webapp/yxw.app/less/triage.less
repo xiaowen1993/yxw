@@ -1,0 +1,23 @@
+/*create by yuki 2015-10-07*/
+@import "var.less";
+
+/*智能分诊*/
+.triageList{ padding-bottom: 90px;}
+
+.triage-view{
+  .view-row{margin-bottom: 15px; background-color: #fff; padding: 1em 0 0; position: relative;
+    &:after{.li-halfLine(-1px);}
+    .title{ font-size: @size16; padding: 0 .8em;}
+    .mate{ font-size: @size14;  padding: 0 .8em;}
+    .btn-w.btn-box{ padding: 0; position: relative; margin-top: 15px; padding-top: 1px;
+      &:before{.li-halfLine-t(0);}
+      .btn-ok{ width: 50%; float: left; height: 45px; line-height: 45px; padding: 0; border-radius: 0;  background-color: #fafafa; color: @skinbgColor; border: 0;
+        &:first-child{ color: #f0a92c; position: relative;
+          &:after{.li-halfLine-x(0);}
+        }
+      }
+
+    }
+  }
+
+}

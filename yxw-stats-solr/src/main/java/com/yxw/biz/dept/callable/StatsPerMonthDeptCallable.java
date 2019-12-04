@@ -1,0 +1,232 @@
+package com.yxw.biz.dept.callable;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.response.PivotField;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.params.FacetParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+
+import com.yxw.client.YxwSolrClient;
+import com.yxw.client.YxwUpdateClient;
+import com.yxw.constants.Cores;
+import com.yxw.framework.common.PKGenerator;
+import com.yxw.framework.common.spring.ext.SpringContextHolder;
+import com.yxw.vo.dept.DeptStats;
+import com.yxw.vo.dept.DeptStatsRequest;
+import com.yxw.vo.dept.DeptVo;
+
+/**
+ * 方案三：获取数据总行数，分页进行统计，最后一次性进行索引的创建
+ * 1、获取总行数
+ * 2、每次执行4000条结果
+ * 功能概要：科室统计，暂时没有考虑分院的情况
+ * @author Administrator
+ * @date 2017年3月9日
+ */
+public class StatsPerMonthDeptCallable implements Callable<String> {
+
+	private static Logger logger = LoggerFactory.getLogger(StatsPerMonthDeptCallable.class);
+
+	private String beginDate;
+
+	private String endDate;
+
+	private DeptStatsRequest request;
+
+	private Map<String, DeptVo> deptVos;
+
+	private String coreName;
+
+	public StatsPerMonthDeptCallable(DeptStatsRequest request, String beginDate, String endDate, final Map<String, DeptVo> deptVos, final String coreName) {
+		this.request = request;
+		this.beginDate = beginDate;
+		this.endDate = endDate;
+		this.deptVos = deptVos;
+		this.coreName = coreName;
+	}
+
+	@Override
+	public String call() throws Exception {
+		List<Object> statsList = new ArrayList<>();
+		YxwSolrClient solrClient = SpringContextHolder.getBean(YxwSolrClient.class);
+
+		String thisMonth = beginDate.substring(0, 7);
+		logger.info("正在处理科室统计. 医院: {}, 月份: {}.", new Object[] { request.getHospitalName(), thisMonth });
+
+		// 查询
+		// 有效数据查询条件：-bizStatus:3 AND -payStatus:1
+		SolrQuery solrQuery = new SolrQuery();
+		StringBuffer sbQuery = new StringBuffer();
+		sbQuery.append("hospitalCode:" + request.getHospitalCode());
+		sbQuery.append(" AND ");
+		// sbQuery.append("areaCode:" + request.getAreaCode().replace("/", "\\/"));
+		// sbQuery.append(" AND ");
+		sbQuery.append("createDate:[" + beginDate + " TO " + endDate + "]");
+		sbQuery.append(" AND ");
+		sbQuery.append("-bizStatus:3");
+		sbQuery.append(" AND ");
+		sbQuery.append("-payStatus:1");
+
+		solrQuery.setRows(0);
+		solrQuery.setQuery(sbQuery.toString());
+		
+		// 先查询一次，获取总的数据行数
+		QueryResponse totalCountResp = solrClient.query(coreName, solrQuery);
+		long totalCount = totalCountResp.getResults().getNumFound();
+		totalCountResp = null;
+		
+		
+		// 开启去重功能
+		solrQuery.set(FacetParams.FACET, "true");
+		solrQuery.set(FacetParams.FACET_PIVOT, "deptCode,platform");
+
+		
+		QueryResponse response = solrClient.query(coreName, solrQuery);
+		List<PivotField> pivotFields = response.getFacetPivot().get("deptCode,platform");
+
+		for (PivotField field : pivotFields) {
+			DeptStats stats = new DeptStats();
+			stats.setId(PKGenerator.generateId());
+			stats.setThisMonth(thisMonth);
+			BeanUtils.copyProperties(request, stats);
+
+			// 科室代码和科室名称
+			String deptCode = (String) field.getValue();
+			stats.setDeptCode(deptCode);
+			stats.setDeptName(deptVos.get(deptCode).getName());
+
+			List<PivotField> subFields = field.getPivot();
+			for (PivotField subField : subFields) {
+				int platform = (int) subField.getValue();
+				int count = subField.getCount();
+
+				if (platform == 1 || platform == 7) {
+					// 微信
+					stats.setMonthWxCount(count);
+				} else if (platform == 2 || platform == 8) {
+					// 支付宝
+					stats.setMonthAliCount(count);
+					;
+				} else {
+					logger.error("无效的平台. hospitalCode: {}. deptCode: {}. platform: {}.", new Object[] { request.getHospitalCode(), deptCode, platform });
+				}
+			}
+
+			statsList.add(stats);
+		}
+		
+		response.removeFacets();
+		response = null;
+
+		// 广西一个大比较特殊，两边平台都有数据的 -- gxykdxdyfsyy
+		// 广西一个大目前配置的是医院项目，因为获取的PlatformCode只能对单个进行控制
+		if (request.getHospitalCode().equals("gxykdxdyfsyy") || request.getHospitalCode().equals("gzsdyrmyy")) {
+			logger.info("[特殊]处理跨平台医院科室统计. 医院: {}, 月份: {}.", new Object[] { request.getHospitalName(), thisMonth });
+			// 一样的先获取最大条数
+			
+			response = solrClient.query(Cores.CORE_STD_REG_INFOS, solrQuery);
+			pivotFields = response.getFacetPivot().get("deptCode,platform");
+
+			for (PivotField field : pivotFields) {
+				DeptStats stats = new DeptStats();
+				stats.setId(PKGenerator.generateId());
+				stats.setThisMonth(thisMonth);
+				BeanUtils.copyProperties(request, stats);
+
+				// 科室代码和科室名称
+				String deptCode = (String) field.getValue();
+				stats.setDeptCode(deptCode);
+				stats.setDeptName(deptVos.get(deptCode).getName());
+
+				List<PivotField> subFields = field.getPivot();
+				for (PivotField subField : subFields) {
+					int platform = (int) subField.getValue();
+					int count = subField.getCount();
+
+					if (platform == 1 || platform == 7) {
+						// 微信
+						stats.setMonthWxCount(count);
+					} else if (platform == 2 || platform == 8) {
+						// 支付宝
+						stats.setMonthAliCount(count);
+						;
+					} else {
+						logger.error("无效的平台. hospitalCode: {}. deptCode: {}. platform: {}.", new Object[] { request.getHospitalCode(), deptCode, platform });
+					}
+				}
+
+				int index = statsList.indexOf(stats);
+				if (index != -1) {
+					((DeptStats) statsList.get(index)).combineEntity(stats);
+				} else {
+					statsList.add(stats);
+				}
+			}
+		}
+		
+		response.removeFacets();
+		response = null;
+
+		// 数据过多，只能一个个月进行建立索引，不然本服务器内存不足，另外，一次性导入太大的数据，对Solr服务器影响巨大。
+		saveStatsInfos(request.getHospitalCode(), thisMonth, statsList);
+		statsList.clear();
+		statsList = null;
+
+		return String.format("hospitalCode: [%s], thisMonth: [%s]. all RegDept stats end...", new Object[] { request.getHospitalCode(), thisMonth });
+	}
+
+	private void saveStatsInfos(String hospitalCode, String thisMonth, Collection<Object> collections) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("hospitalCode:" + request.getHospitalCode() + " AND ");
+		sb.append("thisMonth:" + thisMonth);
+		YxwUpdateClient.addBeans(Cores.CORE_STATS_DEPT, collections, true, sb.toString());
+	}
+
+	public String getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(String beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public DeptStatsRequest getRequest() {
+		return request;
+	}
+
+	public void setRequest(DeptStatsRequest request) {
+		this.request = request;
+	}
+
+	public Map<String, DeptVo> getDeptVos() {
+		return deptVos;
+	}
+
+	public void setDeptVos(Map<String, DeptVo> deptVos) {
+		this.deptVos = deptVos;
+	}
+
+	public String getCoreName() {
+		return coreName;
+	}
+
+	public void setCoreName(String coreName) {
+		this.coreName = coreName;
+	}
+}

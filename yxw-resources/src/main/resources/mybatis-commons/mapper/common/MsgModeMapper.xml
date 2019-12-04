@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.hospital.MsgMode">
+
+	<resultMap id="msgModeResultMap" type="MsgMode">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="PLATFORM_ID" property="platformId" jdbcType="VARCHAR" />
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="TARGET_ID" property="targetId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<select id="findAll" resultMap="msgModeResultMap">
+		select ID,NAME,PLATFORM_ID,CODE,TARGET_ID from SYS_MSG_MODE
+	</select>
+	
+	<select id="findById" resultMap="msgModeResultMap">
+		select ID,NAME,PLATFORM_ID,CODE,TARGET_ID from SYS_MSG_MODE where ID = #{id} 
+	</select>
+	
+	<insert id="add" parameterType="MsgMode" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		SYS_MSG_MODE(ID,NAME,PLATFORM_ID,CODE,TARGET_ID)
+		values
+		(#{id},#{name},#{platformId},${code},#{targetId})
+	</insert>
+
+	<update id="update" parameterType="MsgMode">
+		update SYS_MSG_MODE 
+		set NAME = #{NAME}, 
+			PLATFORM_ID = #{platformId}, 
+			CODE=#{code},
+			TARGET_ID = #{targetId}  
+		where ID = #{id}
+	</update>
+	
+</mapper>

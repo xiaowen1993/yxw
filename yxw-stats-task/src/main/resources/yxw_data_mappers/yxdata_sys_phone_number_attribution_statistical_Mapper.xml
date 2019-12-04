@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.stats.entity.stats.YxDataSysPhoneNumberAttributionStatistical">
+
+  <resultMap id="BaseResultMap" type="com.yxw.stats.entity.stats.YxDataSysPhoneNumberAttributionStatistical" >
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DATE" property="date" jdbcType="VARCHAR" />
+    <result column="PROVINCE" property="province" jdbcType="VARCHAR" />
+    <result column="CITY" property="city" jdbcType="VARCHAR" />
+    <result column="COUNT" property="count" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, DATE, PROVINCE, CITY, COUNT
+  </sql>
+  
+</mapper>

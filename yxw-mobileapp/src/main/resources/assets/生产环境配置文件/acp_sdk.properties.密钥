@@ -1,0 +1,44 @@
+##############SDK配置文件（密钥方式签名）################
+# 说明：
+# 1. 使用时请删除后缀的“.证书”，并将此文件复制到src文件夹下替换原来的acp_sdk.properties。
+# 2. 具体配置项请根据注释修改。
+# 3. 请注意无跳转、代收付等涉及敏感信息加密的产品一定要用证书方式签名的，请勿使用此文件。
+################################################
+
+##########################入网测试环境交易发送地址（线上测试需要使用生产环境交易请求地址）#############################
+
+##交易请求地址 
+acpsdk.frontTransUrl=https://gateway.95516.com/gateway/api/frontTransReq.do
+acpsdk.backTransUrl=https://gateway.95516.com/gateway/api/backTransReq.do
+acpsdk.singleQueryUrl=https://gateway.95516.com/gateway/api/queryTrans.do
+acpsdk.batchTransUrl=https://gateway.95516.com/gateway/api/batchTrans.do
+acpsdk.fileTransUrl=https://filedownload.95516.com/
+acpsdk.appTransUrl=https://gateway.95516.com/gateway/api/appTransReq.do
+acpsdk.cardTransUrl=https://gateway.95516.com/gateway/api/cardTransReq.do
+
+#以下缴费产品使用，其余产品用不到
+acpsdk.jfFrontTransUrl=https://gateway.95516.com/jiaofei/api/frontTransReq.do
+acpsdk.jfBackTransUrl=https://gateway.95516.com/jiaofei/api/backTransReq.do
+acpsdk.jfSingleQueryUrl=https://gateway.95516.com/jiaofei/api/queryTrans.do
+acpsdk.jfCardTransUrl=https://gateway.95516.com/jiaofei/api/cardTransReq.do
+acpsdk.jfAppTransUrl=https://gateway.95516.com/jiaofei/api/appTransReq.do
+
+########################################################################
+
+# 报文版本号，固定5.1.0，请勿改动
+acpsdk.version=5.1.0
+
+#签名方式。sha256方式配11，sm3方式配12。（一般情况请不要改动）
+acpsdk.signMethod=11
+
+#签名密钥（配置业务邮件发送的密钥 ，测试环境固定88888888）
+acpsdk.secureKey=88888888
+
+# 是否验证https证书，测试环境请设置false，生产环境建议优先尝试true，不行再false。非true的值默认都当false处理。
+acpsdk.ifValidateRemoteCert=true
+
+#前台通知地址，填写后台接收银联前台通知的地址
+acpsdk.backUrl=http://222.222.222.222:8080/ACPSample_B2C/backRcvResponse
+
+#后台通知地址，填写后台接收银联后台通知的地址，必须外网能访问
+acpsdk.frontUrl=http://localhost:8080/ACPSample_B2C/frontRcvResponse

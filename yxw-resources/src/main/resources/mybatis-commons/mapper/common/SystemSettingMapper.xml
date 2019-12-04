@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.commons.entity.platform.rule.SystemSetting" >
+	<resultMap id="SystemSettingMapper" type="com.yxw.commons.entity.platform.rule.SystemSetting" >
+	    <id column="ID" property="id" jdbcType="VARCHAR" />
+	    <result column="FINISH_USER_INFO" property="finishUserInfo" />
+	    <result column="FINISH_USER_INFO_CODE" property="finishUserInfoCode" />
+  	</resultMap>
+  
+  <sql id="insertColumn" >
+    ID,FINISH_USER_INFO,FINISH_USER_INFO_CODE
+  </sql>
+  
+  <select id="findAll" resultMap="SystemSettingMapper">
+  		select <include refid="insertColumn"/> from SYS_SETTING 
+  </select>
+  
+  <!-- 新增 -->
+  <insert id="add" parameterType="com.yxw.commons.entity.platform.rule.SystemSetting">
+  		insert into SYS_SETTING(ID,FINISH_USER_INFO,FINISH_USER_INFO_CODE) VALUES(#{id},#{finishUserInfo},#{finishUserInfoCode})
+  </insert>
+  
+  <!-- 更新 -->
+  <update id="update" parameterType="com.yxw.commons.entity.platform.rule.SystemSetting" >
+  	update SYS_SETTING 
+  	<set>
+	  	<if test="finishUserInfo !=null">
+	  		FINISH_USER_INFO=#{finishUserInfo},
+	  	</if>
+	  	<if test="finishUserInfoCode !=null">
+	  		FINISH_USER_INFO_CODE=#{finishUserInfoCode}
+	  	</if>
+  	</set>
+  	where ID=#{id}
+  </update>
+  
+</mapper>

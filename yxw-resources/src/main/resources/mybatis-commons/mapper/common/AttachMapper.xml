@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.framework.common.attach.entity.Attach">
+
+	<resultMap id="attachResult" type="Attach">
+		<id column="ID" 						property="id" />
+		<result column="ATTACH_ID" 				property="attachId" />
+		<result column="ORIGINAL_NAME"          property="originalName"/>
+		<result column="ARCHIVE_NAME"           property="archiveName"/>
+		<result column="RELATIVE_PATH" 			property="relativePath"/>
+		<result column="ABSOLUTE_PATH" 			property="absolutePath"/>
+		<result column="EXT_NAME" 				property="extName"/>
+		<result column="ATTACH_SIZE" 			property="attachSize"/>
+		<result column="UPLOAD_DATE" 			property="uploadDate"/>
+		<result column="UPLOAD_PERSONID" 		property="uploadPersonId"/>
+		<result column="ATTACH_TYPE" 			property="attachType"/>
+		<!-- <result column="UPLOAD_PERSON_NAME" 	property="uploadPersonName"/> -->
+	</resultMap>
+	
+	<!-- 实体插入 -->
+	<insert id="add">
+		INSERT INTO SYS_ATTACH(ID,
+			ATTACH_ID,
+			ORIGINAL_NAME,
+			ARCHIVE_NAME,
+			RELATIVE_PATH,
+			ABSOLUTE_PATH,
+			EXT_NAME,
+			ATTACH_SIZE,
+			UPLOAD_DATE,
+			UPLOAD_PERSONID,
+			ATTACH_TYPE
+		) VALUES (
+			#{id},
+			#{attachId},
+			#{originalName},
+			#{archiveName},
+			#{relativePath},
+			#{absolutePath},
+			#{extName},
+			#{attachSize},
+			#{uploadDate},
+			#{uploadPersonId},
+			#{attachType}
+		)
+	</insert>
+	
+	<!-- 实体更新 -->
+	<update id="update">
+		update SYS_ATTACH set 
+			ATTACH_ID = #{attachId},
+			ORIGINAL_NAME = #{originalName},
+			ARCHIVE_NAME = #{archiveName},
+			RELATIVE_PATH = #{relativePath},
+			ABSOLUTE_PATH = #{absolutePath},
+			EXT_NAME = #{extName},
+			ATTACH_SIZE = #{attachSize},
+			UPLOAD_DATE = #{uploadDate},
+			UPLOAD_PERSONID = #{uploadPersonId},
+			ATTACH_TYPE = #{attachType}
+		 	where ID = #{id}
+	</update>
+	
+	
+	<select id="findByAttachId" resultMap="attachResult" parameterType="String">
+		select ID,
+			ATTACH_ID,
+			ORIGINAL_NAME,
+			ARCHIVE_NAME,
+			RELATIVE_PATH,
+			ABSOLUTE_PATH,
+			EXT_NAME,
+			ATTACH_SIZE,
+			UPLOAD_DATE,
+			UPLOAD_PERSONID,
+			ATTACH_TYPE FROM SYS_ATTACH where ATTACH_ID = #{attachId}
+	</select>
+
+	<!-- <select id="findListByGenericQueryParam" parameterType="genericQueryParam" resultMap="attachResultMap">
+		SELECT 
+			ARCHIVE_NAME 	as archiveName,
+			EXT_NAME 		as extName,
+			ATTACH_SIZE 	as attachSize,
+			UPLOAD_DATE		as uploadDate
+		FROM ATTACH_INFO 
+			<if test="_parameter.getSortCond().size() != 0">
+			order by
+			<foreach collection="_parameter.getSortCond()" item="sortCond"
+				separator=",">
+				${sortCond.column} ${sortCond.order} 
+			</foreach>
+		</if>
+	</select> -->
+	
+	<select id="findByEntityList" resultMap="attachResult">
+		SELECT 
+			ARCHIVE_NAME 	as archiveName,
+			ATTACH_SIZE 	as attachSize,
+			ABSOLUTE_PATH	as absolutePath,
+			RELATIVE_PATH	as relativePath
+		FROM 
+			ATTACH_INFO 
+		WHERE
+			ARCHIVE_NAME = #{archiveName}
+	</select>
+</mapper>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.app.carrieroperator.Carrieroperator">
+
+	<resultMap id="carrieroperatorMap" type="com.yxw.commons.entity.platform.app.carrieroperator.Carrieroperator">
+		<result column="ID" property="id" />
+		<result column="TITLE" property="title" />
+		<result column="OPERATION_POSITION" property="operationPosition" />
+		<result column="START_PIC_640X960" property="starPtic640x960" />
+		<result column="START_PIC_640X1136" property="starPtic640x1136" />
+		<result column="START_PIC_750X1334" property="starPtic750x1334" />
+		<result column="START_PIC_1242X2208" property="starPtic1242x2208" />
+		<!-- 
+		ALTER TABLE `new_yx129`.`SYS_APP_CARRIEROPERATOR` 
+		ADD COLUMN `START_PIC_320X480` varchar(1000) AFTER `START_PIC_1242X2208`, 
+		ADD COLUMN `START_PIC_480X800` varchar(1000) AFTER `START_PIC_320X480`, 
+		ADD COLUMN `START_PIC_1080X1920` varchar(1000) AFTER `START_PIC_480X800`;
+		 -->
+		<result column="START_PIC_320X480" property="starPtic320x480" />
+		<result column="START_PIC_480X800" property="starPtic480x800" />
+		<result column="START_PIC_1080X1920" property="starPtic1080x1920" />
+		
+		<result column="SHUFFLING_PIC" property="shufflingPic" />
+
+		<result column="CONTENT_TYPE" property="contentType" />
+		<result column="CONTENT" property="content" />
+		<result column="SORTING" property="sorting" />
+		<result column="STATUS" property="status" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+		<result column="AUX1" property="aux1" />
+		<result column="AUX2" property="aux2" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID,TITLE,OPERATION_POSITION,START_PIC_640X960,START_PIC_640X1136,START_PIC_750X1334,START_PIC_1242X2208,
+		START_PIC_320X480,START_PIC_480X800,START_PIC_1080X1920,SHUFFLING_PIC,
+		CONTENT_TYPE,CONTENT,SORTING,STATUS,CP,CT,EP,ET,AUX1,AUX2
+	</sql>
+
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.app.carrieroperator.Carrieroperator">
+		INSERT INTO SYS_APP_CARRIEROPERATOR
+		(
+		<include refid="Base_Column_List"></include>
+		)
+		VALUES (#{id}, #{title}, #{operationPosition}, #{starPtic640x960}, #{starPtic640x1136}, #{starPtic750x1334}, #{starPtic1242x2208}, 
+		#{starPtic320x480},#{starPtic480x800},#{starPtic1080x1920},#{shufflingPic},
+		#{contentType}, #{content}, #{sorting}, #{status},
+		#{cp}, #{ct}, #{ep}, #{et}, #{aux1}, #{aux2})
+	</insert>
+
+	<select id="findListByPage" resultMap="carrieroperatorMap">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_APP_CARRIEROPERATOR
+		where 1=1
+		ORDER BY ET DESC
+
+	</select>
+
+	<select id="findById" resultMap="carrieroperatorMap">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_APP_CARRIEROPERATOR where ID = #{id}
+	</select>
+
+	<!-- 根据运营位置查找 -->
+	<select id="findByOperationPosition" resultMap="carrieroperatorMap">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_APP_CARRIEROPERATOR where OPERATION_POSITION = #{operationPosition}
+		order by SORTING
+	</select>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.yxw.commons.entity.platform.app.carrieroperator.Carrieroperator">
+		UPDATE SYS_APP_CARRIEROPERATOR
+		<set>
+			<if test="title != null">
+				TITLE = #{title},
+			</if>
+			<if test="operationPosition != null">
+				OPERATION_POSITION = #{operationPosition},
+			</if>
+			<if test="starPtic640x960 != null">
+				START_PIC_640X960 = #{starPtic640x960},
+			</if>
+			<if test="starPtic640x1136 != null">
+				START_PIC_640X1136 = #{starPtic640x1136},
+			</if>
+			<if test="starPtic750x1334 != null">
+				START_PIC_750X1334 = #{starPtic750x1334},
+			</if>
+			<if test="starPtic1242x2208 != null">
+				START_PIC_1242X2208 = #{starPtic1242x2208},
+			</if>
+			<if test="starPtic320x480 != null">
+				START_PIC_320X480 = #{starPtic320x480},
+			</if>
+			<if test="starPtic480x800 != null">
+				START_PIC_480X800 = #{starPtic480x800},
+			</if>
+			<if test="starPtic1080x1920 != null">
+				START_PIC_1080X1920 = #{starPtic1080x1920},
+			</if>
+			<if test="shufflingPic != null">
+				SHUFFLING_PIC = #{shufflingPic},
+			</if>
+			<if test="contentType != null">
+				CONTENT_TYPE = #{contentType},
+			</if>
+			<if test="content != null">
+				CONTENT = #{content},
+			</if>
+			<if test="sorting != null">
+				SORTING = #{sorting},
+			</if>
+			<if test="status != null">
+				STATUS = #{status},
+			</if>
+			<if test="et != null">
+				ET = #{et},
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<select id="findSorting" resultType="java.lang.String">
+		select SORTING from SYS_APP_CARRIEROPERATOR where OPERATION_POSITION = #{operationPosition}
+	</select>
+</mapper>

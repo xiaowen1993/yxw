@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-app-biz" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-base" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-base-biz" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-cache" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-commons" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-framework" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-insurance" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-integration-canal-kafka-elasticsearch" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-interfaces" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-interfaces-dispatcher" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-interfaces-elasticsearch" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-interfaces-insurance-chinalife" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-mobile-biz" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-mobileapp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-oauth" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-payrefund" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-platform" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-solr" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-statistics" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-stats" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-stats-solr" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-stats-task" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-task" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yxw-utils" charset="UTF-8" />
+  </component>
+</project>

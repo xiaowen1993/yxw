@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yxw.commons.entity.platform.message.Rule">
+	<!-- 规则map -->
+	<resultMap id="ruleMap" type="com.yxw.commons.entity.platform.message.Rule">
+		<id column="ID" property="id"/>
+		<result column="RULE_NAME" property="ruleName"/>
+		<result column="HOSPITAL_ID" property="hospitalId"/>
+		<result column="TYPE" property="type"/>
+		<result column="STATE" property="state"/>
+	</resultMap>
+	<!-- end -->
+	
+	
+	<!-- 新增规则 -->
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.message.Rule" >
+		INSERT INTO SYS_MSG_RULE(ID,HOSPITAL_ID,RULE_NAME,TYPE,THIRD_TYPE,STATE)
+		VALUES(#{id},#{hospitalId},#{ruleName},#{type},#{thirdType},#{state})
+	</insert>
+	<!-- end -->
+	
+	
+	<!-- 查询规则BY ID -->
+	<select id="findById" parameterType="string" resultMap="ruleMap"> 
+		select * from SYS_MSG_RULE r where r.ID=#{id}
+	</select>
+	<!-- end -->
+	
+	
+	
+	
+	<!-- 根据医院Id和平台类型查询规则 -->
+	<select id="findByHospId" parameterType="string" resultMap="ruleMap" >
+		select * from SYS_MSG_RULE r where r.HOSPITAL_ID=#{hospitalId} and r.THIRD_TYPE=#{thirdType}
+	</select>
+	<!-- end -->
+	
+	
+	<!-- 修改规则 -->
+	<update id="update" parameterType="com.yxw.commons.entity.platform.message.Rule">
+		UPDATE SYS_MSG_RULE t 
+		<set>
+			<if test="ruleName!=null">
+				t.RULE_NAME=#{ruleName},
+			</if>
+			<if test="type!=null">
+				t.TYPE=#{type}
+			</if>
+		</set>
+		WHERE t.ID='${id}'
+	</update>
+	<!-- end -->
+	
+	
+	<!-- 删除规则与回复关联关系 -->
+	<delete id="deleteRuleReply" parameterType="Map">
+	    DELETE FROM SYS_MSG_RULE_REPLY  WHERE RULE_ID=#{ruleId} AND REPLY_ID=#{replyId}
+	</delete>
+	<!-- end -->
+	
+	
+	<!-- 删除规则 -->
+	<delete id="deleteById" parameterType="string">
+	    DELETE FROM SYS_MSG_RULE  WHERE ID=#{id}
+	</delete>
+	<!-- end -->
+	
+	
+	<!-- ==========================根据关键字查找符合的规则（完全匹配）==================================== -->
+	<select id="findRuleByKeyword" parameterType="Map" resultMap="ruleReplyMap">
+		SELECT
+			 ru.*
+		FROM SYS_MSG_RULE ru 
+		JOIN SYS_MSG_KEYWORD k ON k.RULE_ID = ru.ID
+		WHERE
+			ru.HOSPITAL_ID = '${hospId}'
+		AND ru.STATE=1  AND ru.THIRD_TYPE=#{thirdType}
+		AND k.CONTENT = '${keyword}' AND k.TYPE=1
+	</select>
+	<!-- ============================根据关键字查询规则（不完全匹配）================================================ -->
+	<select id="findRuleByHalfKeyword" parameterType="Map" resultMap="ruleReplyMap">
+		SELECT
+			 ru.*
+		FROM SYS_MSG_RULE ru 
+		JOIN SYS_MSG_KEYWORD k ON k.RULE_ID = ru.ID
+		WHERE
+			ru.HOSPITAL_ID = '${hospId}'
+		AND ru.STATE=1 AND ru.THIRD_TYPE=#{thirdType}
+		AND k.CONTENT like '%${keyword}%' AND k.TYPE=2
+	</select>
+	<!-- 集合属性 -->
+	<resultMap id="ruleReplyMap" type="com.yxw.commons.entity.platform.message.Rule">
+		<id column="ID" property="id"/>
+		<result column="RULE_NAME" property="ruleName"/>
+		<result column="HOSPITAL_ID" property="hospitalId"/>
+		<result column="TYPE" property="type"/>
+		<result column="STATE" property="state"/>
+		<collection property="replyList" ofType="com.yxw.commons.entity.platform.message.Reply" column="id" select="findListByRuleId"></collection>
+	</resultMap>
+	<select id="findListByRuleId" parameterType="string" resultMap="replyMap">
+		SELECT * FROM SYS_MSG_REPLY t2 
+			LEFT JOIN SYS_MSG_RULE_REPLY t1 	
+			ON t1.REPLY_ID=t2.ID
+			WHERE t2.STATE=1 AND t1.RULE_ID=#{id} 
+	</select>
+	<resultMap type="Reply" id="replyMap">
+		<id column="ID" property="id"/>
+		<result column="TYPE" property="type"/>
+		<result column="CONTENT_TYPE" property="contentType"/>
+		<result column="THIRD_TYPE" property="thirdType"/>
+		<result column="HOSPITAL_ID" property="hospitalId"/>
+		<result column="HOSPITAL_BRANCH_ID" property="hospitalBranchId"/>
+		<result column="CONTENT" property="content"/>
+		<result column="PIC_PATHS" property="picPaths"/>
+		<result column="CP" property="cp"/>
+		<result column="EP" property="ep"/>
+		<collection property="mixedMeterialList" ofType="MixedMeterial" column="id" select="findMixMeterialByReply"></collection>
+	</resultMap>
+	<select id="findMixMeterialByReply" parameterType="string" resultMap="mixedMeterialMap">
+		  SELECT *
+		  FROM SYS_MSG_MIXED_METERIAL t1 LEFT JOIN SYS_MSG_REPLY_METERIAL t2 ON t1.ID=t2.MIXED_METERIAL_ID
+		  WHERE t2.REPLY_ID=#{id} AND ( t1.IS_PARENT=1 OR t1.TYPE=1 )
+	</select>
+	<resultMap type="MixedMeterial" id="mixedMeterialMap">
+		<id column="ID" property="id"/>
+		<result column="TITLE" property="title"/>
+		<result column="AUTHOR" property="author"/>
+		<result column="DESCRIPTION" property="description"/>
+		<result column="CONTENT" property="content"/>
+		<result column="LINK" property="link"/>
+		<result column="TYPE" property="type"/>
+		<result column="COVER_PIC_PATH" property="coverPicPath"/>
+		<result column="STATE" property="state"/>
+		<result column="IS_PARENT" property="isParent"/>
+		<result column="PARENT_ID" property="parentId"/>
+		<collection property="subMixedMeterialList" ofType="MixedMeterial" column="id" select="findSubMixMeterial"></collection>
+	</resultMap>
+	<select id="findSubMixMeterial" parameterType="string" resultType="MixedMeterial">
+		  SELECT t.TITLE as title,
+		  t.AUTHOR as author,
+		  t.DESCRIPTION as description,
+		  t.CONTENT as content,
+		  t.LINK as link,
+		  t.COVER_PIC_PATH as coverPicPath,
+		  t.IS_PARENT as isParent,
+		  t.PARENT_ID as parentId,
+		  t.STATE as state
+		  FROM SYS_MSG_MIXED_METERIAL t 
+		  WHERE t.PARENT_ID=#{id} AND t.IS_PARENT=0 AND t.TYPE=2 
+	</select>
+	<!-- end -->
+	
+</mapper>

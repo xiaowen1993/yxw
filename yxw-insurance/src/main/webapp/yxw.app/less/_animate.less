@@ -1,0 +1,24 @@
+.zoomIn-enter-active,
+.zoomIn-leave-active {
+    transition: transform .3s, opacity .2s;
+    transform: scale(1);
+    opacity: 1
+
+}
+
+.zoomIn-enter,
+.zoomIn-leave-to {
+    transform: scale(.5);
+    opacity: 0;
+}
+
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .5s
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0
+}

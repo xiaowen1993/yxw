@@ -1,0 +1,137 @@
+/*less*/
+@import "var.less";
+// 智能候诊 -选择就诊卡
+.choiceCard{
+  .choiceCard-tip{
+    // min-height: 53px;
+    padding: 0.9em  0.8em; 
+    color:#666;
+    font-size: 14px;
+  }
+  .choiceCard-list{
+    li{
+      position:relative;
+      i{
+        content: "";
+        position:absolute;
+        width:18px;
+        height:31px;
+        top:50%;
+        transform:translateY(-50%);
+        right:0em;
+        left:auto;
+        background: url("@{imgPath}/icon/icon-arrow.png") no-repeat right 50%;
+        background-size: 50%;
+      }
+    }
+    img{
+      height:48px;
+      width:48px;
+      vertical-align:top;
+      margin-right: 10px;
+    }
+    .choiceCard-info{
+      display:inline-block;
+      height:48px;
+      line-height: 1.8;
+      p{
+        margin-right: 15px;
+      }
+      p:nth-of-type(1){
+        font-size: 1.6rem;
+      }
+      p:nth-of-type(2){
+        font-size: 1.4rem;
+        color:#999999;
+      }
+    }
+  }
+}
+// 智能候诊
+
+.houzhen-wrap{
+  .houzhen-info{
+    margin-top: 0.9em;
+    padding:0.9em 0;
+    background-color: #fff;
+    position:relative;
+    overflow: hidden;
+    &:after,&:before{
+      content:"";
+      position:absolute;
+      height:1px;
+      width:100%;
+      left:0;
+      overflow: hidden;
+      background-color: #ccc;
+      // transform:scale(1,0.5);
+    }
+    &:after{
+      bottom:0px;
+      transform:translateY(68%);
+    }
+    &:before{
+      top: 0px;
+      transform:translateY(-68%);
+    }
+    .houzhen-doctor{
+      p{
+        text-align: center;
+      }
+      p:nth-of-type(1){
+        color:#666666;
+        font-size: @size14;
+      }
+      p:nth-of-type(2){
+        color:#333333;
+        font-size: @size16;
+      }
+    }
+    .houzhen-wite{
+      text-align: center;
+      margin-top: 0.9em;
+      margin-bottom: .5em;
+      & > div{
+        display:inline-block;
+        margin:0 20px;
+        font-size: 16px;
+        color:#666666;
+      }
+      span{
+        display:block;
+        color:#fff;
+        border-radius: 60px;
+        font-size: 20px;
+        width:60px;
+        height:60px;
+        line-height: 60px;
+        margin-top: 8px;
+      }
+      .houzhen-count span{
+        background-color: #4ca9ec;
+      }
+      .houzhen-on span{
+        background-color: #2ccf93;
+      }
+    }
+  }
+  .houzhen-infoList{
+    margin-top: 0.9em;
+    .label{
+      float: left;
+    }
+    .values{
+      float: right;
+      color:#666666;
+      text-align: right;
+      &.green{  color:@skinbgColor;}
+      &.blue{ color:#4ca9ec;}
+      span{
+        font-size: 22px;
+        color:@skinbgColor;
+        line-height: 1;
+        // vertical-align: 10px;
+      }
+    }
+  }
+}

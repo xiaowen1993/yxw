@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.commons.entity.platform.rule.RuleOnlineFiling" >
+  <resultMap id="RuleOnlineFilingResultMap" type="com.yxw.commons.entity.platform.rule.RuleOnlineFiling" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+    <result column="VISITING_PERSON_TYPE" property="visitingPersonType" jdbcType="VARCHAR" />
+    <result column="CERTIFICATES_TYPE" property="certificatesType" jdbcType="VARCHAR" />  
+    <result column="TIP_WARM_CONTENT" property="tipWarmContent" jdbcType="VARCHAR" />
+    <result column="INPUT_INCORRECT_TIP" property="inputIncorrectTip" jdbcType="VARCHAR" />
+    <result column="ONLINE_FILING_TIP" property="onlineFilingTip" jdbcType="VARCHAR"/>
+    <result column="CP" property="cp" jdbcType="INTEGER" />
+    <result column="CT" property="ct" jdbcType="TIMESTAMP" />
+    <result column="EP" property="ep" jdbcType="INTEGER" />
+    <result column="ET" property="et" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, HOSPITAL_ID, VISITING_PERSON_TYPE, CERTIFICATES_TYPE, TIP_WARM_CONTENT, INPUT_INCORRECT_TIP, 
+    ONLINE_FILING_TIP,CP, CT, EP, ET
+  </sql>
+  <select id="findById" resultMap="RuleOnlineFilingResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_RULE_ONLINE_FILING
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findAll" resultMap="RuleOnlineFilingResultMap">
+   select *  from SYS_RULE_ONLINE_FILING
+  </select>
+  
+  <select id="findByHospitalId" resultMap="RuleOnlineFilingResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_RULE_ONLINE_FILING
+    where HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from SYS_RULE_ONLINE_FILING
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="add" parameterType="com.yxw.commons.entity.platform.rule.RuleOnlineFiling" >
+    insert into SYS_RULE_ONLINE_FILING (ID, HOSPITAL_ID, VISITING_PERSON_TYPE, 
+      CERTIFICATES_TYPE, TIP_WARM_CONTENT, INPUT_INCORRECT_TIP, ONLINE_FILING_TIP,
+      CP, CT, EP, ET
+      )
+    values (#{id,jdbcType=VARCHAR}, #{hospitalId,jdbcType=BIGINT}, #{visitingPersonType,jdbcType=VARCHAR}, 
+      #{certificatesType,jdbcType=VARCHAR}, #{tipWarmContent,jdbcType=VARCHAR}, #{inputIncorrectTip,jdbcType=VARCHAR}, 
+      #{onlineFilingTip,jdbcType=VARCHAR},#{cp,jdbcType=INTEGER}, #{ct,jdbcType=TIMESTAMP}, #{ep,jdbcType=INTEGER}, 
+      #{et,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  
+  <update id="update" parameterType="com.yxw.commons.entity.platform.rule.RuleOnlineFiling" >
+    update SYS_RULE_ONLINE_FILING
+    <set >
+      <if test="hospitalId != null" >
+        HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+      </if>
+      <if test="visitingPersonType != null" >
+        VISITING_PERSON_TYPE = #{visitingPersonType,jdbcType=VARCHAR},
+      </if>
+      <if test="certificatesType != null" >
+        CERTIFICATES_TYPE = #{certificatesType,jdbcType=VARCHAR},
+      </if>
+      <if test="tipWarmContent != null" >
+        TIP_WARM_CONTENT = #{tipWarmContent,jdbcType=VARCHAR},
+      </if>
+      <if test="inputIncorrectTip != null" >
+        INPUT_INCORRECT_TIP = #{inputIncorrectTip,jdbcType=VARCHAR},
+      </if>
+      <if test="onlineFilingTip != null">
+        ONLINE_FILING_TIP = #{onlineFilingTip,jdbcType=VARCHAR},
+      </if>
+      <if test="cp != null" >
+        CP = #{cp,jdbcType=INTEGER},
+      </if>
+      <if test="ct != null" >
+        CT = #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ep != null" >
+        EP = #{ep,jdbcType=INTEGER},
+      </if>
+      <if test="et != null" >
+        ET = #{et,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateById" parameterType="com.yxw.commons.entity.platform.rule.RuleOnlineFiling" >
+    update SYS_RULE_ONLINE_FILING
+    set HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+      VISITING_PERSON_TYPE = #{visitingPersonType,jdbcType=VARCHAR},
+      CERTIFICATES_TYPE = #{certificatesType,jdbcType=VARCHAR},
+      TIP_WARM_CONTENT = #{tipWarmContent,jdbcType=VARCHAR},
+      INPUT_INCORRECT_TIP = #{inputIncorrectTip,jdbcType=VARCHAR},
+      ONLINE_FILING_TIP = #{onlineFilingTip,jdbcType=VARCHAR},
+      CP = #{cp,jdbcType=INTEGER},
+      CT = #{ct,jdbcType=TIMESTAMP},
+      EP = #{ep,jdbcType=INTEGER},
+      ET = #{et,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

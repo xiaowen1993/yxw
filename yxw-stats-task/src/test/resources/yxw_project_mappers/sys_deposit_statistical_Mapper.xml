@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.stats.entity.project.SysDepositStatistical">
+
+  <resultMap id="BaseResultMap" type="com.yxw.stats.entity.project.SysDepositStatistical" >
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DATE" property="date" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+    <result column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
+    <result column="PAYMENT" property="payment" jdbcType="INTEGER" />
+    <result column="NO_PAYMENT" property="noPayment" jdbcType="INTEGER" />
+    <result column="REFUND" property="refund" jdbcType="INTEGER" />
+    <result column="DEPOSIT_PAY_FEE" property="depositPayFee" jdbcType="DOUBLE" />
+    <result column="DEPOSIT_REFUND_FEE" property="depositRefundFee" jdbcType="DOUBLE" />
+    <result column="PART_REFUND" property="partRefund" jdbcType="DOUBLE" />
+    <result column="BIZ_MODE" property="bizMode" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, DATE, HOSPITAL_ID, BRANCH_ID, PAYMENT, NO_PAYMENT, REFUND, DEPOSIT_PAY_FEE, DEPOSIT_REFUND_FEE, 
+    PART_REFUND, BIZ_MODE
+  </sql>
+  
+  <select id="findCurrDepositStatsMaxDate" resultType="java.lang.String" parameterType="java.lang.String">
+		select max(DATE) as maxDate from SYS_DEPOSIT_STATISTICAL
+		where HOSPITAL_ID = #{hospitalId, jdbcType=VARCHAR}
+	</select>
+
+	<select id="findDepositStatsData" resultMap="BaseResultMap" parameterType="java.util.Map">
+		
+		select  
+		sum(CASE when payType in(2,6,7,8,10,11,18,19,20) then counts else 0 END) as PAYMENT, 
+		sum(CASE when payType in(-1,-2,0,1,3,5,9,17) then counts else 0 END) as NO_PAYMENT, 
+		sum(CASE when paytype in(4,12,13,14,15,16,21,98) then counts else 0 END) DIV 2 as REFUND, 
+		sum(CASE when payType in(2,6,7,8,10,11,18,19,20) then totalFees else 0 END) as DEPOSIT_PAY_FEE, 
+		sum(CASE when payType = 98 then returnFees else 0 END) as PART_REFUND,  
+		sum(CASE when paytype in(4,12,13,14,15,16,21) then totalFees else 0 END) DIV 2 as DEPOSIT_REFUND_FEE, 
+		hospitalId as HOSPITAL_ID,
+		createTime as DATE
+						
+		from (
+						
+			select 
+			count(1) as counts, 
+			sum(totalFee) as totalFees, 
+			sum(returnFee) as returnFees,  
+			DATE_FORMAT(createTime,'%Y-%m-%d') as createTime, 
+			hospitalId as hospitalId,
+			payType 
+			from tb_order 
+			where hospitalId = #{hospitalId} and createTime BETWEEN #{beginDate}and #{endDate} and type = 3  
+			GROUP BY DATE_FORMAT(createTime,'%Y-%m-%d'), payType
+		
+		) a  GROUP BY DATE
+										
+	</select>
+
+	<insert id="batchInsertDepositStatsData" parameterType="java.util.Map" >
+		INSERT INTO 
+			SYS_DEPOSIT_STATISTICAL
+			(<include refid="Base_Column_List"></include>)
+			VALUES
+		<foreach collection="sysDepositStatistical" item="item" index="index" separator=",">
+			 (#{item.id},#{item.date},#{item.hospitalId},#{item.branchId},#{item.payment},#{item.noPayment},#{item.refund},#{item.depositPayFee},
+		 	 #{item.depositRefundFee},#{item.partRefund},#{item.bizMode})
+		</foreach>
+	</insert>
+	
+</mapper>

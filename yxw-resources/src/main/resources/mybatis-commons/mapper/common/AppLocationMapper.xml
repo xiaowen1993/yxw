@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.app.location.AppLocation">
+
+	<resultMap id="appLocationResultMap" type="com.yxw.commons.entity.platform.app.location.AppLocation">
+		<id column="ID" property="id" />
+		<result column="PLATFORM_CODE" property="platformCode" />
+		<result column="CITY_ID" property="cityId" />
+		<result column="CITY_CODE" property="cityCode" />
+		<result column="NAME" property="name" />
+		<result column="LEVEL" property="level" />
+		<result column="PINYIN" property="pinyin" />
+		<result column="STATUS" property="status" />
+		<result column="SHOW_SORT" property="showSort" />
+	</resultMap>
+
+	<sql id="All_Column">
+		ID, PLATFORM_CODE, CITY_ID, CITY_CODE, NAME, LEVEL, PINYIN, STATUS, SHOW_SORT
+	</sql>
+
+	<sql id="Table_Name">SYS_APP_LOCATION</sql>
+
+	<select id="findById" resultMap="appLocationResultMap" parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Table_Name"></include>
+		where ID = #{id}
+	</select>
+
+	<select id="findAll" resultMap="appLocationResultMap" parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Table_Name"></include>
+		order by SHOW_SORT
+	</select>
+
+	<update id="update" parameterType="com.yxw.commons.entity.platform.app.location.AppLocation">
+		update
+		<include refid="Table_Name"></include>
+		<set>
+			<if test="status != null">
+				STATUS = #{status},
+			</if>
+			<if test="showSort != null">
+				SHOW_SORT = #{showSort},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>
+
+	<!-- 批量插入 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into
+		<include refid="Table_Name"></include>
+		(
+		<include refid="All_Column"></include>
+		)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(	
+			#{item.id}, #{item.platformCode}, #{item.cityId}, #{item.cityCode}, 
+			#{item.name}, #{item.level}, #{item.pinyin},
+			#{item.status}, #{item.showSort}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteAll">
+		delete from <include refid="Table_Name"></include>
+	</delete>
+
+</mapper>

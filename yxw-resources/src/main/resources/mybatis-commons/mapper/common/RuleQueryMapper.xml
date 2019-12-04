@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.commons.entity.platform.rule.RuleQuery">
+	<resultMap id="RuleQueryResultMap" type="RuleQuery">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="REPORT_COULD_QUERY_TYPE" property="reportCouldQueryType" jdbcType="VARCHAR" />
+		<result column="REPORT_VIEW_CSS_TYPE" property="reportViewCssType" jdbcType="INTEGER" />
+		<result column="BESPEAK_RECORD_QUERY_TYPE" property="bespeakRecordQueryType" jdbcType="VARCHAR" />
+		<result column="PAYMENT_RECORD_QUERY_TYPE" property="paymentRecordQueryType" jdbcType="VARCHAR" />
+		<result column="REPORT_RECORD_QUERY_MAX_MONTHS" property="reportRecordQueryMaxMonths" jdbcType="INTEGER" />
+		<result column="BESPEAK_RECORD_QUERY_MAX_MONTHS" property="bespeakRecordQueryMaxMonths" jdbcType="INTEGER" />
+		<result column="PAYMENT_RECORD_QUERY_MAX_MONTHS" property="paymentRecordQueryMaxMonths" jdbcType="INTEGER" />
+		<result column="ONE_DAY_RECORD_MAX_MONTHS" property="oneDayRecordMaxMonths" jdbcType="INTEGER" />
+		<result column="QUEUE_TYPE" property="queueType" jdbcType="VARCHAR" />
+		<result column="IS_SHOW_BARCODE" property="isShowBarcode" jdbcType="SMALLINT" />
+		<result column="BARCODE_DATA" property="barcodeData" jdbcType="SMALLINT" />
+		<result column="BARCODE_STYLE" property="barcodeStyle" jdbcType="SMALLINT" />
+
+		<result column="ONE_DAY_RECORD_IS_ITEMS" property="oneDayRecordIsItems" jdbcType="INTEGER" />
+		<result column="SHOW_CLINIC_PAID_DETAIL_STYLE" property="showClinicPaidDetailStyle" jdbcType="INTEGER" />
+		<result column="CHOICES_INSPECTION_REPORT_STYLE" property="choicesInspectionReportStyle" jdbcType="INTEGER" />
+		<result column="TIP" property="tip" jdbcType="VARCHAR" />
+		<result column="SHARE_QUERY_TIMES_LIMIT" property="shareQueryTimesLimit" jdbcType="INTEGER" />
+		<result column="MAX_QUERY_TIMES_PER_DAY" property="maxQueryTimesPerDay" jdbcType="INTEGER" />
+		<result column="REACH_MAX_QUERY_TIMES_PER_DAY_TIP" property="reachMaxQueryTimesPerDayTip" jdbcType="INTEGER" />
+		<result column="MAX_QUERY_TIMES_PER_WEEK" property="maxQueryTimesPerWeek" jdbcType="INTEGER" />
+		<result column="CAPTCHA_EFFECTIVE_TIME" property="captchaEffectiveTime" jdbcType="INTEGER" />
+		<result column="REACH_MAX_QUERY_TIMES_PER_WEEK_TIP" property="reachMaxQueryTimesPerWeekTip" jdbcType="INTEGER" />
+
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, HOSPITAL_ID, REPORT_COULD_QUERY_TYPE, REPORT_VIEW_CSS_TYPE, BESPEAK_RECORD_QUERY_TYPE,
+		PAYMENT_RECORD_QUERY_TYPE, REPORT_RECORD_QUERY_MAX_MONTHS, BESPEAK_RECORD_QUERY_MAX_MONTHS,
+		PAYMENT_RECORD_QUERY_MAX_MONTHS, ONE_DAY_RECORD_MAX_MONTHS, QUEUE_TYPE, IS_SHOW_BARCODE,
+		BARCODE_DATA, BARCODE_STYLE,
+		ONE_DAY_RECORD_IS_ITEMS,SHOW_CLINIC_PAID_DETAIL_STYLE,CHOICES_INSPECTION_REPORT_STYLE,TIP,
+		SHARE_QUERY_TIMES_LIMIT,MAX_QUERY_TIMES_PER_DAY,REACH_MAX_QUERY_TIMES_PER_DAY_TIP,
+		MAX_QUERY_TIMES_PER_WEEK,REACH_MAX_QUERY_TIMES_PER_WEEK_TIP, CAPTCHA_EFFECTIVE_TIME,
+		CP, CT, EP, ET
+	</sql>
+	<select id="findById" resultMap="RuleQueryResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_RULE_QUERY
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findAll" resultMap="RuleQueryResultMap">
+		select * from SYS_RULE_QUERY
+	</select>
+
+	<select id="findByHospitalId" resultMap="RuleQueryResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_RULE_QUERY
+		where HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from SYS_RULE_QUERY
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="add" parameterType="RuleQuery">
+		insert into SYS_RULE_QUERY (ID, HOSPITAL_ID, REPORT_COULD_QUERY_TYPE,
+		REPORT_VIEW_CSS_TYPE, BESPEAK_RECORD_QUERY_TYPE,
+		PAYMENT_RECORD_QUERY_TYPE, REPORT_RECORD_QUERY_MAX_MONTHS,
+		BESPEAK_RECORD_QUERY_MAX_MONTHS, PAYMENT_RECORD_QUERY_MAX_MONTHS,
+		ONE_DAY_RECORD_MAX_MONTHS, QUEUE_TYPE, IS_SHOW_BARCODE, BARCODE_DATA,BARCODE_STYLE,
+		ONE_DAY_RECORD_IS_ITEMS,SHOW_CLINIC_PAID_DETAIL_STYLE,CHOICES_INSPECTION_REPORT_STYLE,TIP,
+		SHARE_QUERY_TIMES_LIMIT,MAX_QUERY_TIMES_PER_DAY,REACH_MAX_QUERY_TIMES_PER_DAY_TIP,
+		MAX_QUERY_TIMES_PER_WEEK,REACH_MAX_QUERY_TIMES_PER_WEEK_TIP, CAPTCHA_EFFECTIVE_TIME,
+		CP, CT, EP, ET)
+		values (#{id,jdbcType=VARCHAR}, #{hospitalId,jdbcType=VARCHAR}, #{reportCouldQueryType,jdbcType=VARCHAR},
+		#{reportViewCssType,jdbcType=INTEGER}, #{bespeakRecordQueryType,jdbcType=VARCHAR},
+		#{paymentRecordQueryType,jdbcType=VARCHAR}, #{reportRecordQueryMaxMonths,jdbcType=INTEGER},
+		#{bespeakRecordQueryMaxMonths,jdbcType=INTEGER}, #{paymentRecordQueryMaxMonths,jdbcType=INTEGER},
+		#{oneDayRecordMaxMonths,jdbcType=INTEGER}, #{queueType,jdbcType=VARCHAR}, #{isShowBarcode,jdbcType=SMALLINT},
+		#{barcodeData,jdbcType=SMALLINT}, #{barcodeStyle,jdbcType=SMALLINT},
+		#{oneDayRecordIsItems,jdbcType=INTEGER}, #{showClinicPaidDetailStyle,jdbcType=INTEGER},#{choicesInspectionReportStyle,jdbcType=INTEGER},
+		#{tip,jdbcType=VARCHAR},#{shareQueryTimesLimit,jdbcType=INTEGER},#{maxQueryTimesPerDay,jdbcType=INTEGER},
+		#{reachMaxQueryTimesPerDayTip, jdbcType=VARCHAR},#{maxQueryTimesPerWeek,jdbcType=INTEGER},#{reachMaxQueryTimesPerWeekTip, jdbcType=VARCHAR},
+		#{captchaEffectiveTime,jdbcType=VARCHAR}, #{cp,jdbcType=VARCHAR}, #{ct,jdbcType=TIMESTAMP},
+		#{ep,jdbcType=VARCHAR}, #{et,jdbcType=TIMESTAMP})
+	</insert>
+
+	<update id="update" parameterType="RuleQuery">
+		update SYS_RULE_QUERY
+		<set>
+			<if test="hospitalId != null">
+				HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+			</if>
+			<if test="reportCouldQueryType != null">
+				REPORT_COULD_QUERY_TYPE = #{reportCouldQueryType,jdbcType=VARCHAR},
+			</if>
+			<if test="reportViewCssType != null">
+				REPORT_VIEW_CSS_TYPE = #{reportViewCssType,jdbcType=INTEGER},
+			</if>
+			<if test="bespeakRecordQueryType != null">
+				BESPEAK_RECORD_QUERY_TYPE = #{bespeakRecordQueryType,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentRecordQueryType != null">
+				PAYMENT_RECORD_QUERY_TYPE = #{paymentRecordQueryType,jdbcType=VARCHAR},
+			</if>
+			<if test="reportRecordQueryMaxMonths != null">
+				REPORT_RECORD_QUERY_MAX_MONTHS = #{reportRecordQueryMaxMonths,jdbcType=INTEGER},
+			</if>
+			<if test="bespeakRecordQueryMaxMonths != null">
+				BESPEAK_RECORD_QUERY_MAX_MONTHS = #{bespeakRecordQueryMaxMonths,jdbcType=INTEGER},
+			</if>
+			<if test="paymentRecordQueryMaxMonths != null">
+				PAYMENT_RECORD_QUERY_MAX_MONTHS = #{paymentRecordQueryMaxMonths,jdbcType=INTEGER},
+			</if>
+			<if test="oneDayRecordMaxMonths != null">
+				ONE_DAY_RECORD_MAX_MONTHS = #{oneDayRecordMaxMonths,jdbcType=INTEGER},
+			</if>
+			<if test="queueType != null">
+				QUEUE_TYPE = #{queueType,jdbcType=INTEGER},
+			</if>
+			<if test="isShowBarcode != null">
+				IS_SHOW_BARCODE = #{isShowBarcode,jdbcType=SMALLINT},
+			</if>
+			<if test="barcodeData != null">
+				BARCODE_DATA = #{barcodeData,jdbcType=SMALLINT},
+			</if>
+			<if test="barcodeStyle != null">
+				BARCODE_STYLE = #{barcodeStyle,jdbcType=SMALLINT},
+			</if>
+			<if test="showClinicPaidDetailStyle != null">
+				SHOW_CLINIC_PAID_DETAIL_STYLE = #{showClinicPaidDetailStyle,jdbcType=INTEGER},
+			</if>
+			<if test="oneDayRecordIsItems != null">
+				ONE_DAY_RECORD_IS_ITEMS = #{oneDayRecordIsItems,jdbcType=INTEGER},
+			</if>
+			<if test="choicesInspectionReportStyle != null">
+				CHOICES_INSPECTION_REPORT_STYLE = #{choicesInspectionReportStyle,jdbcType=INTEGER},
+			</if>
+			<if test="tip != null">
+				TIP = #{tip,jdbcType=VARCHAR},
+			</if>
+			<if test="shareQueryTimesLimit != null">
+				SHARE_QUERY_TIMES_LIMIT = #{shareQueryTimesLimit,jdbcType=INTEGER},
+			</if>
+			<if test="maxQueryTimesPerDay != null">
+				MAX_QUERY_TIMES_PER_DAY = #{maxQueryTimesPerDay,jdbcType=INTEGER},
+			</if>
+			<if test="reachMaxQueryTimesPerDayTip != null">
+				REACH_MAX_QUERY_TIMES_PER_DAY_TIP = #{reachMaxQueryTimesPerDayTip,jdbcType=VARCHAR},
+			</if>
+			<if test="maxQueryTimesPerWeek != null">
+				MAX_QUERY_TIMES_PER_WEEK = #{maxQueryTimesPerWeek,jdbcType=INTEGER},
+			</if>
+			<if test="reachMaxQueryTimesPerWeekTip != null">
+				REACH_MAX_QUERY_TIMES_PER_WEEK_TIP = #{reachMaxQueryTimesPerWeekTip,jdbcType=VARCHAR},
+			</if>
+			<if test="captchaEffectiveTime != null">
+				CAPTCHA_EFFECTIVE_TIME = #{captchaEffectiveTime,jdbcType=VARCHAR},
+			</if>
+
+			<if test="cp != null">
+				CP = #{cp,jdbcType=VARCHAR},
+			</if>
+			<if test="ct != null">
+				CT = #{ct,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ep != null">
+				EP = #{ep,jdbcType=VARCHAR},
+			</if>
+			<if test="et != null">
+				ET = #{et,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateById" parameterType="RuleQuery">
+		update SYS_RULE_QUERY
+		set HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+		REPORT_COULD_QUERY_TYPE = #{reportCouldQueryType,jdbcType=VARCHAR},
+		REPORT_VIEW_CSS_TYPE = #{reportViewCssType,jdbcType=INTEGER},
+		BESPEAK_RECORD_QUERY_TYPE = #{bespeakRecordQueryType,jdbcType=VARCHAR},
+		PAYMENT_RECORD_QUERY_TYPE = #{paymentRecordQueryType,jdbcType=VARCHAR},
+		REPORT_RECORD_QUERY_MAX_MONTHS = #{reportRecordQueryMaxMonths,jdbcType=INTEGER},
+		BESPEAK_RECORD_QUERY_MAX_MONTHS = #{bespeakRecordQueryMaxMonths,jdbcType=INTEGER},
+		PAYMENT_RECORD_QUERY_MAX_MONTHS = #{paymentRecordQueryMaxMonths,jdbcType=INTEGER},
+		ONE_DAY_RECORD_MAX_MONTHS = #{oneDayRecordMaxMonths,jdbcType=INTEGER},
+		QUEUE_TYPE = #{queueType,jdbcType=VARCHAR},
+		IS_SHOW_BARCODE = #{isShowBarcode,jdbcType=SMALLINT},
+		BARCODE_DATA = #{barcodeData,jdbcType=SMALLINT},
+		BARCODE_STYLE = #{barcodeStyle,jdbcType=SMALLINT},
+		
+		ONE_DAY_RECORD_IS_ITEMS = #{oneDayRecordIsItems,jdbcType=INTEGER},
+		SHOW_CLINIC_PAID_DETAIL_STYLE = #{showClinicPaidDetailStyle,jdbcType=INTEGER},
+		CHOICES_INSPECTION_REPORT_STYLE=#{choicesInspectionReportStyle,jdbcType=INTEGER},
+		TIP = #{tip,jdbcType=VARCHAR},
+		SHARE_QUERY_TIMES_LIMIT = #{shareQueryTimesLimit,jdbcType=INTEGER},
+		MAX_QUERY_TIMES_PER_DAY = #{maxQueryTimesPerDay,jdbcType=INTEGER},
+		REACH_MAX_QUERY_TIMES_PER_DAY_TIP = #{reachMaxQueryTimesPerDayTip,jdbcType=VARCHAR},
+		MAX_QUERY_TIMES_PER_WEEK = #{maxQueryTimesPerWeek,jdbcType=INTEGER},
+		REACH_MAX_QUERY_TIMES_PER_WEEK_TIP = #{reachMaxQueryTimesPerWeekTip,jdbcType=VARCHAR},
+		CAPTCHA_EFFECTIVE_TIME = #{captchaEffectiveTime,jdbcType=VARCHAR},
+
+		CP = #{cp,jdbcType=VARCHAR},
+		CT = #{ct,jdbcType=TIMESTAMP},
+		EP = #{ep,jdbcType=VARCHAR},
+		ET = #{et,jdbcType=TIMESTAMP}
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

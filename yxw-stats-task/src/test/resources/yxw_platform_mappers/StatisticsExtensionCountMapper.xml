@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.stats.entity.platform.ExtensionCount">
+	
+	<resultMap id="extensionCountResultMap" type="com.yxw.stats.entity.platform.ExtensionCount">
+		<id column="ID" property="id" jdbcType="VARCHAR"/>
+		<result column="DATE" property="date" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="EXTENSION_ID" property="extensionId" jdbcType="VARCHAR" />		
+		<result column="NUM" property="num" jdbcType="INTEGER" />
+		<result column="TOTAL_NUM" property="totalNum" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<!-- 统计每日订单 -->
+	<select id="findExtensionCountByDate" resultMap="extensionCountResultMap" parameterType="map">
+		SELECT
+										w.*, o.HOSPITAL_ID,from_UNIXTIME(#{startDate} / 1000,'%Y-%m-%d') as DATE
+									FROM
+										(
+											SELECT
+												r.EXTENSION_ID,
+												SUM(r.num) as NUM
+											FROM
+												(
+													SELECT
+														e.*, t.EXTENSION_ID
+													FROM
+														(
+													SELECT d.open_id AS openId,
+														count(d.open_id) AS num 
+													FROM (
+										SELECT open_id as open_id from 
+										
+										<choose>
+										    <when test="depositHashTableName == 'BIZ_DEPOSIT_RECORD_1'">
+						                		BIZ_DEPOSIT_RECORD_1 
+								            </when>
+								            <when test="depositHashTableName == 'BIZ_DEPOSIT_RECORD_2'">
+								                BIZ_DEPOSIT_RECORD_2 
+								            </when>
+								            <when test="depositHashTableName == 'BIZ_DEPOSIT_RECORD_3'">
+								                BIZ_DEPOSIT_RECORD_3 
+								            </when>
+								            <when test="depositHashTableName == 'BIZ_DEPOSIT_RECORD_4'">
+								                BIZ_DEPOSIT_RECORD_4 
+								            </when>
+								            <when test="depositHashTableName == 'BIZ_DEPOSIT_RECORD_5'">
+								                BIZ_DEPOSIT_RECORD_5 
+								            </when>
+								            <when test="depositHashTableName == 'BIZ_DEPOSIT_RECORD_6'">
+								                BIZ_DEPOSIT_RECORD_6 
+								            </when>
+								            <when test="depositHashTableName == 'BIZ_DEPOSIT_RECORD_7'">
+								                BIZ_DEPOSIT_RECORD_7 
+								            </when>
+								            <when test="depositHashTableName == 'BIZ_DEPOSIT_RECORD_8'">
+								                BIZ_DEPOSIT_RECORD_8 
+								            </when>
+								            <when test="depositHashTableName == 'BIZ_DEPOSIT_RECORD_9'">
+								                BIZ_DEPOSIT_RECORD_9 
+								            </when>
+								            <when test="depositHashTableName == 'BIZ_DEPOSIT_RECORD_10'">
+								                BIZ_DEPOSIT_RECORD_10 
+								            </when> 
+									    </choose>
+										
+										where PAY_STATUS=#{payStatus} AND DEPOSIT_STATUS=#{bizStatus} AND CREATE_TIME BETWEEN #{startDate} AND  #{endDate}
+																							
+										union ALL
+										
+										SELECT open_id as open_id from 
+										
+										<choose>
+										    <when test="clinicHashTableName == 'BIZ_CLINIC_RECORD_1'">
+						                		BIZ_CLINIC_RECORD_1 
+								            </when>
+								            <when test="clinicHashTableName == 'BIZ_CLINIC_RECORD_2'">
+								                BIZ_CLINIC_RECORD_2 
+								            </when>
+								            <when test="clinicHashTableName == 'BIZ_CLINIC_RECORD_3'">
+								                BIZ_CLINIC_RECORD_3 
+								            </when>
+								            <when test="clinicHashTableName == 'BIZ_CLINIC_RECORD_4'">
+								                BIZ_CLINIC_RECORD_4 
+								            </when>
+								            <when test="clinicHashTableName == 'BIZ_CLINIC_RECORD_5'">
+								                BIZ_CLINIC_RECORD_5 
+								            </when>
+								            <when test="clinicHashTableName == 'BIZ_CLINIC_RECORD_6'">
+								                BIZ_CLINIC_RECORD_6 
+								            </when>
+								            <when test="clinicHashTableName == 'BIZ_CLINIC_RECORD_7'">
+								                BIZ_CLINIC_RECORD_7 
+								            </when>
+								            <when test="clinicHashTableName == 'BIZ_CLINIC_RECORD_8'">
+								                BIZ_CLINIC_RECORD_8 
+								            </when>
+								            <when test="clinicHashTableName == 'BIZ_CLINIC_RECORD_9'">
+								                BIZ_CLINIC_RECORD_9 
+								            </when>
+								            <when test="clinicHashTableName == 'BIZ_CLINIC_RECORD_10'">
+								                BIZ_CLINIC_RECORD_10 
+								            </when> 
+									    </choose>
+										
+										where PAY_STATUS=#{payStatus} AND CLINIC_STATUS=#{bizStatus} AND CREATE_TIME BETWEEN #{startDate} AND  #{endDate}
+										
+										UNION ALL
+										
+										SELECT open_id as open_id from 
+										
+										<choose>
+										    <when test="regHashTableName == 'BIZ_REGISTER_RECORD_1'">
+										         BIZ_REGISTER_RECORD_1 
+										    </when>
+										    <when test="regHashTableName == 'BIZ_REGISTER_RECORD_2'">
+										         BIZ_REGISTER_RECORD_2 
+										    </when>
+										    <when test="regHashTableName == 'BIZ_REGISTER_RECORD_3'">
+										         BIZ_REGISTER_RECORD_3 
+										    </when>
+										    <when test="regHashTableName == 'BIZ_REGISTER_RECORD_4'">
+										         BIZ_REGISTER_RECORD_4 
+										    </when>
+										    <when test="regHashTableName == 'BIZ_REGISTER_RECORD_5'">
+										         BIZ_REGISTER_RECORD_5 
+										    </when>
+										    <when test="regHashTableName == 'BIZ_REGISTER_RECORD_6'">
+										         BIZ_REGISTER_RECORD_6 
+										    </when>
+										    <when test="regHashTableName == 'BIZ_REGISTER_RECORD_7'">
+										         BIZ_REGISTER_RECORD_7 
+										    </when>
+										    <when test="regHashTableName == 'BIZ_REGISTER_RECORD_8'">
+										         BIZ_REGISTER_RECORD_8 
+										    </when>
+										    <when test="regHashTableName == 'BIZ_REGISTER_RECORD_9'">
+										         BIZ_REGISTER_RECORD_9 
+										    </when>
+										    <when test="regHashTableName == 'BIZ_REGISTER_RECORD_10'">
+										         BIZ_REGISTER_RECORD_10 
+										    </when>
+									    </choose>
+										
+										where PAY_STATUS=#{payStatus} AND REG_STATUS=#{bizStatus} AND REGISTER_TIME BETWEEN #{startDate} AND  #{endDate}
+										
+										) d
+													GROUP BY
+															d.open_id
+														ORDER BY
+															count(d.open_id) DESC
+															) e
+																			LEFT JOIN SYS_EXTENSION_DETAIL t ON e.openId = t.OPEN_ID
+																		) r
+																	WHERE
+																		r.EXTENSION_ID IS NOT NULL
+																	GROUP BY
+																		r.EXTENSION_ID
+																) w
+															LEFT JOIN SYS_EXTENSION o ON w.EXTENSION_ID = o.ID
+	</select>
+	
+	<insert id="batchInsert" parameterType="java.util.List">
+		 INSERT INTO 
+		 SYS_EXTENSION_STATISTICAL(		 
+		 ID,
+		 DATE,
+		 HOSPITAL_ID,
+		 EXTENSION_ID,
+		 NUM
+		 )
+		 VALUES
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (#{item.id},
+	        #{item.date},
+	        #{item.hospitalId},
+	        #{item.extensionId},
+	        #{item.num}	        
+	        )
+	    </foreach>  
+	</insert>
+</mapper>

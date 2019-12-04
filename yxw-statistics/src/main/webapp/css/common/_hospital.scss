@@ -1,0 +1,17 @@
+.uploadBtn-warp{
+    position: relative;
+    [type='file']{
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        cursor: pointer;
+        -webkit-appearance: none;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        outline: none;
+        z-index: 8;
+        zoom: 1;
+    }
+}

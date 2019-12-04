@@ -1,0 +1,419 @@
+@import 'var.less';
+#login-wrap{
+    position:relative;
+    height:100%;
+    background-color:@whtie;
+}
+.loginBox{
+    height:100%;
+    .thumbImg{
+        height:150px;
+        background:url('@{imgPath}/login/loginBg.png') no-repeat scroll 50% 50%;
+        background-size:80% auto;
+        position:relative;
+        .logo{
+            overflow:hidden;
+            position:absolute;
+            left:50%;
+            top:50%;
+            transform:translate(-50%,-50%);
+            width:130px;
+            img{
+               width:100%;
+            }
+        }
+    }
+    .frm-box{
+        margin-top: 30px;
+        padding:0 .8em;
+    }
+    .frm-group{
+        position:relative;
+        margin:0 1.2em ;
+        &:after{
+            position:absolute;
+            bottom:0;
+            left:0;
+            display:block;
+            width:100%;
+            height:1px;
+            content:'';
+            -webkit-transform:scaleY(.5);
+                    transform:scaleY(.5);
+            background-color:@borderColor;
+        }
+        .frm-input{
+            position:relative;
+            box-sizing:border-box;
+            width:100%;
+            height:60px;
+            padding:5px 5px  5px 30px;
+            border:0;
+            outline:none;
+            color:#9e9e9e;
+            &::-webkit-input-placeholder {
+                color:#9e9e9e;
+            }
+            &.card{
+                padding-right:5em;
+            }
+        }
+        .icon-login{
+            position:absolute;
+            top:15px;
+            left:4px;
+            width:22px;
+            height:22px;
+            .iconfont;
+            color:@skinbgColor;
+            font-size: 20px;
+        }
+        .select_box{
+            line-height:60px;
+            position:absolute;
+            top:0;
+            right:0;
+            overflow:hidden;
+            width:5em;
+            height:60px;
+            .text{
+                font-size:85%;
+                line-height:27px;
+                display:inline-block;
+                width:100%;
+                height:27px;
+                text-align:center;
+                color:@whtie;
+                border-radius:25px;
+                background-color:#c6c6c6;
+            }
+        }
+    }
+    .firstBtn-w{
+        margin-top: 10px!important;
+    }
+    .forget-pwd{
+        text-align: center;
+        color:@color999;
+        font-size: 14px;
+        span{
+            padding:5px;
+        }
+    }
+    .register button.btn-ok{
+        // background-color: #c4c4c4;
+        border:1px solid #4ca9ec;
+        background-color: #4ca9ec;
+        color:#fff;
+        &:hover{
+            border:1px solid #3793d5;
+            background-color: #3793d5;
+        }
+    }
+    .btn-w{
+        padding:7px 0;
+        margin: 0 .6em;
+        .btn-ok{
+            color:#fff;
+            border: none;
+            // border:1px solid #3eadec;
+            outline:none;
+            background-color:@skinbgColor;
+            border-radius: 45px;
+            line-height: 44px;
+            font-size: 16px;
+            &.hover{
+                color:@whtie;
+                background-color:@skinbgColorHover;
+            }
+            &:hover{
+                color:@whtie;
+                background-color:@skinbgColorHover;
+            }
+        }
+    }
+}
+.textBox{
+    position:absolute;
+    bottom:0;
+    left:0;
+    box-sizing:border-box;
+    width:100%;
+    height:50px;
+    padding:15px 0;
+    text-align:center;
+    color:#bdbdbd;
+    .texts{
+        font-size:85%;
+        line-height:20px;
+        box-sizing:border-box;
+        height:20px;
+        padding:0 1.5em;
+        text-align:center;
+        color:@color999;
+        //      &:first-child{ position: relative; text-align: right;
+        //        &:before{
+        //          content: '';
+        //          display: block;
+        //          position: absolute;
+        //          width: 1px;
+        //          right: 0;
+        //          bottom: 5%;
+        //          height: 90%;
+        //          background-color:  @borderColor;
+        //          -webkit-transform: scaleX(0.5);
+        //          transform: scaleX(0.5);
+        //        }
+        //      }
+        //      &:last-child{ text-align: center;}
+    }
+    // span:nth-of-type(1){
+    //     border-right: 1px solid #bdbdbd;
+        
+    // }
+}
+.texts{
+    font-size:85%;
+    line-height:20px;
+    box-sizing:border-box;
+    height:20px;
+    padding:0 1.5em;
+    text-align:center;
+    color:@color999;
+}
+
+
+// 登录模块 改版
+
+// 登录页媒体查询
+@media screen and (max-height:490px) {
+    #login-wrap .loginBox .frm-box{
+        margin-top: 10px;
+    }
+}
+@media screen and (min-height:500px) {
+    #login-wrap .loginBox .thumbImg{
+        height:210px;
+    }
+}
+
+
+//.p-mask{  background-color: #fff;
+//  height: 100%;
+//  left: 0;
+//  opacity: 0.9;
+//  position: fixed;
+//  top: 0;
+//  width: 100%;
+//  z-index: 99;}
+.p-mask{
+    position:fixed;
+    z-index:99;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    opacity:1;
+    background:#fff url('@{imgPath}/start2.png') no-repeat scroll 0 100%;
+    background-size:100%;
+}
+
+///* 兼容iphone5 */
+
+
+//  注册模块
+.register-wrap,
+.mod-forgetpwd{
+    padding-top:10px;
+    .register-list{
+        position:relative;
+        overflow:hidden;
+        background-color:#fff;
+
+        li:nth-last-of-type(n+2){
+            // border-bottom: 1px solid #ddd;
+            &:after{
+                position:absolute;
+                bottom:0;
+                left:0;
+                width:100%;
+                height:1px;
+                content:'';
+                transform:translateY(70%);
+                background-color:#ccc;
+            }
+        }
+        label{
+            font-size:16px;
+            width:4em;
+            color:#999;
+        }
+        input{
+            font-size:16px;
+            display:block;
+            width:50%;
+            padding-right:1em;
+            color:#999;
+            // padding-left: 1em;
+            color:#333;
+            border:none;
+            outline:none;
+
+            flex:1;
+            &::-webkit-input-placeholder{
+                font-size:16px;
+                color:#999;
+            }
+        }
+        select{
+            display:block;
+            width:9em;
+            border:none;
+
+            -webkit-appearance:none;
+            direction:rtl;
+            option{
+                direction:rtl;
+            }
+        }
+        .code-btn,.select-box-text{
+            line-height:30px;
+            display:block;
+            padding:0 10px ;
+            color:#fff;
+            border-radius:30px;
+            background-color:@bgColor;
+            font-size: 14px;
+            &.doing{
+                background-color:#c6c6c6;
+            }
+        }
+        .select-box-text{
+            width:auto;
+            text-align: center;
+            // max-width: 6em;
+            // overflow:hidden;
+            // white-space: nowrap;
+            position:relative;
+            z-index: 1;
+            padding:0 1rem 0 1.4rem;
+            i{
+                .iconfont();
+                font-weight: bold;
+                font-size: 20px;
+            }
+            select{
+                position:absolute;
+                top:0;
+                left:0;
+                height:100%;
+                width:100%;
+                opacity:0;
+                z-index: 2;
+                color:#000;
+            }
+        }
+        .password-show-icon{
+            .iconfont;
+            width:40px;
+            line-height: 40px;
+            text-align: center;
+            color:@skinbgColor;
+            font-size: 24px;
+            user-select:none;
+        }
+        // border-top: 1px solid #ddd;
+        // border-bottom: 1px solid #ddd;
+        &:after{
+            position:absolute;
+            bottom:0;
+            left:0;
+            overflow:hidden;
+            width:100%;
+            height:1px;
+            content:'';
+            transform:translateY(60%);
+            background-color:#ccc;
+        }
+        &:before{
+            position:absolute;
+            top:0;
+            left:0;
+            overflow:hidden;
+            width:100%;
+            height:1px;
+            content:'';
+            transform:translateY(-60%);
+            background-color:#ccc;
+        }
+        ul{
+            margin:0 .8em;
+        }
+        li{
+            position:relative;
+            display:flex;
+            overflow:hidden;
+            box-sizing:border-box;
+            // height:55px;
+            // line-height: 55px;
+            padding:.9em 0;
+
+            align-items:center ;
+            // flex-direction:column ;
+        }
+    }
+    
+    .register-btn{
+        span{
+            line-height:2.7em;
+            display:block;
+            margin:0 .8em;
+            // font-size: 20px;
+            text-align:center;
+            color:#fff;
+            border:1px solid @skinbgColorHover;
+            border-radius:2px;
+            background-color:@skinbgColor;
+        }
+    }
+}
+
+//忘记密码模块
+.mod-forgetpwd{
+    .register-list{
+        margin-bottom:10px;
+        label{
+            width:7em;
+        }
+    }
+}
+// 修改密码
+.mod-changePhone{
+    .register-list{
+        margin-bottom:10px;
+        label{
+            width:7em;
+        }
+    }
+    .box-tips{
+        margin-bottom: 0.8rem;
+        position:relative;
+        overflow: hidden;
+        &:after,&:before{
+            position:absolute;
+            content:'';
+            width:100%;
+            height:1px;
+            background-color: #ccc;
+            left:0;
+        }
+        &:after{
+            bottom:0;
+            transform:translateY(60%)
+        }
+        &:before{
+            top:0;
+            transform:translateY(-40%)
+        }
+    }
+}

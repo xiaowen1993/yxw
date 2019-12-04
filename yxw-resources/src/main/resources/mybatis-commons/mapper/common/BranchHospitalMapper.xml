@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.hospital.BranchHospital">
+
+	<resultMap id="branchHospitalResultMap" type="BranchHospital">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="INTERFACE_ID" property="interfaceId" jdbcType="VARCHAR" />
+		<result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+		<result column="TEL" property="tel" jdbcType="VARCHAR" />
+		<result column="LONGITUDE" property="longitude" jdbcType="VARCHAR" />
+		<result column="LATITUDE" property="latitude" jdbcType="VARCHAR" />
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<!-- 根据id查询分院 -->
+	<select id="findById" resultMap="branchHospitalResultMap">
+		select ID,HOSPITAL_ID,NAME,CODE,INTERFACE_ID,ADDRESS,TEL,CP,CT,EP,ET from SYS_BRANCH_HOSPITAL bh where bh.ID = #{id}
+	</select>
+
+	<!-- 根据code查询分院 -->
+	<select id="findBranchHospitalByCode" resultMap="branchHospitalResultMap">
+		select ID,HOSPITAL_ID,NAME,CODE,INTERFACE_ID,ADDRESS,TEL,CP,CT,EP,ET from SYS_BRANCH_HOSPITAL bh where bh.CODE = #{code}
+	</select>
+	
+	<!-- 根据code及医院id查询分院 -->
+	<select id="findHospitalByCodeForHospitalId" parameterType="BranchHospital" resultMap="branchHospitalResultMap">
+		select ID,HOSPITAL_ID,NAME,CODE,INTERFACE_ID,ADDRESS,TEL,CP,CT,EP,ET from SYS_BRANCH_HOSPITAL bh where bh.HOSPITAL_ID = #{hospitalId} and bh.CODE = #{code}
+	</select>
+	
+	<!-- 根据code查询分院  保证医院及分院code唯一的前置条件查询,查询条件来源于医院code-->
+	<select id="findBranchHospitalByHospitalCode" parameterType="String" resultMap="branchHospitalResultMap">
+		select ID,HOSPITAL_ID,NAME,CODE,INTERFACE_ID,ADDRESS,TEL,CP,CT,EP,ET from SYS_BRANCH_HOSPITAL bh where bh.CODE = #{code}
+	</select>
+	
+	<!-- 根据医院id查询分院 -->
+	<select id="findByHospitalId" parameterType="BranchHospital" resultMap="branchHospitalResultMap">
+        select ID,HOSPITAL_ID,NAME,CODE,INTERFACE_ID,ADDRESS,TEL,CP,CT,EP,ET from SYS_BRANCH_HOSPITAL bh where bh.HOSPITAL_ID = #{hospitalId}
+    </select>
+	
+	<!-- 根据name及医院id查询分院 -->
+	<select id="findHospitalByNameForHospitalId" parameterType="BranchHospital" resultMap="branchHospitalResultMap">
+		select ID,HOSPITAL_ID,NAME,CODE,INTERFACE_ID,ADDRESS,TEL,CP,CT,EP,ET from SYS_BRANCH_HOSPITAL bh where bh.HOSPITAL_ID = #{hospitalId} and bh.NAME = #{name}
+	</select>
+	
+	<!-- 根据interfaceId查询分院 -->
+	<select id="findHospitalByInterfaceId" parameterType="BranchHospital" resultMap="branchHospitalResultMap">
+		select ID,HOSPITAL_ID,NAME,CODE,INTERFACE_ID,ADDRESS,TEL,CP,CT,EP,ET from SYS_BRANCH_HOSPITAL bh where bh.INTERFACE_ID = #{interfaceId}
+	</select>
+	
+	<!-- 根据医院id查询分院 -->
+	<select id="selectBranchHospitalsByHospitalId" resultMap="branchHospitalResultMap">
+		select ID,HOSPITAL_ID,NAME,CODE,INTERFACE_ID,ADDRESS,TEL,LONGITUDE,LATITUDE,CP,CT,EP,ET from SYS_BRANCH_HOSPITAL bh where bh.HOSPITAL_ID = #{hospital_id} order by bh.ID
+	</select>
+
+	<!-- 更新分院 -->
+	<update id="update" parameterType="BranchHospital">
+		update SYS_BRANCH_HOSPITAL set NAME = #{name}, CODE = #{code}, INTERFACE_ID = #{interfaceId}, ADDRESS = #{address}, TEL = #{tel},LATITUDE=#{latitude},LONGITUDE=#{longitude} ,EP = #{ep},ET = now() where ID = #{id}
+	</update>
+
+	<insert id="add" parameterType="BranchHospital">
+		insert into
+		SYS_BRANCH_HOSPITAL(ID,HOSPITAL_ID,NAME,CODE,INTERFACE_ID,ADDRESS,TEL,LATITUDE,LONGITUDE,CP,CT,EP,ET)
+		values
+		(#{id},#{hospitalId},#{name},#{code},#{interfaceId},#{address},#{tel},#{latitude},#{longitude},#{cp},now(),#{ep},#{et})
+	</insert>
+	
+	<delete id="deleteById" parameterType="BranchHospital">
+		delete from SYS_BRANCH_HOSPITAL where ID = #{id}   
+	</delete>
+
+</mapper>

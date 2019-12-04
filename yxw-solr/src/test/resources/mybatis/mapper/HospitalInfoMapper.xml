@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.solr.vo.HospitalInfosVo">
+	<resultMap id="hospitalInfosVo" type="HospitalInfosVo">
+		<result column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_NAME" property="hospitalName" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_CODE" property="hospitalCode" jdbcType="VARCHAR" />
+		<result column="PLATFORM_NAME" property="platformName" jdbcType="VARCHAR" />
+		<result column="PLATFORM_CODE" property="platformCode" jdbcType="VARCHAR" />
+		<result column="TRADE_NAME" property="tradeName" jdbcType="VARCHAR" />
+		<result column="TRADE_MODE" property="tradeMode" jdbcType="VARCHAR" />
+		<result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+		<result column="CATEGORY" property="category" jdbcType="INTEGER" />
+		<result column="AREA_CODE" property="areaCode" jdbcType="VARCHAR" />
+		<result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap id="statsHospitalInfosVo" type="StatsHospitalInfosVo">
+		<result column="HOSPITAL_NAME" property="hospitalName" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_CODE" property="hospitalCode" jdbcType="VARCHAR" />
+		<result column="PLATFORM_NAME" property="platformName" jdbcType="VARCHAR" />
+		<result column="PLATFORM_CODE" property="platformCode" jdbcType="VARCHAR" />
+		<result column="BRANCH_NAME" property="branchName" jdbcType="VARCHAR" />
+		<result column="BRANCH_CODE" property="branchCode" jdbcType="VARCHAR" />
+		<result column="TRADE_NAME" property="tradeName" jdbcType="VARCHAR" />
+		<result column="TRADE_MODE" property="tradeMode" jdbcType="VARCHAR" />
+		<result column="AREA_CODE" property="areaCode" jdbcType="VARCHAR" />
+		<result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" />
+		<result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="findAllByAppId" resultMap="hospitalInfosVo" parameterType="java.lang.String">
+		SELECT
+			s.ID,
+			s.HOSPITAL_ID,
+			h. NAME AS HOSPITAL_NAME,
+			p. NAME AS PLATFORM_NAME,
+			p. CODE AS PLATFORM_CODE,
+			h. CODE AS HOSPITAL_CODE,
+			t. NAME AS TRADE_NAME,
+			t. CODE AS TRADE_MODE,
+			s.APP_ID,
+			t.CATEGORY,
+			h.AREA_CODE,
+			h.AREA_NAME
+		FROM
+			BIZ_HOSPITAL h
+		LEFT JOIN BIZ_HOSPITAL_PLATFORM_TRADE_SETTINGS s ON h.ID = s.HOSPITAL_ID
+		LEFT JOIN SYS_PLATFORM p ON p.ID = s.PLATFORM_ID
+		LEFT JOIN SYS_TRADE_MODE t ON s.TRADE_MODE_ID = t.ID
+		WHERE
+			s.HOSPITAL_ID = (
+				SELECT
+					HOSPITAL_ID
+				FROM
+					BIZ_HOSPITAL_PLATFORM_TRADE_SETTINGS
+				WHERE
+					APP_ID = #{appId}
+			)
+		ORDER BY
+			PLATFORM_CODE,
+			TRADE_MODE
+	</select>
+	
+	<select id="findAllInfos" resultMap="statsHospitalInfosVo">
+		SELECT
+			b.CODE AS BRANCH_CODE,
+			b.NAME AS BRANCH_NAME,
+			s.HOSPITAL_ID,
+			h. NAME AS HOSPITAL_NAME,
+			p. NAME AS PLATFORM_NAME,
+			p. CODE AS PLATFORM_CODE,
+			h. CODE AS HOSPITAL_CODE,
+			t. NAME AS TRADE_NAME,
+			t. CODE AS TRADE_MODE,
+			h.AREA_NAME,
+			h.AREA_CODE,
+			s.APP_ID
+		FROM
+			BIZ_BRANCH b
+		LEFT JOIN BIZ_HOSPITAL h ON b.HOSPITAL_ID = h.ID
+		LEFT JOIN BIZ_HOSPITAL_PLATFORM_TRADE_SETTINGS s ON h.ID = s.HOSPITAL_ID
+		LEFT JOIN SYS_PLATFORM p ON p.ID = s.PLATFORM_ID
+		LEFT JOIN SYS_TRADE_MODE t ON s.TRADE_MODE_ID = t.ID
+		ORDER BY
+			PLATFORM_CODE,
+			TRADE_MODE
+	</select>
+	
+	<select id="getStdInfos" resultMap="statsHospitalInfosVo">
+		SELECT
+			s.HOSPITAL_ID,
+			h. NAME AS HOSPITAL_NAME,
+			p. NAME AS PLATFORM_NAME,
+			p. CODE AS PLATFORM_CODE,
+			h. CODE AS HOSPITAL_CODE,
+			t. NAME AS TRADE_NAME,
+			t. CODE AS TRADE_MODE,
+			h.AREA_NAME,
+			h.AREA_CODE,
+			s.APP_ID
+		FROM
+			BIZ_HOSPITAL h
+		LEFT JOIN BIZ_HOSPITAL_PLATFORM_TRADE_SETTINGS s ON h.ID = s.HOSPITAL_ID
+		LEFT JOIN SYS_PLATFORM p ON p.ID = s.PLATFORM_ID
+		LEFT JOIN SYS_TRADE_MODE t ON s.TRADE_MODE_ID = t.ID
+		WHERE p.CODE in (1, 2)
+		GROUP BY h.NAME
+	</select>
+	
+</mapper>

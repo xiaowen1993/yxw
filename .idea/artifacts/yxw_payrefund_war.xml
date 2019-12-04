@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="yxw-payrefund:war">
+    <output-path>$PROJECT_DIR$/yxw-payrefund/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>yxw-payrefund</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="yxw-payrefund.war">
+      <element id="artifact" artifact-name="yxw-payrefund:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.easyhealth.biz.datastorage.clinic.entity.DataMzFeeDetail">
+
+	<resultMap id="dataMZFeeDetailResultMap" type="DataMzFeeDetail">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="MZ_FEE_ID" property="mzFeeId" jdbcType="VARCHAR" />
+		<result column="ITEM_TIME" property="itemTime" jdbcType="VARCHAR" />
+		<result column="ITEM_ID" property="itemId" jdbcType="VARCHAR" />
+		<result column="ITEM_NAME" property="itemName" jdbcType="VARCHAR" />
+		<result column="ITEM_TYPE" property="itemType" jdbcType="VARCHAR" />
+		<result column="ITEM_UNIT" property="itemUnit" jdbcType="VARCHAR" />
+		<result column="ITEM_PRICE" property="itemPrice" jdbcType="VARCHAR" />
+		<result column="ITEM_SPEC" property="itemSpec" jdbcType="VARCHAR" />
+		<result column="ITEM_NUMBER" property="itemNumber" jdbcType="VARCHAR" />
+		<result column="ITEM_TOTAL_FEE" property="itemTotalFee" jdbcType="VARCHAR" />
+		<result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
+		<result column="DOCTOR_NAME" property="doctorName" jdbcType="VARCHAR" />
+		<result column="DOCTOR_CODE" property="doctorCode" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="All_Column">
+		ID, MZ_FEE_ID, ITEM_TIME, ITEM_ID, ITEM_NAME, ITEM_TYPE, ITEM_UNIT, 
+		ITEM_PRICE, ITEM_SPEC, ITEM_NUMBER, ITEM_TOTAL_FEE, DEPT_NAME, DOCTOR_NAME, DOCTOR_CODE
+	</sql>
+	
+	<select id="findByBranchHospitalCodeAndMzFeeIdAndItemId" resultMap="dataMZFeeDetailResultMap" parameterType="map">
+		SELECT
+			<include refid="All_Column"></include>
+		FROM
+			DATA_MZ_FEE_DETAIL AS a
+		WHERE
+			a.MZ_FEE_ID = #{mzFeeId}
+		AND a.ITEM_ID = #{itemId}
+	</select>
+	
+	<insert id="batchInsert" parameterType="java.util.List">
+		 INSERT INTO 
+		 	DATA_MZ_FEE_DETAIL(<include refid="All_Column"></include>)
+		 VALUES
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (
+	         #{item.id}, #{item.mzFeeId}, #{item.itemTime}, #{item.itemId}, #{item.itemName}, #{item.itemType}, 
+	         #{item.itemUnit}, #{item.itemPrice}, #{item.itemSpec}, #{item.itemNumber}, #{item.itemTotalFee}, #{item.deptName},
+	         #{item.doctorName}, #{item.doctorCode}
+	        )
+	    </foreach>  
+	</insert>
+
+	<insert id="add" parameterType="DataMzFeeDetail" useGeneratedKeys="true" keyProperty="id">
+		insert into 
+			DATA_MZ_FEE_DETAIL(<include refid="All_Column"></include>)
+		values 
+			(
+	         #{id}, #{mzFeeId}, #{itemTime}, #{itemId}, #{itemName}, #{itemType}, 
+	         #{itemUnit}, #{itemPrice}, #{itemSpec}, #{itemNumber}, #{itemTotalFee}, #{deptName},
+	         #{doctorName}, #{doctorCode}
+	        )
+	</insert>
+
+</mapper>

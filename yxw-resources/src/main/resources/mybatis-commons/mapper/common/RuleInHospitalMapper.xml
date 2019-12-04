@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.rule.RuleInHospital">
+	<resultMap id="RuleInHospitalResultMap" type="RuleInHospital">
+
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="HOSPITAL_ID" jdbcType="VARCHAR" property="hospitalId" />
+		<result column="IF_BIND_NEED_ID_CARD" jdbcType="INTEGER" property="ifBindNeedIDCard" />
+		<result column="IF_BIND_NEED_ADMISSION_NO" jdbcType="INTEGER" property="ifBindNeedAdmissionNo" />
+		<result column="HAS_BRANCH" jdbcType="INTEGER" property="hasBranch" />
+		<result column="ISTIP" jdbcType="INTEGER" property="isTip" />
+		<result column="TIPCONTENT" jdbcType="VARCHAR" property="tipContent" />
+		<result column="HOSPITAL_DEPOSIT_MIN_MONEY" property="hospitalDepositMinMoney" jdbcType="DOUBLE" />
+		<result column="HOSPITAL_DEPOSIT_MAX_MONEY" property="hospitalDepositMaxMoney" jdbcType="DOUBLE" />
+		<result column="DEPOSIT_PAYMENT_FAILED_TIP" property="depositPaymentFailedTip" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_DEPOSIT_PAYMENTS_TIP" property="hospitalDepositPaymentsTip" jdbcType="VARCHAR" />
+		<result column="CLEAR_ACCOUNT_TIP" property="clearAccountTip" jdbcType="VARCHAR" />
+		<result column="CLEAR_ACCOUNT_PRE_ORDER_TIP" property="clearAccountPreOrderTip" jdbcType="VARCHAR" />
+		<!-- 特补 -->
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID, HOSPITAL_ID, IF_BIND_NEED_ID_CARD, IF_BIND_NEED_ADMISSION_NO, HAS_BRANCH,ISTIP,TIPCONTENT,
+		HOSPITAL_DEPOSIT_MIN_MONEY, HOSPITAL_DEPOSIT_MAX_MONEY, DEPOSIT_PAYMENT_FAILED_TIP,
+		HOSPITAL_DEPOSIT_PAYMENTS_TIP, CLEAR_ACCOUNT_TIP, CLEAR_ACCOUNT_PRE_ORDER_TIP, CP, CT, EP, ET
+	</sql>
+
+
+	<select id="findById" parameterType="java.lang.String" resultMap="RuleInHospitalResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_RULE_INHOSPITAL
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findAll" resultMap="RuleInHospitalResultMap">
+		select * from SYS_RULE_INHOSPITAL
+	</select>
+
+	<select id="findByHospitalId" resultMap="RuleInHospitalResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_RULE_INHOSPITAL
+		where HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from SYS_RULE_INHOSPITAL
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="add" parameterType="RuleInHospital">
+		insert into SYS_RULE_INHOSPITAL (
+		<include refid="Base_Column_List" />
+		)
+		values (#{id,jdbcType=VARCHAR},#{hospitalId,jdbcType=VARCHAR},
+		#{ifBindNeedIDCard,jdbcType=INTEGER}, #{ifBindNeedAdmissionNo,jdbcType=INTEGER}, #{hasBranch,jdbcType=INTEGER},
+		#{isTip,jdbcType=INTEGER},#{tipContent,jdbcType=VARCHAR}, #{hospitalDepositMinMoney,jdbcType=DOUBLE},
+		#{hospitalDepositMaxMoney,jdbcType=DOUBLE}, #{depositPaymentFailedTip, jdbcType=VARCHAR},
+		#{hospitalDepositPaymentsTip, jdbcType=VARCHAR}, #{clearAccountTip, jdbcType=VARCHAR}, #{clearAccountPreOrderTip, jdbcType=VARCHAR},
+		#{cp},#{ct},#{ep},#{et})
+	</insert>
+
+	<update id="update" parameterType="RuleInHospital">
+		update SYS_RULE_INHOSPITAL
+		<set>
+			<if test="hospitalId != null">
+				HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+			</if>
+			<if test="ifBindNeedIDCard != null">
+				IF_BIND_NEED_ID_CARD = #{ifBindNeedIDCard,jdbcType=INTEGER},
+			</if>
+			<if test="ifBindNeedAdmissionNo != null">
+				IF_BIND_NEED_ADMISSION_NO = #{ifBindNeedAdmissionNo,jdbcType=INTEGER},
+			</if>
+			<if test="hasBranch != null">
+				HAS_BRANCH = #{hasBranch,jdbcType=INTEGER},
+			</if>
+			<if test="isTip != null">
+				ISTIP = #{isTip,jdbcType=INTEGER},
+			</if>
+			<if test="tipContent != null">
+				TIPCONTENT = #{tipContent,jdbcType=VARCHAR},
+			</if>
+			<if test="hospitalDepositMaxMoney != null">
+				HOSPITAL_DEPOSIT_MAX_MONEY = #{hospitalDepositMaxMoney,jdbcType=DOUBLE},
+			</if>
+			<if test="hospitalDepositMinMoney != null">
+				HOSPITAL_DEPOSIT_MIN_MONEY = #{hospitalDepositMinMoney,jdbcType=DOUBLE},
+			</if>
+			<if test="depositPaymentFailedTip != null">
+				DEPOSIT_PAYMENT_FAILED_TIP = #{depositPaymentFailedTip,jdbcType=VARCHAR},
+			</if>
+			<if test="hospitalDepositPaymentsTip != null">
+				HOSPITAL_DEPOSIT_PAYMENTS_TIP = #{hospitalDepositPaymentsTip,jdbcType=VARCHAR},
+			</if>
+			<if test="clearAccountTip != null">
+				CLEAR_ACCOUNT_TIP = #{clearAccountTip,jdbcType=VARCHAR},
+			</if>
+			<if test="clearAccountPreOrderTip != null">
+				CLEAR_ACCOUNT_PRE_ORDER_TIP = #{clearAccountPreOrderTip,jdbcType=VARCHAR},
+			</if>
+			<if test="cp != null">
+				CP = #{cp,jdbcType=VARCHAR},
+			</if>
+			<if test="ct != null">
+				CT = #{ct,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ep != null">
+				EP = #{ep,jdbcType=VARCHAR},
+			</if>
+			<if test="et != null">
+				ET = #{et,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+
+	<update id="updateById" parameterType="RuleInHospital">
+		update SYS_RULE_INHOSPITAL
+		set HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+
+		IF_BIND_NEED_ID_CARD = #{ifBindNeedIDCard,jdbcType=INTEGER},
+		IF_BIND_NEED_ADMISSION_NO = #{ifBindNeedAdmissionNo,jdbcType=INTEGER},
+		HAS_BRANCH = #{hasBranch,jdbcType=INTEGER},
+		ISTIP = #{isTip,jdbcType=INTEGER},
+		TIPCONTENT = #{tipContent,jdbcType=VARCHAR},
+
+		HOSPITAL_DEPOSIT_MIN_MONEY = #{hospitalDepositMinMoney,jdbcType=DOUBLE},
+		HOSPITAL_DEPOSIT_MAX_MONEY = #{hospitalDepositMaxMoney,jdbcType=DOUBLE},
+
+		CP = #{cp,jdbcType=VARCHAR},
+		CT = #{ct,jdbcType=TIMESTAMP},
+		EP = #{ep,jdbcType=VARCHAR},
+		ET = #{et,jdbcType=TIMESTAMP}
+
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+
+</mapper>

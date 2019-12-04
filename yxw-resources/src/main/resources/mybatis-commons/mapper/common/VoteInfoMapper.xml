@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.commons.entity.mobile.biz.vote.VoteInfo" >
+  <resultMap id="VoteInfoResultMap" type="com.yxw.commons.entity.mobile.biz.vote.VoteInfo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_CODE" property="hospitalCode" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_NAME" property="hospitalName" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="APP_CODE" property="appCode" jdbcType="VARCHAR" />
+    <result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+    <result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+    <result column="PATIENT_NAME" property="patientName" jdbcType="VARCHAR" />
+    <result column="BIZ_CODE" property="bizCode" jdbcType="VARCHAR" />
+    <result column="APPRAISE_LEVEL" property="appraiseLevel" jdbcType="SMALLINT" />
+    <result column="SERVICE_LEVEL" property="serviceLevel" jdbcType="SMALLINT" />
+    <result column="SKILL_LEVEL" property="skillLevel" jdbcType="SMALLINT" />
+    <result column="SUGGESTION" property="suggestion" jdbcType="VARCHAR" />
+    <result column="ORDER_NO" property="orderNo" jdbcType="VARCHAR" />
+    <result column="ORDER_NO_HASH_VAL" property="orderNoHashVal" jdbcType="BIGINT" />
+    <result column="RATER_CODE" property="raterCode" jdbcType="VARCHAR" />
+    <result column="IS_HAD_VOTE" property="isHadVote" jdbcType="SMALLINT" />
+    <result column="VOTE_TITLE" property="voteTitle" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="BIGINT"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, HOSPITAL_ID, HOSPITAL_CODE, HOSPITAL_NAME, APP_ID, APP_CODE, OPEN_ID, CARD_NO, PATIENT_NAME,
+    BIZ_CODE, APPRAISE_LEVEL, SERVICE_LEVEL, SKILL_LEVEL, SUGGESTION, ORDER_NO, ORDER_NO_HASH_VAL, RATER_CODE,IS_HAD_VOTE,VOTE_TITLE,CREATE_TIME
+  </sql>
+  <sql id="Choose_Hash_TableName">
+    <choose>
+        <when test="hashTableName == 'BIZ_VOTE_1'">
+             BIZ_VOTE_1 
+        </when>
+        <when test="hashTableName == 'BIZ_VOTE_2'">
+             BIZ_VOTE_2 
+        </when>
+        <when test="hashTableName == 'BIZ_VOTE_3'">
+             BIZ_VOTE_3 
+        </when>
+        <when test="hashTableName == 'BIZ_VOTE_4'">
+             BIZ_VOTE_4 
+        </when>
+        <when test="hashTableName == 'BIZ_VOTE_5'">
+             BIZ_VOTE_5 
+        </when>
+        <when test="hashTableName == 'BIZ_VOTE_6'">
+             BIZ_VOTE_6 
+        </when>
+        <when test="hashTableName == 'BIZ_VOTE_7'">
+             BIZ_VOTE_7 
+        </when>
+        <when test="hashTableName == 'BIZ_VOTE_8'">
+             BIZ_VOTE_8 
+        </when>
+        <when test="hashTableName == 'BIZ_VOTE_9'">
+             BIZ_VOTE_9 
+        </when>
+        <when test="hashTableName == 'BIZ_VOTE_10'">
+             BIZ_VOTE_10 
+        </when>
+    </choose>
+  </sql>
+  
+  <select id="selectById" resultMap="VoteInfoResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from BIZ_VOTE_1
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from BIZ_VOTE_1
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <select id="findRaterAllVoteInfos" resultMap="VoteInfoResultMap" parameterType="java.util.Map" >
+    select 
+        <include refid="Base_Column_List" />
+    from 
+        <include refid="Choose_Hash_TableName" />
+    where 1 = 1
+    <if test="hospitalId != null">
+        AND HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR}
+    </if>
+    <if test="raterCode != null">
+        AND RATER_CODE = #{raterCode , jdbcType=VARCHAR}
+    </if>
+    <if test="isHadVote != null">
+        AND IS_HAD_VOTE = #{isHadVote , jdbcType=SMALLINT}
+    </if>
+    <if test="openId != null">
+        AND OPEN_ID = #{openId , jdbcType=VARCHAR}
+    </if>
+    order by CREATE_TIME desc
+  </select>
+  
+  <select id="countVoteInfo" resultType="java.lang.Integer" parameterType="java.util.Map">
+    select count(id)
+    from 
+       <include refid="Choose_Hash_TableName" />
+    where OPEN_ID = #{openId,jdbcType=VARCHAR}
+       <if test="orderNo != null and orderNoHashVal != null">
+            AND ORDER_NO = #{orderNo , jdbcType=VARCHAR} 
+            AND ORDER_NO_HASH_VAL = #{orderNoHashVal , jdbcType=BIGINT} 
+       </if>
+       <if test="raterCode != null">
+            AND RATER_CODE = #{raterCode , jdbcType=VARCHAR} 
+       </if>
+  </select>
+  
+  <select id="findVoteInfo" resultMap="VoteInfoResultMap" parameterType="java.util.Map" >
+       select 
+            <include refid="Base_Column_List" />
+       from 
+            <include refid="Choose_Hash_TableName" />
+      where OPEN_ID = #{openId,jdbcType=VARCHAR}
+      <if test="id != null">
+            AND ID = #{id , jdbcType=VARCHAR} 
+       </if>
+       <if test="orderNo != null and orderNoHashVal != null">
+            AND ORDER_NO = #{orderNo , jdbcType=VARCHAR} 
+            AND ORDER_NO_HASH_VAL = #{orderNoHashVal , jdbcType=BIGINT} 
+       </if>
+       <if test="raterCode != null">
+            AND RATER_CODE = #{raterCode , jdbcType=VARCHAR} 
+       </if>
+  </select>
+  
+  <insert id="add" parameterType="com.yxw.commons.entity.mobile.biz.vote.VoteInfo" >
+    insert into 
+       <include refid="Choose_Hash_TableName" />
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="hospitalId != null" >
+        HOSPITAL_ID,
+      </if>
+      <if test="hospitalCode != null" >
+        HOSPITAL_CODE,
+      </if>
+      <if test="hospitalName != null" >
+        HOSPITAL_NAME,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="appCode != null" >
+        APP_CODE,
+      </if>
+      <if test="openId != null" >
+        OPEN_ID,
+      </if>
+      <if test="cardNo != null" >
+        CARD_NO,
+      </if>
+      <if test="patientName != null" >
+        PATIENT_NAME,
+      </if>
+      <if test="bizCode != null" >
+        BIZ_CODE,
+      </if>
+      <if test="appraiseLevel != null" >
+        APPRAISE_LEVEL,
+      </if>
+      <if test="serviceLevel != null" >
+        SERVICE_LEVEL,
+      </if>
+      <if test="skillLevel != null" >
+        SKILL_LEVEL,
+      </if>
+      <if test="suggestion != null" >
+        SUGGESTION,
+      </if>
+      <if test="orderNo != null" >
+        ORDER_NO,
+      </if>
+      <if test="orderNoHashVal != null" >
+        ORDER_NO_HASH_VAL,
+      </if>
+      <if test="raterCode != null" >
+        RATER_CODE,
+      </if>
+      <if test="isHadVote != null" >
+        IS_HAD_VOTE,
+      </if>
+      <if test="voteTitle != null" >
+        VOTE_TITLE,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalId != null" >
+        #{hospitalId,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalCode != null" >
+        #{hospitalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalName != null" >
+        #{hospitalName,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="appCode != null" >
+        #{appCode,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="patientName != null" >
+        #{patientName,jdbcType=VARCHAR},
+      </if>
+      <if test="bizCode != null" >
+        #{bizCode,jdbcType=VARCHAR},
+      </if>
+      <if test="appraiseLevel != null" >
+        #{appraiseLevel,jdbcType=SMALLINT},
+      </if>
+      <if test="serviceLevel != null" >
+        #{serviceLevel,jdbcType=SMALLINT},
+      </if>
+      <if test="skillLevel != null" >
+        #{skillLevel,jdbcType=SMALLINT},
+      </if>
+      <if test="suggestion != null" >
+        #{suggestion,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNoHashVal != null" >
+        #{orderNoHashVal,jdbcType=BIGINT},
+      </if>
+      <if test="raterCode != null" >
+        #{raterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isHadVote != null" >
+        #{isHadVote,jdbcType=SMALLINT},
+      </if>
+      <if test="voteTitle != null" >
+        #{voteTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.yxw.commons.entity.mobile.biz.vote.VoteInfo" >
+    update 
+      <include refid="Choose_Hash_TableName" />
+    <set >
+      <if test="hospitalId != null" >
+        HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalCode != null" >
+        HOSPITAL_CODE = #{hospitalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalName != null" >
+        HOSPITAL_NAME = #{hospitalName,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="appCode != null" >
+        APP_CODE = #{appCode,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        OPEN_ID = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        CARD_NO = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bizCode != null" >
+        BIZ_CODE = #{bizCode,jdbcType=VARCHAR},
+      </if>
+      <if test="appraiseLevel != null" >
+        APPRAISE_LEVEL = #{appraiseLevel,jdbcType=SMALLINT},
+      </if>
+      <if test="serviceLevel != null" >
+        SERVICE_LEVEL = #{serviceLevel,jdbcType=SMALLINT},
+      </if>
+      <if test="skillLevel != null" >
+        SKILL_LEVEL = #{skillLevel,jdbcType=SMALLINT},
+      </if>
+      <if test="suggestion != null" >
+        SUGGESTION = #{suggestion,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        ORDER_NO = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNoHashVal != null" >
+        ORDER_NO_HASH_VAL = #{orderNoHashVal,jdbcType=BIGINT},
+      </if>
+      <if test="raterCode != null" >
+        RATER_CODE = #{raterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isHadVote != null" >
+        IS_HAD_VOTE = #{isHadVote,jdbcType=SMALLINT},
+      </if>
+      <if test="voteTitle != null" >
+        VOTE_TITLE = #{voteTitle,jdbcType=VARCHAR},
+      </if>
+      
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateById" parameterType="com.yxw.commons.entity.mobile.biz.vote.VoteInfo" >
+    update 
+    <include refid="Choose_Hash_TableName" />
+    set HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+      HOSPITAL_CODE = #{hospitalCode,jdbcType=VARCHAR},
+      HOSPITAL_NAME = #{hospitalName,jdbcType=VARCHAR},
+      APP_ID = #{appId,jdbcType=VARCHAR},
+      APP_CODE = #{appCode,jdbcType=VARCHAR},
+      OPEN_ID = #{openId,jdbcType=VARCHAR},
+      CARD_NO = #{cardNo,jdbcType=VARCHAR},
+      BIZ_CODE = #{bizCode,jdbcType=VARCHAR},
+      APPRAISE_LEVEL = #{appraiseLevel,jdbcType=SMALLINT},
+      SERVICE_LEVEL = #{serviceLevel,jdbcType=SMALLINT},
+      SKILL_LEVEL = #{skillLevel,jdbcType=SMALLINT},
+      SUGGESTION = #{suggestion,jdbcType=VARCHAR},
+      ORDER_NO = #{orderNo,jdbcType=VARCHAR},
+      ORDER_NO_HASH_VAL = #{orderNoHashVal,jdbcType=BIGINT},
+      RATER_CODE = #{raterCode,jdbcType=VARCHAR},
+      IS_HAD_VOTE = #{isHadVote,jdbcType=SMALLINT},
+      VOTE_TITLE = #{voteTitle,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

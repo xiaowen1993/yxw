@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.easyhealth.biz.register.entity.RegisterOrder" >
+  <resultMap id="RegisterOrderResultMap" type="RegisterOrder" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ORDER_NO" property="orderNo" jdbcType="VARCHAR" />
+    <result column="ORDER_NO_HASH_VAL" property="orderNoHashVal" jdbcType="BIGINT" />
+    <result column="RELATIVE_ORDER_NO" property="relativeOrderNo" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="APP_CODE" property="appCode" jdbcType="VARCHAR" />
+    <result column="REG_TYPE" property="regType" jdbcType="INTEGER" />
+    <result column="ORDER_TITLE" property="orderTitle" jdbcType="VARCHAR" />
+    <result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+    <result column="MCH_OPEN_ID" property="mchOpenId" jdbcType="VARCHAR" />
+    <result column="MCH_ID" property="mchId" jdbcType="VARCHAR" />
+    <result column="MCH_SECRET" property="mchSecret" jdbcType="VARCHAR" />
+    <result column="SUB_MCH_ID" property="subMchId" jdbcType="VARCHAR" />
+    <result column="IS_SUB_PAY" property="isSubPay" jdbcType="INTEGER" />
+    <result column="MCH_KEY" property="mchKey" jdbcType="VARCHAR" />
+    <result column="HIS_ORD_NUM" property="hisOrdNum" jdbcType="VARCHAR" />
+    <result column="HIS_REF_ORD_NUM" property="hisRefOrdNum" jdbcType="VARCHAR" />
+    <result column="AGT_ORD_NUM" property="agtOrdNum" jdbcType="VARCHAR" />
+    <result column="AGT_REF_ORD_NUM" property="agtRefOrdNum" jdbcType="VARCHAR" />
+    <result column="AGT_CODE" property="agtCode" jdbcType="VARCHAR" />
+    <result column="PAY_MODE" property="payMode" jdbcType="INTEGER" />
+    <result column="PAY_AMOUT" property="payAmout" jdbcType="INTEGER" />
+    <result column="PAY_TIME" property="payTime" jdbcType="DATE" />
+    <result column="PAY_DESC" property="payDesc" jdbcType="VARCHAR" />
+    <result column="PAY_SETTING_ID" property="paySettingId" jdbcType="VARCHAR" />
+    <result column="REFUND_MODE" property="refundMode" jdbcType="INTEGER" />
+    <result column="REFUND_AMOUT" property="refundAmout" jdbcType="INTEGER" />
+    <result column="REFUND_TIME" property="refundTime" jdbcType="DATE" />
+    <result column="REFUND_DESC" property="refundDesc" jdbcType="VARCHAR" />
+    <result column="CANCEL_REASON" property="cancelReason" jdbcType="VARCHAR" />
+    <result column="STATE" property="state" jdbcType="INTEGER" />
+    <result column="ORDER_DESC" property="orderDesc" jdbcType="VARCHAR" />
+    <result column="BUSINESS_CODE" property="businessCode" jdbcType="VARCHAR" />
+    <result column="BUSINESS_NAME" property="businessName" jdbcType="VARCHAR" />
+    <result column="MZ_ORD_NUM" property="mzOrdNum" jdbcType="VARCHAR" />
+    <result column="CARD_TYPE" property="cardType" jdbcType="INTEGER" />
+    <result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+    <result column="LOCK_ID" property="lockId" jdbcType="VARCHAR" />
+    <result column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
+    <result column="SUB_APP_ID" property="subAppId" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+    <result column="ORDER_TIME" property="orderTime" jdbcType="DATE" />
+    <result column="WAIT_PAY_TIME" property="waitPayTime" jdbcType="INTEGER" />
+    <result column="ONLINE_PAYMENT_TYPE" property="onlinePaymentType" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, ORDER_NO, ORDER_NO_HASH_VAL, RELATIVE_ORDER_NO, APP_ID, APP_CODE, REG_TYPE, ORDER_TITLE, 
+    OPEN_ID, MCH_OPEN_ID, MCH_ID, MCH_SECRET, SUB_MCH_ID, IS_SUB_PAY, MCH_KEY, HIS_ORD_NUM, 
+    HIS_REF_ORD_NUM, AGT_ORD_NUM, AGT_REF_ORD_NUM, AGT_CODE, PAY_MODE, PAY_AMOUT, PAY_TIME, 
+    PAY_DESC, CANCEL_REASON, STATE, ORDER_DESC, BUSINESS_CODE, BUSINESS_NAME, MZ_ORD_NUM, 
+    CARD_TYPE, CARD_NO, LOCK_ID, BRANCH_ID, SUB_APP_ID, HOSPITAL_ID, ORDER_TIME, WAIT_PAY_TIME, 
+    ONLINE_PAYMENT_TYPE ,REFUND_AMOUT ,REFUND_TIME , REFUND_DESC,REFUND_MODE,PAY_SETTING_ID
+  </sql>
+  <select id="findById" resultMap="RegisterOrderResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from BIZ_REGISTER_ORDER
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findByOrderNo" resultMap="RegisterOrderResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from BIZ_REGISTER_ORDER
+    where ORDER_NO = #{orderNo,jdbcType=VARCHAR} AND ORDER_NO_HASH_VAL = #{orderNoHashVal ,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByOrderNo" parameterType="java.util.Map" >
+    delete from BIZ_REGISTER_ORDER
+    where ORDER_NO = #{orderNo,jdbcType=VARCHAR} AND ORDER_NO_HASH_VAL = #{orderNoHashVal ,jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from BIZ_REGISTER_ORDER
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="add" parameterType="RegisterOrder" >
+    insert into BIZ_REGISTER_ORDER (ID, ORDER_NO, ORDER_NO_HASH_VAL, 
+      RELATIVE_ORDER_NO, APP_ID, APP_CODE, 
+      REG_TYPE, ORDER_TITLE, OPEN_ID, 
+      MCH_OPEN_ID, MCH_ID, MCH_SECRET, 
+      SUB_MCH_ID, IS_SUB_PAY, MCH_KEY, 
+      HIS_ORD_NUM, HIS_REF_ORD_NUM, AGT_ORD_NUM, 
+      AGT_REF_ORD_NUM, AGT_CODE, PAY_MODE, 
+      PAY_AMOUT, PAY_TIME, PAY_DESC, 
+      CANCEL_REASON, STATE, ORDER_DESC, 
+      BUSINESS_CODE, BUSINESS_NAME, MZ_ORD_NUM, 
+      CARD_TYPE, CARD_NO, LOCK_ID, 
+      BRANCH_ID, SUB_APP_ID, HOSPITAL_ID, 
+      ORDER_TIME, WAIT_PAY_TIME, ONLINE_PAYMENT_TYPE,
+      REFUND_AMOUT ,REFUND_TIME , REFUND_DESC , REFUND_MODE,PAY_SETTING_ID
+      )
+    values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{orderNoHashVal,jdbcType=BIGINT}, 
+      #{relativeOrderNo,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{appCode,jdbcType=VARCHAR}, 
+      #{regType,jdbcType=INTEGER}, #{orderTitle,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, 
+      #{mchOpenId,jdbcType=VARCHAR}, #{mchId,jdbcType=VARCHAR}, #{mchSecret,jdbcType=VARCHAR}, 
+      #{subMchId,jdbcType=VARCHAR}, #{isSubPay,jdbcType=INTEGER}, #{mchKey,jdbcType=VARCHAR}, 
+      #{hisOrdNum,jdbcType=VARCHAR}, #{hisRefOrdNum,jdbcType=VARCHAR}, #{agtOrdNum,jdbcType=VARCHAR}, 
+      #{agtRefOrdNum,jdbcType=VARCHAR}, #{agtCode,jdbcType=VARCHAR}, #{payMode,jdbcType=INTEGER}, 
+      #{payAmout,jdbcType=INTEGER}, #{payTime,jdbcType=DATE}, #{payDesc,jdbcType=VARCHAR}, 
+      #{cancelReason,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{orderDesc,jdbcType=VARCHAR}, 
+      #{businessCode,jdbcType=VARCHAR}, #{businessName,jdbcType=VARCHAR}, #{mzOrdNum,jdbcType=VARCHAR}, 
+      #{cardType,jdbcType=INTEGER}, #{cardNo,jdbcType=VARCHAR}, #{lockId,jdbcType=VARCHAR}, 
+      #{branchId,jdbcType=VARCHAR}, #{subAppId,jdbcType=VARCHAR}, #{hospitalId,jdbcType=VARCHAR}, 
+      #{orderTime,jdbcType=DATE}, #{waitPayTime,jdbcType=INTEGER}, #{onlinePaymentType,jdbcType=INTEGER},
+      #{refundAmout,jdbcType=INTEGER}, #{refundTime,jdbcType=DATE}, #{refundDesc,jdbcType=VARCHAR},
+      #{refundMode,jdbcType=INTEGER},#{paySettingId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateRefundOrderNo" parameterType="java.util.Map">
+     update BIZ_REGISTER_ORDER O SET O.RELATIVE_ORDER_NO = #{relativeOrderNo ,jdbcType=VARCHAR}
+     WHERE ORDER_NO = #{orderNo,jdbcType=VARCHAR} AND ORDER_NO_HASH_VAL = #{orderNoHashVal ,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByOrderNo" parameterType="RegisterOrder" >
+    update BIZ_REGISTER_ORDER
+    <set >
+      <if test="relativeOrderNo != null" >
+        RELATIVE_ORDER_NO = #{relativeOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="appCode != null" >
+        APP_CODE = #{appCode,jdbcType=VARCHAR},
+      </if>
+      <if test="regType != null" >
+        REG_TYPE = #{regType,jdbcType=INTEGER},
+      </if>
+      <if test="orderTitle != null" >
+        ORDER_TITLE = #{orderTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        OPEN_ID = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="mchOpenId != null" >
+        MCH_OPEN_ID = #{mchOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="mchId != null" >
+        MCH_ID = #{mchId,jdbcType=VARCHAR},
+      </if>
+      <if test="mchSecret != null" >
+        MCH_SECRET = #{mchSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="subMchId != null" >
+        SUB_MCH_ID = #{subMchId,jdbcType=VARCHAR},
+      </if>
+      <if test="isSubPay != null" >
+        IS_SUB_PAY = #{isSubPay,jdbcType=INTEGER},
+      </if>
+      <if test="mchKey != null" >
+        MCH_KEY = #{mchKey,jdbcType=VARCHAR},
+      </if>
+      <if test="hisOrdNum != null" >
+        HIS_ORD_NUM = #{hisOrdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="hisRefOrdNum != null" >
+        HIS_REF_ORD_NUM = #{hisRefOrdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="agtOrdNum != null" >
+        AGT_ORD_NUM = #{agtOrdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="agtRefOrdNum != null" >
+        AGT_REF_ORD_NUM = #{agtRefOrdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="agtCode != null" >
+        AGT_CODE = #{agtCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payMode != null" >
+        PAY_MODE = #{payMode,jdbcType=INTEGER},
+      </if>
+      <if test="payAmout != null" >
+        PAY_AMOUT = #{payAmout,jdbcType=INTEGER},
+      </if>
+      <if test="payTime != null" >
+        PAY_TIME = #{payTime,jdbcType=DATE},
+      </if>
+      <if test="payDesc != null" >
+        PAY_DESC = #{payDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="paySettingId != null" >
+        PAY_SETTING_ID = #{paySettingId,jdbcType=VARCHAR},
+      </if>
+      <if test="refundMode != null" >
+        REFUND_MODE = #{refundMode,jdbcType=INTEGER},
+      </if>
+      <if test="refundAmout != null" >
+        REFUND_AMOUT = #{refundAmout,jdbcType=INTEGER},
+      </if>
+       <if test="refundTime != null" >
+        REFUND_TIME = #{refundTime,jdbcType=DATE},
+      </if>
+       <if test="refundDesc != null" >
+        REFUND_DESC = #{refundDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelReason != null" >
+        CANCEL_REASON = #{cancelReason,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        STATE = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="orderDesc != null" >
+        ORDER_DESC = #{orderDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="businessCode != null" >
+        BUSINESS_CODE = #{businessCode,jdbcType=VARCHAR},
+      </if>
+      <if test="businessName != null" >
+        BUSINESS_NAME = #{businessName,jdbcType=VARCHAR},
+      </if>
+      <if test="mzOrdNum != null" >
+        MZ_ORD_NUM = #{mzOrdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        CARD_TYPE = #{cardType,jdbcType=INTEGER},
+      </if>
+      <if test="cardNo != null" >
+        CARD_NO = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lockId != null" >
+        LOCK_ID = #{lockId,jdbcType=VARCHAR},
+      </if>
+      <if test="branchId != null" >
+        BRANCH_ID = #{branchId,jdbcType=VARCHAR},
+      </if>
+      <if test="subAppId != null" >
+        SUB_APP_ID = #{subAppId,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalId != null" >
+        HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderTime != null" >
+        ORDER_TIME = #{orderTime,jdbcType=DATE},
+      </if>
+      <if test="waitPayTime != null" >
+        WAIT_PAY_TIME = #{waitPayTime,jdbcType=INTEGER},
+      </if>
+      <if test="onlinePaymentType != null" >
+        ONLINE_PAYMENT_TYPE = #{onlinePaymentType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ORDER_NO = #{orderNo,jdbcType=VARCHAR} AND ORDER_NO_HASH_VAL = #{orderNoHashVal ,jdbcType=INTEGER}
+    </update>
+    <update id="update" parameterType="RegisterOrder" >
+    update BIZ_REGISTER_ORDER
+    <set >
+      <if test="orderNo != null" >
+        ORDER_NO = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNoHashVal != null" >
+        ORDER_NO_HASH_VAL = #{orderNoHashVal,jdbcType=BIGINT},
+      </if>
+      <if test="relativeOrderNo != null" >
+        RELATIVE_ORDER_NO = #{relativeOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="appCode != null" >
+        APP_CODE = #{appCode,jdbcType=VARCHAR},
+      </if>
+      <if test="regType != null" >
+        REG_TYPE = #{regType,jdbcType=INTEGER},
+      </if>
+      <if test="orderTitle != null" >
+        ORDER_TITLE = #{orderTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        OPEN_ID = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="mchOpenId != null" >
+        MCH_OPEN_ID = #{mchOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="mchId != null" >
+        MCH_ID = #{mchId,jdbcType=VARCHAR},
+      </if>
+      <if test="mchSecret != null" >
+        MCH_SECRET = #{mchSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="subMchId != null" >
+        SUB_MCH_ID = #{subMchId,jdbcType=VARCHAR},
+      </if>
+      <if test="isSubPay != null" >
+        IS_SUB_PAY = #{isSubPay,jdbcType=INTEGER},
+      </if>
+      <if test="mchKey != null" >
+        MCH_KEY = #{mchKey,jdbcType=VARCHAR},
+      </if>
+      <if test="hisOrdNum != null" >
+        HIS_ORD_NUM = #{hisOrdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="hisRefOrdNum != null" >
+        HIS_REF_ORD_NUM = #{hisRefOrdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="agtOrdNum != null" >
+        AGT_ORD_NUM = #{agtOrdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="agtRefOrdNum != null" >
+        AGT_REF_ORD_NUM = #{agtRefOrdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="agtCode != null" >
+        AGT_CODE = #{agtCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payMode != null" >
+        PAY_MODE = #{payMode,jdbcType=INTEGER},
+      </if>
+      <if test="payAmout != null" >
+        PAY_AMOUT = #{payAmout,jdbcType=INTEGER},
+      </if>
+      <if test="payTime != null" >
+        PAY_TIME = #{payTime,jdbcType=DATE},
+      </if>
+      <if test="payDesc != null" >
+        PAY_DESC = #{payDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="paySettingId != null" >
+        PAY_SETTING_ID = #{paySettingId,jdbcType=VARCHAR},
+      </if>
+      <if test="refundMode != null" >
+        REFUND_MODE = #{refundMode,jdbcType=INTEGER},
+      </if>
+      <if test="refundAmout != null" >
+        REFUND_AMOUT = #{refundAmout,jdbcType=INTEGER},
+      </if>
+       <if test="refundTime != null" >
+        REFUND_TIME = #{refundTime,jdbcType=DATE},
+      </if>
+       <if test="refundDesc != null" >
+        REFUND_DESC = #{refundDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelReason != null" >
+        CANCEL_REASON = #{cancelReason,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        STATE = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="orderDesc != null" >
+        ORDER_DESC = #{orderDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="businessCode != null" >
+        BUSINESS_CODE = #{businessCode,jdbcType=VARCHAR},
+      </if>
+      <if test="businessName != null" >
+        BUSINESS_NAME = #{businessName,jdbcType=VARCHAR},
+      </if>
+      <if test="mzOrdNum != null" >
+        MZ_ORD_NUM = #{mzOrdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        CARD_TYPE = #{cardType,jdbcType=INTEGER},
+      </if>
+      <if test="cardNo != null" >
+        CARD_NO = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lockId != null" >
+        LOCK_ID = #{lockId,jdbcType=VARCHAR},
+      </if>
+      <if test="branchId != null" >
+        BRANCH_ID = #{branchId,jdbcType=VARCHAR},
+      </if>
+      <if test="subAppId != null" >
+        SUB_APP_ID = #{subAppId,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalId != null" >
+        HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderTime != null" >
+        ORDER_TIME = #{orderTime,jdbcType=DATE},
+      </if>
+      <if test="waitPayTime != null" >
+        WAIT_PAY_TIME = #{waitPayTime,jdbcType=INTEGER},
+      </if>
+      <if test="onlinePaymentType != null" >
+        ONLINE_PAYMENT_TYPE = #{onlinePaymentType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateById" parameterType="RegisterOrder" >
+    update BIZ_REGISTER_ORDER
+    set ORDER_NO = #{orderNo,jdbcType=VARCHAR},
+      ORDER_NO_HASH_VAL = #{orderNoHashVal,jdbcType=BIGINT},
+      RELATIVE_ORDER_NO = #{relativeOrderNo,jdbcType=VARCHAR},
+      APP_ID = #{appId,jdbcType=VARCHAR},
+      APP_CODE = #{appCode,jdbcType=VARCHAR},
+      REG_TYPE = #{regType,jdbcType=INTEGER},
+      ORDER_TITLE = #{orderTitle,jdbcType=VARCHAR},
+      OPEN_ID = #{openId,jdbcType=VARCHAR},
+      MCH_OPEN_ID = #{mchOpenId,jdbcType=VARCHAR},
+      MCH_ID = #{mchId,jdbcType=VARCHAR},
+      MCH_SECRET = #{mchSecret,jdbcType=VARCHAR},
+      SUB_MCH_ID = #{subMchId,jdbcType=VARCHAR},
+      IS_SUB_PAY = #{isSubPay,jdbcType=INTEGER},
+      MCH_KEY = #{mchKey,jdbcType=VARCHAR},
+      HIS_ORD_NUM = #{hisOrdNum,jdbcType=VARCHAR},
+      HIS_REF_ORD_NUM = #{hisRefOrdNum,jdbcType=VARCHAR},
+      AGT_ORD_NUM = #{agtOrdNum,jdbcType=VARCHAR},
+      AGT_REF_ORD_NUM = #{agtRefOrdNum,jdbcType=VARCHAR},
+      AGT_CODE = #{agtCode,jdbcType=VARCHAR},
+      PAY_MODE = #{payMode,jdbcType=INTEGER},
+      PAY_AMOUT = #{payAmout,jdbcType=INTEGER},
+      PAY_TIME = #{payTime,jdbcType=DATE},
+      PAY_DESC = #{payDesc,jdbcType=VARCHAR},
+      CANCEL_REASON = #{cancelReason,jdbcType=VARCHAR},
+      STATE = #{state,jdbcType=INTEGER},
+      ORDER_DESC = #{orderDesc,jdbcType=VARCHAR},
+      BUSINESS_CODE = #{businessCode,jdbcType=VARCHAR},
+      BUSINESS_NAME = #{businessName,jdbcType=VARCHAR},
+      MZ_ORD_NUM = #{mzOrdNum,jdbcType=VARCHAR},
+      CARD_TYPE = #{cardType,jdbcType=INTEGER},
+      CARD_NO = #{cardNo,jdbcType=VARCHAR},
+      LOCK_ID = #{lockId,jdbcType=VARCHAR},
+      BRANCH_ID = #{branchId,jdbcType=VARCHAR},
+      SUB_APP_ID = #{subAppId,jdbcType=VARCHAR},
+      HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+      ORDER_TIME = #{orderTime,jdbcType=DATE},
+      WAIT_PAY_TIME = #{waitPayTime,jdbcType=INTEGER},
+      ONLINE_PAYMENT_TYPE = #{onlinePaymentType,jdbcType=INTEGER},
+      REFUND_AMOUT = #{refundAmout,jdbcType=INTEGER}, 
+      REFUND_TIME = #{refundTime,jdbcType=DATE}, 
+      REFUND_DESC = #{refundDesc,jdbcType=VARCHAR},
+      REFUND_MODE = #{refundMode,jdbcType=INTEGER},
+      PAY_SETTING_ID = #{paySettingId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

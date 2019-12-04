@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd 
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+						http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd 
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+						http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	default-lazy-init="false">
+
+	<!-- 标准平台提供的接口 -->
+	<!-- <dubbo:reference id="spOutsideInvokeService" interface="com.yxw.mobileapp.invoke.OutsideInvokeService" cluster="failsafe" url="dubbo://120.25.65.47:10001" timeout="3000000" version="rc" />
+
+	新平台提供的接口
+	<dubbo:reference id="ptOutsideInvokeService" interface="com.yxw.mobileapp.invoke.OutsideInvokeService" cluster="failsafe" group="pt" timeout="3000000" version="dev" />
+
+	ES 接口
+	<dubbo:reference id="yxwESService" interface="com.yxw.interfaces.service.YxwESService" cluster="failsafe" timeout="3000000" version="dev" />
+
+	生成远程服务代理
+	孙逸仙
+	<dubbo:reference id="syxService" interface="com.yxw.interfaces.service.SYXService" cluster="failsafe" timeout="300000" url="dubbo://58.248.185.219:30000" version="RC20150821" />
+	红会
+	<dubbo:reference id="hhService" interface="com.yxw.interfaces.service.HHService" cluster="failsafe" timeout="300000" url="dubbo://183.62.36.170:30000" version="RC20150821" />
+	<dubbo:reference id="hhService" interface="com.yxw.interfaces.service.HHService" cluster="failsafe" timeout="300000" url="dubbo://123.207.35.198:30000" version="RC20150821" />
+	汕大附一
+	<dubbo:reference id="sdfyService" interface="com.yxw.interfaces.service.SDFYService" cluster="failsafe" timeout="300000" url="dubbo://218.16.214.141:30000" version="RC20150821" />
+	深二
+	<dubbo:reference id="shenerService" interface="com.yxw.interfaces.service.ShenerService" cluster="failsafe" timeout="300000" url="dubbo://218.18.109.234:30000" version="RC20150821" />
+
+	省2
+	<dubbo:reference id="seService" interface="com.yxw.interfaces.service.SEService" cluster="failsafe" timeout="300000" url="dubbo://59.41.70.226:30000" version="RC20150821" />
+
+	东莞
+	<dubbo:reference id="dgryService" interface="com.yxw.interfaces.service.DGRYService" cluster="failsafe" timeout="300000" url="dubbo://121.12.155.237:30000" version="RC20150821" />
+	深三
+	<dubbo:reference id="shensanService" interface="com.yxw.interfaces.service.ShensanService" cluster="failsafe" timeout="300000" url="dubbo://113.98.232.20:30000" version="RC20150821" />
+	深圳眼科
+	<dubbo:reference id="szykService" interface="com.yxw.interfaces.service.ShenZhenYanKeService" cluster="failsafe" timeout="300000" url="dubbo://202.104.143.114:30000" version="RC20150821" />
+	深儿童
+	<dubbo:reference id="szetService" interface="com.yxw.interfaces.service.ShenZhenErTongService" cluster="failsafe" timeout="300000" url="dubbo://121.15.136.85:30000" version="RC20150821" />
+	深妇幼
+	<dubbo:reference id="szfyService" interface="com.yxw.interfaces.service.SZFYService" cluster="failsafe" timeout="300000" url="dubbo://113.98.245.109:30000" version="RC20150821" />
+	江门五邑
+	<dubbo:reference id="jmwyService" interface="com.yxw.interfaces.service.JMWYService" cluster="failsafe" timeout="300000" url="dubbo://113.107.139.27:30000" version="RC20150821" />
+	佛中
+	<dubbo:reference id="fszyService" interface="com.yxw.interfaces.service.FoZhongService" cluster="failsafe" timeout="300000" url="dubbo://219.130.222.29:30000" version="RC20150821" />
+	江门中心
+	<dubbo:reference id="jmzxService" interface="com.yxw.interfaces.service.JiangMenZhongXinService" cluster="failsafe" timeout="300000" url="dubbo://221.4.189.248:30000" version="RC20150821" />
+	南宁市二
+	<dubbo:reference id="nnseService" interface="com.yxw.interfaces.service.NNSEService" cluster="failsafe" timeout="300000" url="dubbo://121.31.14.141:30000" version="RC20151221" />
+	江门妇幼
+	<dubbo:reference id="jmfyService" interface="com.yxw.interfaces.service.JMFYService" cluster="failsafe" timeout="300000" url="dubbo://218.14.180.38:30000" version="RC20151221" />
+	光华
+	<dubbo:reference id="gzghkqService" interface="com.yxw.interfaces.service.GzghkkyyService" cluster="failsafe" timeout="300000" url="dubbo://116.204.5.131:30000" version="RC20151221" />
+	韶关
+	<dubbo:reference id="shaoguangshiyiqService" interface="com.yxw.interfaces.service.ShaoguangshiyiService" cluster="failsafe" timeout="300000" url="dubbo://113.75.172.179:30000"
+		version="RC20151221" />
+	广西医科大附属第一
+	<dubbo:reference id="gxfyService" interface="com.yxw.interfaces.service.GuangxiFuyiService" cluster="failsafe" timeout="300000" url="dubbo://210.36.48.33:30000" version="RC20151221" />
+	番禺中心
+	<dubbo:reference id="pyzxService" interface="com.yxw.interfaces.service.PanYuZhongXinService" cluster="failsafe" timeout="300000" url="dubbo://183.63.115.114:30000" version="RC20160421" />
+	汕头中心
+	<dubbo:reference id="stzxService" interface="com.yxw.interfaces.service.STZXService" cluster="failsafe" timeout="300000" url="dubbo://121.11.18.162:30000" version="RC20150821" />
+	东莞后街
+	<dubbo:reference id="dghjService" interface="com.yxw.interfaces.service.DGHJService" cluster="failsafe" timeout="300000" url="dubbo://120.197.141.38:30000" version="RC20150821" />
+
+	中山三院
+	<dubbo:reference id="zssyService" interface="com.yxw.interfaces.service.ZSSYService" cluster="failsafe" timeout="300000" url="dubbo://113.108.151.249:30000" version="RC20150821" />
+	广州市一
+	<dubbo:reference id="gzsyService" interface="com.yxw.interfaces.service.GZSYService" cluster="failsafe" timeout="300000" url="dubbo://10.20.1.46:30000" version="RC20150821" />
+	云浮
+	<dubbo:reference id="yffyService" interface="com.yxw.interfaces.service.YffyService" cluster="failsafe" timeout="3000000" url="dubbo://113.107.226.186:30000" version="RC20150821" />
+	中大惠亚
+	<dubbo:reference id="zdhyService" interface="com.yxw.interfaces.service.ZDHYService" cluster="failsafe" timeout="3000000" url="dubbo://183.238.205.251:8793" version="RC20150821" />
+
+	测试医院 伪造数据
+	<dubbo:reference id="testService" interface="com.yxw.interfaces.service.TESTService" cluster="failsafe" timeout="60000" url="dubbo://183.60.127.56:30058" version="dev" />
+	 -->
+	<!--<dubbo:reference id="hhTestService" interface="com.yxw.interfaces.service.HHService" cluster="failsafe" timeout="3000000" url="dubbo://183.60.127.56:30020" version="rc" />-->
+	<!-- <dubbo:reference id="hhTestService" interface="com.yxw.interfaces.service.HHService" cluster="failsafe" timeout="3000000" url="dubbo://183.62.36.170:30020" version="rc" /> -->
+<!-- 	<dubbo:reference id="hhTestService" interface="com.yxw.interfaces.service.HHService" cluster="failsafe" timeout="3000000" url="dubbo://123.207.35.198:30020" version="rc" />
+ -->	
+    
+    <dubbo:reference id="hhService" interface="com.yxw.interfaces.service.HHService" cluster="failsafe" timeout="300000" url="dubbo://123.207.35.198:30000" version="rc" />
+    <dubbo:reference id="hhTestService" interface="com.yxw.interfaces.service.HHService" cluster="failsafe" timeout="3000000" url="dubbo://123.207.35.198:30020" version="rc" />
+
+</beans>

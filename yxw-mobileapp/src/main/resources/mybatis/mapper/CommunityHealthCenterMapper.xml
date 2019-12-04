@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.commons.entity.mobile.biz.community.CommunityHealthCenter" >
+  <resultMap id="CommunityHealthMap" type="CommunityHealthCenter" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_NAME" property="hospitalName" jdbcType="VARCHAR" />
+    <result column="ORGANIZATION_NAME" property="organizationName" jdbcType="VARCHAR" />
+    <result column="REGISTRAION_NUMBER" property="registrationNumber" jdbcType="VARCHAR" />
+    <result column="ORGANIZATION_ADDRESS" property="organizationAddress" jdbcType="VARCHAR" />
+    <result column="PHONE_NUMBER" property="phoneNumber" jdbcType="VARCHAR" />
+    <result column="REGISTER_PUT" property="registerAndPut" jdbcType="VARCHAR" />
+    <result column="ADMINSTRATIVE_REGION" property="administrativeRegion" jdbcType="VARCHAR" />
+    <result column="COMMUNITY_FICATION" property="communityFication" jdbcType="VARCHAR" />
+    <result column="HOLDING_NATURE" property="holdingNature" jdbcType="VARCHAR" />
+    <result column="TREATMENT_SUBJECT_NAME" property="treatmentSubjectName" jdbcType="VARCHAR" />
+    <result column="REMARN" property="remark" jdbcType="VARCHAR" />
+    <result column="AUX1" property="aux3" jdbcType="VARCHAR"/>
+    <result column="AUX2" property="aux3" jdbcType="VARCHAR" />
+    <result column="AUX3" property="aux3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID,HOSPITAL_ID,HOSPITAL_NAME,ORGANIZATION_NAME,REGISTRAION_NUMBER,ORGANIZATION_ADDRESS,PHONE_NUMBER,REGISTER_PUT,
+    ADMINSTRATIVE_REGION,COMMUNITY_FICATION,HOLDING_NATURE,TREATMENT_SUBJECT_NAME,REMARN,AUX1,AUX2,AUX3
+  </sql>
+  
+  <select id="findById" resultMap="CommunityHealthMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from BIZ_COMMUNITY_HEALTH_CENTER
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findAll" resultMap="CommunityHealthMap">
+    select 
+    <include refid="Base_Column_List" />
+    from BIZ_COMMUNITY_HEALTH_CENTER ORDER BY HOSPITAL_NAME ASC
+  </select>
+  
+  <select id="findGroupByAdministrativeRegion" resultMap="CommunityHealthMap" parameterType="java.lang.String" >
+    select ADMINSTRATIVE_REGION from BIZ_COMMUNITY_HEALTH_CENTER 
+    group by ADMINSTRATIVE_REGION
+  </select>
+  
+  <select id="findByAdministrativeRegion" resultMap="CommunityHealthMap">
+    select 
+    <include refid="Base_Column_List" />
+    from BIZ_COMMUNITY_HEALTH_CENTER
+    where 1=1
+    <if test="organizationName != null and organizationName != ''">
+		and ORGANIZATION_NAME like '%${organizationName}%'
+	</if>
+	<if test="administrativeRegion != null and administrativeRegion != ''">
+    	and ADMINSTRATIVE_REGION = #{administrativeRegion}
+    </if>
+    ORDER BY ORGANIZATION_NAME ASC
+  </select>
+  
+
+</mapper>

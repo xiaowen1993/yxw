@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.msgpush.MsgTemplateContent">
+
+	<resultMap id="msgTemplateContentMap" type="com.yxw.commons.entity.platform.msgpush.MsgTemplateContent">
+		<id column="ID" property="id" />
+		<result column="SORT" property="sort" />
+		<result column="KEYWORD" property="keyword" />
+		<result column="VALUE" property="value" />
+		<result column="NODE" property="node" />
+		<result column="FONT_COLOR" property="fontColor" />
+		<result column="TEMPLATE_ID" property="templateId" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+	</resultMap>
+	
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.msgpush.MsgTemplateContent">
+		INSERT INTO SYS_MSG_TEMPLATE_CONTENT VALUES
+		 (#{id}, #{sort}, #{keyword}, #{value}, #{node}, #{fontColor}, #{templateId},'8b1994dff203407a869161c0946f6e97', now(), '8b1994dff203407a869161c0946f6e97', now());
+	</insert>
+
+	<delete id="deleteByTemplateId" parameterType="String">
+	 DELETE FROM  SYS_MSG_TEMPLATE_CONTENT where TEMPLATE_ID=#{templateId}
+	</delete>
+</mapper>

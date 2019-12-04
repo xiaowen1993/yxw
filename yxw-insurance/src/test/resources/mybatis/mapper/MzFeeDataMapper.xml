@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.insurance.biz.entity.MzFeeData">
+
+	<resultMap id="mzFeeMap"  type="com.yxw.insurance.biz.entity.MzFeeData">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="TOTAL_AMOUT" property="totalAmout" jdbcType="VARCHAR" />
+		<result column="CLINIC_TIME" property="clinicTime" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+			m.ID,m.TOTAL_AMOUT,m.CLINIC_TIME
+	</sql>
+	
+	<select id="findMzFee"  resultMap="mzFeeMap"  parameterType="java.util.Map">
+			 select 
+	 		<include refid="Base_Column_List" />
+			 from biz_medical_card_1 c 
+			 left join  data_mz_fee m   on c.CARD_NO=m.CARD_NO
+             where c.OPEN_ID=#{openId,jdbcType=VARCHAR} and m.MZ_FEE_ID=#{mzFeeId,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

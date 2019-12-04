@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.mobile.biz.smarttriage.Symptom">
+
+	<resultMap id="symptomResultMap" type="Symptom">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="PART" property="part" jdbcType="VARCHAR" />
+		<result column="IS_HIDE" property="isHide" jdbcType="INTEGER" />
+	</resultMap>
+
+
+	<!-- 分页查询医院列表 -->
+	<select id="findListByPage" resultMap="symptomResultMap">
+		select ID,NAME,PART,IS_HIDE from ST_SYMPTOM
+		<where>
+			<if test="search!=null">
+				and NAME like '%#{search}%'
+			</if>
+		</where>
+	</select>
+
+	<select id="findAll" resultMap="symptomResultMap">
+		select ID,NAME,PART,IS_HIDE from ST_SYMPTOM
+	</select>
+
+	<select id="findById" resultMap="symptomResultMap">
+		select ID,NAME,PART,IS_HIDE from ST_SYMPTOM where ID = #{id}
+	</select>
+	
+	<select id="findSymptomByName" resultMap="symptomResultMap" parameterType="map">
+		select ID,NAME,PART,IS_HIDE from ST_SYMPTOM where NAME = #{name}
+	</select>
+	
+	<select id="findAllByIsHide" resultMap="symptomResultMap" parameterType="map">
+		select ID,NAME,PART,IS_HIDE from ST_SYMPTOM where IS_HIDE = #{isHide}
+	</select>
+	
+	<select id="findSymptomByDiseaseId" resultMap="symptomResultMap" parameterType="String">
+		SELECT s.* FROM ST_SYMPTOM s, ST_SYMPTOM_DISEASE sd 
+		where s.ID = sd.SYMPTOM_ID  AND sd.DISEASE_ID = #{diseaseId}
+	</select>
+	
+	
+
+	<insert id="add" parameterType="Symptom" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		ST_SYMPTOM(ID,NAME,PART,IS_HIDE)
+		values
+		(#{id},#{name},#{part},#{isHide})
+	</insert>
+
+	<update id="update" parameterType="Symptom">
+		update ST_SYMPTOM 
+		<set>
+			<if test="name != null">
+				NAME = #{name},
+			</if>
+			<if test="part != null">
+				PART = #{part},
+			</if>
+			<if test="isHide != null">
+				IS_HIDE = #{isHide},
+			</if>
+		</set>
+		 where ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+</mapper>

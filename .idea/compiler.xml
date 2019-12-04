@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="yxw-framework" />
+        <module name="yxw-app-biz" />
+        <module name="yxw-base-biz" />
+        <module name="yxw-insurance" />
+        <module name="yxw-statistics" />
+        <module name="yxw-mobile-biz" />
+        <module name="yxw-task" />
+        <module name="yxw-cache" />
+        <module name="yxw-stats-task" />
+        <module name="yxw-base" />
+        <module name="yxw-mobileapp" />
+        <module name="yxw-interfaces" />
+        <module name="yxw-interfaces-insurance-chinalife" />
+        <module name="yxw-solr" />
+        <module name="yxw-stats-solr" />
+        <module name="yxw-utils" />
+        <module name="yxw-platform" />
+        <module name="yxw-commons" />
+        <module name="yxw-stats" />
+        <module name="yxw-interfaces-dispatcher" />
+        <module name="yxw-payrefund" />
+        <module name="yxw-oauth" />
+        <module name="yxw-interfaces-elasticsearch" />
+        <module name="yxw-integration-canal-kafka-elasticsearch" />
+        <module name="yxw-resources" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="yxw" target="1.7" />
+      <module name="yxw-app-biz" target="1.7" />
+      <module name="yxw-base" target="1.7" />
+      <module name="yxw-base-biz" target="1.7" />
+      <module name="yxw-cache" target="1.7" />
+      <module name="yxw-commons" target="1.7" />
+      <module name="yxw-framework" target="1.7" />
+      <module name="yxw-insurance" target="1.7" />
+      <module name="yxw-integration-canal-kafka-elasticsearch" target="1.8" />
+      <module name="yxw-interfaces" target="1.7" />
+      <module name="yxw-interfaces-dispatcher" target="1.7" />
+      <module name="yxw-interfaces-elasticsearch" target="1.8" />
+      <module name="yxw-interfaces-insurance-chinalife" target="1.7" />
+      <module name="yxw-mobile-biz" target="1.7" />
+      <module name="yxw-mobileapp" target="1.7" />
+      <module name="yxw-oauth" target="1.7" />
+      <module name="yxw-payrefund" target="1.7" />
+      <module name="yxw-platform" target="1.7" />
+      <module name="yxw-resources" target="1.7" />
+      <module name="yxw-solr" target="1.7" />
+      <module name="yxw-statistics" target="1.7" />
+      <module name="yxw-stats" target="1.7" />
+      <module name="yxw-stats-solr" target="1.7" />
+      <module name="yxw-stats-task" target="1.8" />
+      <module name="yxw-task" target="1.7" />
+      <module name="yxw-utils" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="yxw-platform" options="-bootclasspath &quot;C:/Program Files/Java/jdk1.8.0_221/jre/lib/rt.jar;C:/Program Files/Java/jdk1.8.0_221/jre/lib/jce.jar&quot;" />
+    </option>
+  </component>
+</project>

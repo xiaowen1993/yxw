@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.easyhealth.biz.datastorage.reports.entity.DataInspectDetail">
+
+	<resultMap id="dataInspectDetailResultMap" type="DataInspectDetail">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="INSPECT_ID" property="inspectId" jdbcType="VARCHAR" />
+		<result column="ITEM_NAME" property="itemName" jdbcType="VARCHAR" />
+		<result column="RESULT" property="result" jdbcType="VARCHAR" />
+		<result column="UNIT" property="unit" jdbcType="VARCHAR" />
+		<result column="REF_RANGE" property="refRange" jdbcType="VARCHAR" />
+		<result column="ABNORMAL" property="abnormal" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 批量插入 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		 INSERT INTO 
+		 DATA_INSPECT_DETAIL(ID,INSPECT_ID,ITEM_NAME,RESULT,UNIT,REF_RANGE,ABNORMAL)
+		 VALUES
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (#{item.id},#{item.inspectId},#{item.itemName},#{item.result},#{item.unit},#{item.refRange},#{item.abnormal})
+	    </foreach>  
+	</insert>
+
+	<insert id="add" parameterType="DataInspectDetail" useGeneratedKeys="true" keyProperty="id">
+		insert into 
+		DATA_INSPECT_DETAIL(ID,INSPECT_ID,ITEM_NAME,RESULT,UNIT,REF_RANGE,ABNORMAL)
+		 values 
+		(#{id},#{inspectId},#{itemName},#{result},#{unit},#{refRange},#{abnormal})
+	</insert>
+	
+	<select id="findByInspectId" resultMap="dataInspectDetailResultMap" parameterType="map">
+		SELECT
+			*
+		FROM
+			DATA_INSPECT_DETAIL DI
+		WHERE
+			DI.INSPECT_ID = #{inspectId}
+	</select>
+
+</mapper>

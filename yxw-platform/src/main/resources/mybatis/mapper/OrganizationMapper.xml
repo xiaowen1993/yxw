@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.platform.privilege.entity.Organization">
+
+	<resultMap type="Organization" id="organizationMap">
+		<id column="ID" property="id" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="INTRODUCTION" property="introduction" jdbcType="VARCHAR" />
+		<result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+		
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="MEMO" property="memo" jdbcType="VARCHAR" />
+		
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+	    <result column="CT" property="ct" jdbcType="TIMESTAMP" />
+	    <result column="EP" property="ep" jdbcType="VARCHAR" />
+	    <result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<resultMap type="com.yxw.platform.privilege.vo.OrganizationVo" id="organizationVoMap">
+		<id column="ID" property="id" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="INTRODUCTION" property="introduction" jdbcType="VARCHAR" />
+		<result column="PARENT_NAME" property="parentName" jdbcType="VARCHAR" />
+		
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="MEMO" property="memo" jdbcType="VARCHAR" />
+		
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+	    <result column="CT" property="ct" jdbcType="TIMESTAMP" />
+	    <result column="EP" property="ep" jdbcType="VARCHAR" />
+	    <result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<select id="findAll"  resultMap="organizationMap">
+		select * from SYS_ORGANIZATION t
+	</select>
+	
+	<select id="findById" parameterType="string" resultMap="organizationMap">
+		select * from SYS_ORGANIZATION t
+		where t.ID=#{id}
+	</select>
+	
+	<insert id="add" parameterType="Organization">
+		INSERT INTO SYS_ORGANIZATION(ID,NAME,INTRODUCTION,PARENT_ID,CODE,MEMO
+			,CP,CT,EP,ET)
+		VALUES
+			(#{id},#{name},#{introduction},#{parentId},#{code},#{memo}
+				,#{cp},#{ct},#{ep},#{et})
+	</insert>
+	
+	<update id="update" parameterType="Organization">
+		UPDATE SYS_ORGANIZATION
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="name!=null">
+				NAME = #{name},
+			</if>
+			<if test="introduction!=null">
+				INTRODUCTION = #{introduction},
+			</if>
+			<if test="parentId!=null">
+				PARENT_ID = #{parentId},
+			</if>
+			<if test="code!=null">
+				CODE = #{code},
+			</if>
+			<if test="memo!=null">
+				MEMO = #{memo},
+			</if>
+			
+			<if test="ep!=null">
+				EP = #{ep},
+			</if>
+			<if test="et!=null">
+				ET = #{et}
+			</if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+	
+	<select id="findByName" parameterType="string" resultMap="organizationMap">
+		SELECT * FROM SYS_ORGANIZATION
+		WHERE NAME LIKE #{search} 
+	</select>
+	
+	<select id="findByCode" parameterType="string" resultMap="organizationMap">
+		SELECT * FROM SYS_ORGANIZATION
+		WHERE CODE = #{code} 
+	</select>
+	
+	<!-- 账户管理  查询所有账户 分页 -->
+	<select id="findListByPage" resultMap="organizationVoMap" >
+      select t0.ID,t0.NAME,t0.INTRODUCTION,t1.NAME as PARENT_NAME,t0.CODE,t0.MEMO
+      			,t0.CP,t0.CT,t0.EP,t0.ET
+      from SYS_ORGANIZATION t0 left join SYS_ORGANIZATION t1
+      	on t0.PARENT_ID=t1.ID
+      <where>
+		<if test="search!=null">
+			t0.NAME like #{search}
+		</if>
+	  </where>
+       order by t0.CT desc
+    </select>
+	<!-- end -->
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from SYS_ORGANIZATION
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		
+	</delete>
+</mapper>

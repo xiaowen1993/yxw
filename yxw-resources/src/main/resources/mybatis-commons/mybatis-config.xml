@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE configuration    
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="Attach" type="com.yxw.framework.common.attach.entity.Attach"/>
+		<typeAlias alias="Hospital" type="com.yxw.commons.entity.platform.hospital.Hospital"/>
+		<typeAlias alias="BranchHospital" type="com.yxw.commons.entity.platform.hospital.BranchHospital"/>
+		<typeAlias alias="Menu" type="com.yxw.commons.entity.platform.hospital.Menu"/>
+		<typeAlias alias="Optional" type="com.yxw.commons.entity.platform.hospital.Optional"/>
+		<typeAlias alias="PlatformOptional" type="com.yxw.commons.entity.platform.hospital.PlatformOptional"/>
+		<typeAlias alias="PayMode" type="com.yxw.commons.entity.platform.hospital.PayMode"/>
+		<typeAlias alias="MsgMode" type="com.yxw.commons.entity.platform.hospital.MsgMode"/>
+		<typeAlias alias="PaySettings" type="com.yxw.commons.entity.platform.hospital.PaySettings"/>
+		<typeAlias alias="PlatformPaySettings" type="com.yxw.commons.entity.platform.hospital.PlatformPaySettings"/>
+		<typeAlias alias="Platform" type="com.yxw.commons.entity.platform.hospital.Platform"/>
+		<typeAlias alias="PlatformSettings" type="com.yxw.commons.entity.platform.hospital.PlatformSettings"/>
+		<typeAlias alias="HospitalPlatformSettings" type="com.yxw.commons.entity.platform.hospital.HospitalPlatformSettings"/>
+		<typeAlias alias="Keyword" type="com.yxw.commons.entity.platform.message.Keyword" />
+		<typeAlias alias="PlatformSettingsMenu" type="com.yxw.commons.entity.platform.hospital.PlatformSettingsMenu"/>
+		<typeAlias alias="PlatformSettingsMenu" type="com.yxw.commons.entity.platform.hospital.PlatformSettingsMenu"/>
+		<typeAlias alias="User" type="com.yxw.commons.entity.platform.privilege.User"/>
+		<typeAlias alias="Role" type="com.yxw.commons.entity.platform.privilege.Role"/>
+		<typeAlias alias="Resource" type="com.yxw.commons.entity.platform.privilege.Resource"/>
+		<typeAlias alias="UserRole" type="com.yxw.commons.entity.platform.privilege.UserRole"/>
+		<typeAlias alias="RoleResource" type="com.yxw.commons.entity.platform.privilege.RoleResource"/>
+		<typeAlias alias="Area" type="com.yxw.commons.entity.platform.area.Area"/>
+		<typeAlias alias="AppOptional" type="com.yxw.commons.entity.platform.app.optional.AppOptional"/>
+		<typeAlias alias="AppOptionalModule" type="com.yxw.commons.entity.platform.app.optional.AppOptionalModule"/>
+		<typeAlias alias="AppColor" type="com.yxw.commons.entity.platform.app.color.AppColor"/>
+		<typeAlias alias="NihRecord" type="com.yxw.commons.entity.mobile.biz.nih.NihRecord"/>
+		<typeAlias alias="Feedback" type="com.yxw.commons.entity.mobile.biz.customservice.Feedback"/>
+		<typeAlias alias="Vaccinate" type="com.yxw.commons.entity.mobile.biz.vaccinate.Vaccinate"/>
+		<typeAlias alias="StopRegisterLog" type="com.yxw.commons.entity.mobile.biz.register.StopRegisterLog"/>
+		<typeAlias alias="RuleClinic" type="com.yxw.commons.entity.platform.rule.RuleClinic"/>
+		<typeAlias alias="RulePayment" type="com.yxw.commons.entity.platform.rule.RulePayment"/>
+		<typeAlias alias="RuleTiedCard" type="com.yxw.commons.entity.platform.rule.RuleTiedCard"/>
+		<typeAlias alias="RuleQuery" type="com.yxw.commons.entity.platform.rule.RuleQuery"/>
+		<typeAlias alias="RuleFriedExpress" type="com.yxw.commons.entity.platform.rule.RuleFriedExpress"/>
+		<typeAlias alias="RuleInHospital" type="com.yxw.commons.entity.platform.rule.RuleInHospital"/>
+		
+		<typeAlias alias="RegisterRecord" type="com.yxw.commons.entity.mobile.biz.register.RegisterRecord"/>
+	</typeAliases>
+</configuration>

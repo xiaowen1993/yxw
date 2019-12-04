@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.commons.entity.platform.rule.RuleClinic">
+	<resultMap id="RuleClinicResultMap" type="RuleClinic">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="IS_SUPPORT_COMBINED_PAYMENTS" property="isSupportCombinedPayments" jdbcType="INTEGER" />
+		<result column="IS_SUPPORT_HEALTH_PAYMENTS" property="isSupportHealthPayments" jdbcType="INTEGER" />
+		<result column="NOT_SUPPORT_HEALTH_PAYMENTS_TIP" property="notSupportHealthPaymentsTip" jdbcType="VARCHAR" />
+		<result column="SUPPORT_HEALTH_PAYMENTS_TIP" property="supportHealthPaymentsTip" jdbcType="VARCHAR" />
+		<result column="OUTPATIENT_PAYMENT_FAILED_TIP" property="outpatientPaymentFailedTip" jdbcType="VARCHAR" />
+		<result column="CLINIC_PRE_PAY_WARM_TIP" property="clinicPrePayWarmTip" jdbcType="VARCHAR" />
+		<result column="IS_BASEDON_MEDICAL_INSURANCE" property="isBasedOnMedicalInsurance" jdbcType="INTEGER" />
+		<result column="IS_SUPPORT_FORBIDDEN_PAYMENT" property="isSupportForbiddenPayment" jdbcType="INTEGER" />
+		<result column="SHOW_CLINIC_PAY_DETAIL_STYLE" property="showClinicPayDetailStyle" jdbcType="INTEGER" />
+		<result column="SUPPORT_FORBIDDEN_PAYMENT_TIPS" property="supportForbiddenPaymentTips" jdbcType="VARCHAR" />
+		<result column="OUTPATIENT_SERVICE_PAY_TIPS" property="outpatientServicePayTips" jdbcType="VARCHAR" />
+		<result column="PRESETTLE_STYLE" property="presettleStyle" jdbcType="INTEGER" />
+		<result column="CONFIRM_TIP_MEDICARE_WECHAT" property="confirmTipMedicareWechat" jdbcType="VARCHAR" />
+		<result column="IS_CONFIRM_TIP_MEDICARE_WECHAT" property="isconfirmTipMedicareWechat" jdbcType="INTEGER" />
+		<result column="CONFIRM_TIP_MEDICARE_ALIPAY" property="confirmTipMedicareAlipay" jdbcType="VARCHAR" />
+		<result column="IS_CONFIRM_TIP_MEDICARE_ALIPAY" property="isconfirmTipMedicareAlipay" jdbcType="INTEGER" />
+		<result column="CONFIRM_TIP_SELFPAY_WECHAT" property="confirmTipSelfPayWechat" jdbcType="VARCHAR" />
+		<result column="IS_CONFIRM_TIP_SELFPAY_WECHAT" property="isconfirmTipSelfPayWechat" jdbcType="INTEGER" />
+		<result column="CONFIRM_TIP_SELFPAY_ALIPAY" property="confirmTipSelfPayAlipay" jdbcType="VARCHAR" />
+		<result column="IS_CONFIRM_TIP_SELFPAY_ALIPAY" property="isconfirmTipSelfPayAlipay" jdbcType="INTEGER" />
+		<result column="REFUND_DELAY_AFTER_EXCEPTION" property="refundDelayAfterException" jdbcType="INTEGER" />
+		<!-- 特补 -->
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, HOSPITAL_ID, IS_SUPPORT_COMBINED_PAYMENTS, IS_SUPPORT_HEALTH_PAYMENTS,
+		NOT_SUPPORT_HEALTH_PAYMENTS_TIP, SUPPORT_HEALTH_PAYMENTS_TIP, OUTPATIENT_PAYMENT_FAILED_TIP,
+		CLINIC_PRE_PAY_WARM_TIP, IS_BASEDON_MEDICAL_INSURANCE,IS_SUPPORT_FORBIDDEN_PAYMENT, SHOW_CLINIC_PAY_DETAIL_STYLE,
+		SUPPORT_FORBIDDEN_PAYMENT_TIPS, OUTPATIENT_SERVICE_PAY_TIPS, PRESETTLE_STYLE, CONFIRM_TIP_MEDICARE_WECHAT,
+		IS_CONFIRM_TIP_MEDICARE_WECHAT, CONFIRM_TIP_MEDICARE_ALIPAY,IS_CONFIRM_TIP_MEDICARE_ALIPAY,CONFIRM_TIP_SELFPAY_WECHAT,
+		IS_CONFIRM_TIP_SELFPAY_WECHAT,CONFIRM_TIP_SELFPAY_ALIPAY,IS_CONFIRM_TIP_SELFPAY_ALIPAY,REFUND_DELAY_AFTER_EXCEPTION,
+		CP, CT, EP, ET
+	</sql>
+	<select id="findById" resultMap="RuleClinicResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_RULE_CLINIC
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findAll" resultMap="RuleClinicResultMap">
+		select * from SYS_RULE_CLINIC
+	</select>
+
+	<select id="findByHospitalId" resultMap="RuleClinicResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_RULE_CLINIC
+		where HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR}
+	</select>
+
+	<insert id="add" parameterType="RuleClinic">
+		insert into SYS_RULE_CLINIC (ID, HOSPITAL_ID, IS_SUPPORT_COMBINED_PAYMENTS,
+		IS_SUPPORT_HEALTH_PAYMENTS,
+		NOT_SUPPORT_HEALTH_PAYMENTS_TIP, SUPPORT_HEALTH_PAYMENTS_TIP,
+		OUTPATIENT_PAYMENT_FAILED_TIP, CLINIC_PRE_PAY_WARM_TIP,
+		IS_BASEDON_MEDICAL_INSURANCE,IS_SUPPORT_FORBIDDEN_PAYMENT,SHOW_CLINIC_PAY_DETAIL_STYLE,
+		SUPPORT_FORBIDDEN_PAYMENT_TIPS,OUTPATIENT_SERVICE_PAY_TIPS,PRESETTLE_STYLE,CONFIRM_TIP_MEDICARE_WECHAT,
+		IS_CONFIRM_TIP_MEDICARE_WECHAT,CONFIRM_TIP_MEDICARE_ALIPAY,IS_CONFIRM_TIP_MEDICARE_ALIPAY,CONFIRM_TIP_SELFPAY_WECHAT,
+		IS_CONFIRM_TIP_SELFPAY_WECHAT,CONFIRM_TIP_SELFPAY_ALIPAY,IS_CONFIRM_TIP_SELFPAY_ALIPAY,REFUND_DELAY_AFTER_EXCEPTION,
+		CP, CT, EP, ET
+		)
+		values (#{id,jdbcType=VARCHAR}, #{hospitalId,jdbcType=VARCHAR}, #{isSupportCombinedPayments,jdbcType=INTEGER},
+		#{isSupportHealthPayments,jdbcType=INTEGER}, 
+		#{notSupportHealthPaymentsTip,jdbcType=VARCHAR}, #{supportHealthPaymentsTip,jdbcType=VARCHAR},
+		#{outpatientPaymentFailedTip,jdbcType=VARCHAR}, #{clinicPrePayWarmTip,jdbcType=VARCHAR},
+		#{isBasedOnMedicalInsurance,jdbcType=INTEGER}, #{isSupportForbiddenPayment,jdbcType=INTEGER},#{showClinicPayDetailStyle,jdbcType=INTEGER},
+		#{supportForbiddenPaymentTips,jdbcType=VARCHAR},
+		#{outpatientServicePayTips,jdbcType=VARCHAR},#{presettleStyle},#{confirmTipMedicareWechat},
+		#{isconfirmTipMedicareWechat},#{confirmTipMedicareAlipay},#{isconfirmTipMedicareAlipay},#{confirmTipSelfPayWechat},
+		#{isconfirmTipSelfPayWechat},#{confirmTipSelfPayAlipay},#{isconfirmTipSelfPayAlipay},#{refundDelayAfterException,jdbcType=INTEGER},
+		#{cp,jdbcType=VARCHAR}, #{ct,jdbcType=TIMESTAMP}, #{ep,jdbcType=VARCHAR}, #{et,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from SYS_RULE_CLINIC where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<update id="update" parameterType="RuleClinic">
+		update SYS_RULE_CLINIC
+		<set>
+			<if test="hospitalId != null">
+				HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+			</if>
+			<if test="isSupportCombinedPayments != null">
+				IS_SUPPORT_COMBINED_PAYMENTS = #{isSupportCombinedPayments,jdbcType=INTEGER},
+			</if>
+			<if test="isSupportHealthPayments != null">
+				IS_SUPPORT_HEALTH_PAYMENTS = #{isSupportHealthPayments,jdbcType=INTEGER},
+			</if>
+			<if test="notSupportHealthPaymentsTip != null">
+				NOT_SUPPORT_HEALTH_PAYMENTS_TIP = #{notSupportHealthPaymentsTip,jdbcType=VARCHAR},
+			</if>
+			<if test="supportHealthPaymentsTip != null">
+				SUPPORT_HEALTH_PAYMENTS_TIP = #{supportHealthPaymentsTip,jdbcType=VARCHAR},
+			</if>
+			<if test="outpatientPaymentFailedTip != null">
+				OUTPATIENT_PAYMENT_FAILED_TIP = #{outpatientPaymentFailedTip,jdbcType=VARCHAR},
+			</if>
+			<if test="clinicPrePayWarmTip != null">
+				CLINIC_PRE_PAY_WARM_TIP = #{clinicPrePayWarmTip,jdbcType=VARCHAR},
+			</if>
+
+			<if test="isBasedOnMedicalInsurance != null">
+				IS_BASEDON_MEDICAL_INSURANCE = #{isBasedOnMedicalInsurance,jdbcType=INTEGER},
+			</if>
+			<if test="isSupportForbiddenPayment != null">
+				IS_SUPPORT_FORBIDDEN_PAYMENT = #{isSupportForbiddenPayment,jdbcType=INTEGER},
+			</if>
+			<if test="showClinicPayDetailStyle != null">
+				SHOW_CLINIC_PAY_DETAIL_STYLE = #{showClinicPayDetailStyle,jdbcType=INTEGER},
+			</if>
+			<if test="supportForbiddenPaymentTips != null">
+				SUPPORT_FORBIDDEN_PAYMENT_TIPS = #{supportForbiddenPaymentTips,jdbcType=VARCHAR},
+			</if>
+			<if test="outpatientServicePayTips != null">
+				OUTPATIENT_SERVICE_PAY_TIPS = #{outpatientServicePayTips,jdbcType=VARCHAR},
+			</if>
+			<if test="presettleStyle != null">
+				PRESETTLE_STYLE = #{presettleStyle,jdbcType=INTEGER},
+			</if>
+			<if test="confirmTipMedicareWechat != null">
+				CONFIRM_TIP_MEDICARE_WECHAT = #{confirmTipMedicareWechat,jdbcType=VARCHAR},
+			</if>
+			<if test="isconfirmTipMedicareWechat != null">
+				IS_CONFIRM_TIP_MEDICARE_WECHAT = #{isconfirmTipMedicareWechat,jdbcType=INTEGER},
+			</if>
+			<if test="confirmTipMedicareAlipay != null">
+				CONFIRM_TIP_MEDICARE_ALIPAY = #{confirmTipMedicareAlipay,jdbcType=VARCHAR},
+			</if>
+			<if test="isconfirmTipMedicareAlipay != null">
+				IS_CONFIRM_TIP_MEDICARE_ALIPAY = #{isconfirmTipMedicareAlipay,jdbcType=INTEGER},
+			</if>
+			<if test="confirmTipSelfPayWechat != null">
+				CONFIRM_TIP_SELFPAY_WECHAT = #{confirmTipSelfPayWechat,jdbcType=VARCHAR},
+			</if>
+			<if test="isconfirmTipSelfPayWechat != null">
+				IS_CONFIRM_TIP_SELFPAY_WECHAT = #{isconfirmTipSelfPayWechat,jdbcType=INTEGER},
+			</if>
+			<if test="confirmTipSelfPayAlipay != null">
+				CONFIRM_TIP_SELFPAY_ALIPAY = #{confirmTipSelfPayAlipay,jdbcType=VARCHAR},
+			</if>
+			<if test="isconfirmTipSelfPayAlipay != null">
+				IS_CONFIRM_TIP_SELFPAY_ALIPAY = #{isconfirmTipSelfPayAlipay,jdbcType=INTEGER},
+			</if>
+			<if test="refundDelayAfterException != null">
+				REFUND_DELAY_AFTER_EXCEPTION = #{refundDelayAfterException,jdbcType=INTEGER},
+			</if>
+
+			<if test="cp != null">
+				CP = #{cp,jdbcType=VARCHAR},
+			</if>
+			<if test="ct != null">
+				CT = #{ct,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ep != null">
+				EP = #{ep,jdbcType=VARCHAR},
+			</if>
+			<if test="et != null">
+				ET = #{et,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateById" parameterType="RuleClinic">
+		update SYS_RULE_CLINIC
+		set HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR},
+		IS_SUPPORT_COMBINED_PAYMENTS = #{isSupportCombinedPayments,jdbcType=INTEGER},
+		IS_SUPPORT_HEALTH_PAYMENTS = #{isSupportHealthPayments,jdbcType=INTEGER},
+		NOT_SUPPORT_HEALTH_PAYMENTS_TIP = #{notSupportHealthPaymentsTip,jdbcType=VARCHAR},
+		SUPPORT_HEALTH_PAYMENTS_TIP = #{supportHealthPaymentsTip,jdbcType=VARCHAR},
+		OUTPATIENT_PAYMENT_FAILED_TIP = #{outpatientPaymentFailedTip,jdbcType=VARCHAR},
+		IS_BASEDON_MEDICAL_INSURANCE = #{isBasedOnMedicalInsurance,jdbcType=INTEGER}, 
+		IS_SUPPORT_FORBIDDEN_PAYMENT = #{isSupportForbiddenPayment,jdbcType=INTEGER},
+		SHOW_CLINIC_PAY_DETAIL_STYLE = #{showClinicPayDetailStyle,jdbcType=INTEGER},
+		SUPPORT_FORBIDDEN_PAYMENT_TIPS = #{supportForbiddenPaymentTips,jdbcType=VARCHAR},
+		OUTPATIENT_SERVICE_PAY_TIPS = #{outpatientServicePayTips,jdbcType=VARCHAR}, 
+		PRESETTLE_STYLE = #{presettleStyle},
+		CONFIRM_TIP_MEDICARE_WECHAT = #{confirmTipMedicareWechat},
+		IS_CONFIRM_TIP_MEDICARE_WECHAT = #{isconfirmTipMedicareWechat},
+		CONFIRM_TIP_MEDICARE_ALIPAY = #{confirmTipMedicareAlipay},
+		IS_CONFIRM_TIP_MEDICARE_ALIPAY = #{isconfirmTipMedicareAlipay},
+		CONFIRM_TIP_SELFPAY_WECHAT = #{confirmTipSelfPayWechat},
+		IS_CONFIRM_TIP_SELFPAY_WECHAT = #{isconfirmTipSelfPayWechat},
+		CONFIRM_TIP_SELFPAY_ALIPAY = #{confirmTipSelfPayAlipay},
+		IS_CONFIRM_TIP_SELFPAY_ALIPAY = #{isconfirmTipSelfPayAlipay},
+		REFUND_DELAY_AFTER_EXCEPTION = #{refundDelayAfterException,jdbcType=INTEGER},
+
+		CP = #{cp,jdbcType=VARCHAR},
+		CT = #{ct,jdbcType=TIMESTAMP},
+		EP = #{ep,jdbcType=VARCHAR},
+		ET = #{et,jdbcType=TIMESTAMP}
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

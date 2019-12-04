@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.mobile.biz.smarttriage.Disease">
+
+	<resultMap id="diseaseResultMap" type="Disease">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="DUMMARY" property="dummary" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="findAll" resultMap="diseaseResultMap">
+		select ID,NAME,DUMMARY from ST_DISEASE
+	</select>
+
+	<select id="findById" resultMap="diseaseResultMap">
+		select ID,NAME,DUMMARY from ST_DISEASE where ID = #{id}
+	</select>
+	
+	<select id="findDiseaseByName" resultMap="diseaseResultMap" parameterType="map">
+		select ID,NAME,DUMMARY from ST_DISEASE where NAME = #{name}
+	</select>
+	
+	<select id="findDiseaseBySymptomIds" resultMap="diseaseResultMap" parameterType="map">
+		SELECT s.* FROM ST_DISEASE s, ST_SYMPTOM_DISEASE sd WHERE s.ID = sd.DISEASE_ID
+		AND sd.SYMPTOM_ID in 
+		<foreach item="item" index="index" collection="symptomIds" open="(" separator="," close=")">  
+			#{item}
+		</foreach>
+		 GROUP BY s.ID
+	</select>
+
+	
+
+
+
+	<insert id="add" parameterType="Disease" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		ST_DISEASE(ID,NAME,DUMMARY)
+		values
+		(#{id},#{name},#{dummary})
+	</insert>
+
+	<update id="update" parameterType="Disease">
+		update ST_DISEASE 
+		<set>
+			<if test="name != null">
+				NAME = #{name},
+			</if>
+			<if test="dummary != null">
+				DUMMARY = #{dummary},
+			</if>
+		</set>
+		where 
+			ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+</mapper>

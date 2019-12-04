@@ -1,0 +1,4 @@
+1、使用get方式删除数据
+http://localhost:9999/solr/statsRegister/update?stream.body=%3Cdelete%3E%3Cquery%3EthisMonth:2016-11%3C/query%3E%3C/delete%3E&stream.contentType=text/xml;charset=utf-8&commit=true
+2、solr服务器提交XML方式删除
+<delete><query>*:*</query></delete><commit />

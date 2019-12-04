@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/yxw.iml" filepath="$PROJECT_DIR$/yxw.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-app-biz/yxw-app-biz.iml" filepath="$PROJECT_DIR$/yxw-app-biz/yxw-app-biz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-base/yxw-base.iml" filepath="$PROJECT_DIR$/yxw-base/yxw-base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-base-biz/yxw-base-biz.iml" filepath="$PROJECT_DIR$/yxw-base-biz/yxw-base-biz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-cache/yxw-cache.iml" filepath="$PROJECT_DIR$/yxw-cache/yxw-cache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-commons/yxw-commons.iml" filepath="$PROJECT_DIR$/yxw-commons/yxw-commons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-framework/yxw-framework.iml" filepath="$PROJECT_DIR$/yxw-framework/yxw-framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-insurance/yxw-insurance.iml" filepath="$PROJECT_DIR$/yxw-insurance/yxw-insurance.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-integration-canal-kafka-elasticsearch/yxw-integration-canal-kafka-elasticsearch.iml" filepath="$PROJECT_DIR$/yxw-integration-canal-kafka-elasticsearch/yxw-integration-canal-kafka-elasticsearch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-interfaces/yxw-interfaces.iml" filepath="$PROJECT_DIR$/yxw-interfaces/yxw-interfaces.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-interfaces-dispatcher/yxw-interfaces-dispatcher.iml" filepath="$PROJECT_DIR$/yxw-interfaces-dispatcher/yxw-interfaces-dispatcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-interfaces-elasticsearch/yxw-interfaces-elasticsearch.iml" filepath="$PROJECT_DIR$/yxw-interfaces-elasticsearch/yxw-interfaces-elasticsearch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-interfaces-insurance-chinalife/yxw-interfaces-insurance-chinalife.iml" filepath="$PROJECT_DIR$/yxw-interfaces-insurance-chinalife/yxw-interfaces-insurance-chinalife.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-mobile-biz/yxw-mobile-biz.iml" filepath="$PROJECT_DIR$/yxw-mobile-biz/yxw-mobile-biz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-mobileapp/yxw-mobileapp.iml" filepath="$PROJECT_DIR$/yxw-mobileapp/yxw-mobileapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-oauth/yxw-oauth.iml" filepath="$PROJECT_DIR$/yxw-oauth/yxw-oauth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-payrefund/yxw-payrefund.iml" filepath="$PROJECT_DIR$/yxw-payrefund/yxw-payrefund.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-platform/yxw-platform.iml" filepath="$PROJECT_DIR$/yxw-platform/yxw-platform.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-resources/yxw-resources.iml" filepath="$PROJECT_DIR$/yxw-resources/yxw-resources.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-solr/yxw-solr.iml" filepath="$PROJECT_DIR$/yxw-solr/yxw-solr.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-statistics/yxw-statistics.iml" filepath="$PROJECT_DIR$/yxw-statistics/yxw-statistics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-stats/yxw-stats.iml" filepath="$PROJECT_DIR$/yxw-stats/yxw-stats.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-stats-solr/yxw-stats-solr.iml" filepath="$PROJECT_DIR$/yxw-stats-solr/yxw-stats-solr.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-stats-task/yxw-stats-task.iml" filepath="$PROJECT_DIR$/yxw-stats-task/yxw-stats-task.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-task/yxw-task.iml" filepath="$PROJECT_DIR$/yxw-task/yxw-task.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yxw-utils/yxw-utils.iml" filepath="$PROJECT_DIR$/yxw-utils/yxw-utils.iml" />
+    </modules>
+  </component>
+</project>

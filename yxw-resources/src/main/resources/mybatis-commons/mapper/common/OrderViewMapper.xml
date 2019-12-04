@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.commons.entity.platform.order.OrderView" >
+  	<resultMap id="orderViewResultMap" type="com.yxw.commons.entity.platform.order.OrderView">
+  		<id column="ID" property="id" jdbcType="VARCHAR" /> 
+    	<result column="ORDER_TYPE" property="orderType" jdbcType="VARCHAR" />
+	    <result column="TABLE_NAME" property="tableName" jdbcType="VARCHAR" />
+	    <result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+	    <result column="HOSPITAL_CODE" property="hospitalCode" jdbcType="VARCHAR" />
+	    <result column="PAY_STATUS" property="payStatus" jdbcType="VARCHAR" />
+	    <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+	    <result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+	    <result column="PATIENT_NAME" property="patientName" jdbcType="VARCHAR" />
+	    <result column="PATIENT_MOBILE" property="patientMobile" jdbcType="VARCHAR" />
+	    <result column="ORDER_NO" property="orderNo" jdbcType="VARCHAR" />
+	    <result column="ORDER_NO_HASH_VAL" property="orderNoHashVal" jdbcType="INTEGER" />
+	    <result column="HIS_ORD_NO" property="hisOrdNo" jdbcType="VARCHAR" />
+	    <result column="AGT_ORD_NUM" property="agtOrdNum" jdbcType="VARCHAR" />
+	    <result column="PAY_TIME" property="payTime" jdbcType="VARCHAR" /> 
+	    <result column="REFUND_ORDER_NO" property="refundOrderNo" jdbcType="VARCHAR" />
+	    <result column="REFUND_HISORD_NO" property="refundHisOrdNo" jdbcType="VARCHAR" />
+	    <result column="AGT_REFUND_ORD_NUM" property="agtRefundOrdNum" jdbcType="VARCHAR" />
+	    <result column="REFUND_TIME" property="refundTime" jdbcType="VARCHAR" />
+	    <result column="BIZ_MODE" property="bizMode" jdbcType="VARCHAR" />
+	    <result column="RECEIPT_NUM" property="receiptNum" jdbcType="VARCHAR" />
+	    <result column="PAY_FEE" property="payFee" jdbcType="VARCHAR" />
+	    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+	    <result column="BIZ_STATUS" property="bizStatus" jdbcType="VARCHAR" />
+	    <result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+	</resultMap>
+  	<sql id="Order_Query_Column_List" >
+	    ID, ORDER_TYPE, TABLE_NAME, HOSPITAL_ID, HOSPITAL_CODE, PAY_STATUS, CREATE_TIME, CARD_NO, PATIENT_NAME, PATIENT_MOBILE, ORDER_NO, ORDER_NO_HASH_VAL,HIS_ORD_NO, 
+	    AGT_ORD_NUM, PAY_FEE, PAY_TIME, REFUND_ORDER_NO, REFUND_HISORD_NO, AGT_REFUND_ORD_NUM, REFUND_TIME, RECEIPT_NUM, BIZ_MODE, TITLE, BIZ_STATUS,OPEN_ID
+	</sql>
+  	
+  	<select id="findListByPage" resultMap="orderViewResultMap" parameterType="map"> 
+	    SELECT 
+	    	<include refid="Order_Query_Column_List" />  
+	    FROM 
+	    REFUND_ORDER_QUERY WHERE HOSPITAL_ID = #{hospitalId}
+ 			<if test="orderType != null and orderType != ''" >
+        		 AND ORDER_TYPE = #{orderType}
+      		</if>
+      		<if test="orderNo != null and orderNo != ''" >
+      			AND ORDER_NO = #{orderNo} AND ORDER_NO_HASH_VAL = #{orderNoHashVal} 
+      		</if>
+      		<if test="startTime != null and startTime != '' and endTime != null and endTime != ''" >
+      			AND CREATE_TIME BETWEEN #{startTime} AND #{endTime} 
+      		</if>
+      		<if test="payStatus != null and payStatus != ''" >
+      			AND PAY_STATUS = #{payStatus} 
+      		</if>
+      		<if test="payMode != null and payMode != ''" >
+      			AND BIZ_MODE = #{payMode} 
+      		</if>
+      		<if test="cardNo != null and cardNo != ''" >
+      			AND CARD_NO = #{cardNo} 
+      		</if>
+      		<if test="patientName != null and patientName != ''" >
+      			AND PATIENT_NAME like #{patientName} 
+      		</if>
+      		<if test="patientMobile != null and patientMobile != ''" >
+      			AND PATIENT_MOBILE like #{patientMobile} 
+      		</if>
+      		<if test="hisOrdNo != null and hisOrdNo != ''" >
+      			AND HIS_ORD_NO = #{hisOrdNo} 
+      		</if>
+      		<if test="agtOrdNum != null and agtOrdNum != ''" >
+      			AND AGT_ORD_NUM = #{agtOrdNum} 
+      		</if>
+      		<if test="bizStatus != null and bizStatus != ''" >
+      			AND BIZ_STATUS = #{bizStatus} 
+      		</if>
+      		<if test="openId != null and openId != ''" >
+      			AND OPEN_ID = #{openId} 
+      		</if>
+ 			ORDER BY CREATE_TIME DESC
+  	</select>
+  	
+</mapper>

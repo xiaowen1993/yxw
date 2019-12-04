@@ -1,0 +1,18 @@
+/*less*/
+@import "var.less";
+#payRecord{
+  .yx-list{
+    li{
+      &.arrow{ padding: 1em 15px 1em 5px;
+        &:before{margin-top: -5px;}
+      }
+    }
+  }
+  .pay-tips{ background-color:@skinbgColor;  color: #fff;  width: 100%;  padding: 10px;  text-align: center;  position: relative;  box-sizing: border-box;  overflow:hidden; font-size: @size14;
+    i{
+      &.icon-triangle-dark{border-left:15px solid @skinbgColorHover;  border-bottom:15px solid transparent;  border-right:15px solid transparent;  display: block;  height: 0;  width:0px;  position: absolute;  right: -15px;  bottom: 0;  z-index: 10;}
+      &.icons-square{  width: 15px;  height: 15px;  background-color: #eeeeee;  position: absolute;  right: 0;  bottom: 0;  z-index: 9;}
+    }
+
+  }
+  }

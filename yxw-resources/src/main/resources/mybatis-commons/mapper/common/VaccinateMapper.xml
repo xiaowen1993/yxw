@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.mobile.biz.vaccinate.Vaccinate">
+
+	<resultMap id="vaccinateResult" type="Vaccinate">
+		<id column="ID" property="id" />
+		<result column="REGION_NAME" property="regionName" />
+		<result column="VACCINATE_CLINIC_NAME" property="vaccinateClinicName" />
+		<result column="VACCINATE_CLINIC_ADDR" property="vaccinateClinicAddr" />
+		<result column="VACCINATE_CLINIC_TEL" property="vaccinateClinicTel" />
+	</resultMap>
+	
+	<sql id="All_Column">
+		ID, REGION_NAME, VACCINATE_CLINIC_NAME, VACCINATE_CLINIC_ADDR, VACCINATE_CLINIC_TEL
+	</sql>
+	
+	<select id="findVaccinateClinicsByRegionName" resultMap="vaccinateResult" parameterType="java.util.Map">
+    	select  <include refid="All_Column"></include> 
+    	FROM BIZ_VACCINATE 
+    	where REGION_NAME = #{regionName}
+  </select>
+
+
+</mapper>

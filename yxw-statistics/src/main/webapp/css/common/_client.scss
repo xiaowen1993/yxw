@@ -1,0 +1,105 @@
+.row-layout{
+    .form-horizontal{
+        .control-label {
+            width: 180px;
+        }
+        .controls{
+            margin-left: 200px;
+        }
+    }
+    .uploadBtn-warp{
+        margin-left: 10px;
+        display: inline;
+    }
+    .grey{
+        color: #666;
+    }
+    .imgBox{
+        width: 100px;
+        height: 100px;
+        border: #eee 1px solid;
+        margin-right: 15px;
+        display: inline-block;
+        zoom: 1;
+        *display: inline;
+    }
+    .city-list{
+        border-bottom: #eee 1px solid;
+        padding: 10px 0;
+        &.show{
+            .city-content{
+                display: block;
+            }
+           .dropdown .caret {
+                border-left: 8px solid transparent;
+                border-right: 8px solid transparent;
+                border-top: 8px solid #76797d;
+                content: "";
+                display: inline-block;
+                height: 0;
+                vertical-align: top;
+                width: 0;
+            }
+        }
+    }
+    .city-title{
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        //border-bottom: #eee 1px solid;
+        //padding-bottom: 10px;
+        .dropdown{
+            width: 30px;
+            height: 24px;
+            text-align: center;
+            display: inline-block;
+            zoom: 1;
+            *display: inline;
+            vertical-align: top;
+            .caret {
+                border-bottom: 8px solid transparent;
+                border-left: 8px solid #76797d;
+                border-top: 8px solid transparent;
+                content: "";
+                display: inline-block;
+                height: 0;
+                vertical-align: top;
+                width: 0;
+            }
+        }
+    }
+    .city-content{
+        display: none;
+        padding-left: 55px;
+        .city-li{
+            width: 150px;
+            padding: 5px 0;
+            display: inline-block;
+            zoom: 1;
+            *display: inline;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+    .checkboxTwo{
+        margin-right: 10px;
+    }
+}
+.row-replay{
+    .form-horizontal {
+        .control-label {
+            width: 180px;
+        }
+        .controls{
+            margin-left: 200px;
+            padding: 6px 20px 5px 0;
+            line-height: 25px;
+        }
+        .control-group.fore{
+            padding-bottom: 5px;
+            border-bottom: #eee 1px solid;
+        }
+    }
+
+}
+

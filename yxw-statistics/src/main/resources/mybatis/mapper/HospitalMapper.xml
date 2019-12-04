@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.statistics.biz.hospitalmanager.entity.Hospital">
+	<resultMap id="hospital" type="Hospital">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="AREA_CODE" property="areaCode" jdbcType="VARCHAR" />
+		<result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" />
+		<result column="STATE" property="state" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<resultMap id="hospitalInfosVo" type="com.yxw.statistics.biz.vo.HospitalInfosVo">
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_NAME" property="hospitalName" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_CODE" property="hospitalCode" jdbcType="VARCHAR" />
+		<result column="PLATFORM_NAME" property="platformName" jdbcType="VARCHAR" />
+		<result column="PLATFORM_CODE" property="platformCode" jdbcType="VARCHAR" />
+		<result column="AREA_CODE" property="areaCode" jdbcType="VARCHAR" />
+		<result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" />
+		<result column="TRADE_NAME" property="tradeName" jdbcType="VARCHAR" />
+		<result column="TRADE_MODE" property="tradeMode" jdbcType="VARCHAR" />
+		<result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+		<result column="STATE" property="state" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<!-- 根据ID查询 -->
+	<select id="findById" resultMap="hospital" parameterType="java.lang.String">
+		SELECT
+		ID, NAME, CODE, AREA_CODE, AREA_NAME, STATE
+		FROM BIZ_HOSPITAL
+		WHERE ID = #{id, jdbcType=VARCHAR}
+	</select>
+
+	<!-- 查询所有 -->
+	<select id="findAll" resultMap="hospital">
+		SELECT
+		ID, NAME, CODE, AREA_CODE, AREA_NAME, STATE
+		FROM BIZ_HOSPITAL
+	</select>
+	
+	<!-- 查询所有 -->
+	<select id="findByName" resultMap="hospital">
+		SELECT
+		ID, NAME, CODE, AREA_CODE, AREA_NAME, STATE
+		FROM BIZ_HOSPITAL
+		WHERE NAME LIKE '%${name}%'
+	</select>
+	
+	<!-- 查询医院、平台信息 -->
+	<select id="findAllHospitalInfos" resultMap="hospitalInfosVo">
+		SELECT a.HOSPITAL_ID, a.HOSPITAL_NAME, a.HOSPITAL_CODE, 
+			   a.PLATFORM_NAME, a.PLATFORM_CODE, a.AREA_CODE, a.AREA_NAME, a.STATE
+		FROM 
+		(
+			SELECT
+			h.ID AS HOSPITAL_ID, h.NAME AS HOSPITAL_NAME, p.NAME AS PLATFORM_NAME, 
+			p.CODE AS PLATFORM_CODE, h.CODE AS HOSPITAL_CODE, h.AREA_CODE, h.AREA_NAME, h.STATE
+			FROM BIZ_HOSPITAL h 
+			LEFT JOIN BIZ_HOSPITAL_PLATFORM_TRADE_SETTINGS s ON 
+				h.ID = s.HOSPITAL_ID 
+			LEFT JOIN SYS_PLATFORM p 
+				ON p.ID = s.PLATFORM_ID
+			<if test="name != null and name != ''">
+			WHERE h.NAME LIKE '%${name}%' 
+			</if>
+			GROUP BY h.ID, s.PLATFORM_ID 
+		) a
+		ORDER BY a.PLATFORM_CODE
+	</select>
+	
+	<!-- 通过医院名查询医院 -->
+	<select id="findHospitalsByName" resultMap="hospital">
+		SELECT
+		ID, NAME, CODE, AREA_CODE, AREA_NAME, STATE
+		FROM BIZ_HOSPITAL
+		WHERE NAME = #{name}
+	</select>
+	
+	<!-- 通过医院名查询医院 -->
+	<select id="findHospitalsByCode" resultMap="hospital">
+		SELECT
+		ID, NAME, CODE, AREA_CODE, AREA_NAME, STATE
+		FROM BIZ_HOSPITAL
+		WHERE CODE = #{code}
+	</select>
+
+	<!-- 新增 -->
+	<insert id="add" parameterType="hospital">
+		INSERT INTO
+		BIZ_HOSPITAL
+			(ID, NAME, CODE, AREA_CODE, AREA_NAME, STATE)
+		VALUES
+			(#{id}, #{name},#{code}, #{areaCode}, #{areaName}, #{state})
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="update" parameterType="hospital">
+		UPDATE
+		BIZ_HOSPITAL
+		<set >
+	    	<if test="name != null" >
+	        NAME = #{name},
+	      	</if>
+	      	<if test="code != null" >
+	        CODE = #{code},
+	      	</if>
+	      	<if test="areaCode != null" >
+	        AREA_CODE = #{areaCode},
+	      	</if>
+	      	<if test="areaName != null" >
+	        AREA_NAME = #{areaName},
+	      	</if>
+	      	<if test="state != null" >
+	        STATE = #{state},
+	      	</if>
+	    </set>
+		WHERE ID = #{id}	
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		DELETE FROM BIZ_HOSPITAL WHERE ID = #{id}   
+	</delete>
+
+</mapper>

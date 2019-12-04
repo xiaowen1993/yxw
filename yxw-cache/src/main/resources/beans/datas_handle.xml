@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd 
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd 
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd 
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd"
+	default-lazy-init="false">
+
+	<!-- 注册缓存组件bean -->
+	<bean id="AccessTokenCache" class="com.yxw.cache.component.AccessTokenCache" />
+	<bean id="ComponentVerifyTicketCache" class="com.yxw.cache.component.ComponentVerifyTicketCache" />
+	<bean id="ClinicExceptionCache" class="com.yxw.cache.component.ClinicExceptionCache" />
+	<bean id="ClinicRecordCache" class="com.yxw.cache.component.ClinicRecordCache" />
+	<bean id="CommonCache" class="com.yxw.cache.component.CommonCache" />
+	<bean id="DepositExceptionCache" class="com.yxw.cache.component.DepositExceptionCache" />
+	<bean id="DepositRecordCache" class="com.yxw.cache.component.DepositRecordCache" />
+	<bean id="DeptCache" class="com.yxw.cache.component.DeptCache" />
+	<bean id="DoctorCache" class="com.yxw.cache.component.DoctorCache" />
+	<bean id="HadRegDoctorCache" class="com.yxw.cache.component.HadRegDoctorCache" />
+	<bean id="HospitalAndOptionCache" class="com.yxw.cache.component.HospitalAndOptionCache" />
+	<bean id="HospitalCache" class="com.yxw.cache.component.HospitalCache" />
+	<bean id="HospitalRuleCache" class="com.yxw.cache.component.HospitalRuleCache" />
+	<bean id="MedicalCardCache" class="com.yxw.cache.component.MedicalCardCache" />
+	<bean id="MsgTempCache" class="com.yxw.cache.component.MsgTempCache" />
+	<bean id="RegisterExceptionCache" class="com.yxw.cache.component.RegisterExceptionCache" />
+	<bean id="RegisterRecordCache" class="com.yxw.cache.component.RegisterRecordCache" />
+	<bean id="RegisterSourceCache" class="com.yxw.cache.component.RegisterSourceCache" />
+	<bean id="RegisterInfoCache" class="com.yxw.cache.component.RegisterInfoCache" />
+	<bean id="RoleResourceCache" class="com.yxw.cache.component.RoleResourceCache" />
+	<bean id="StopRegisterExceptionCache" class="com.yxw.cache.component.StopRegisterExceptionCache" />
+	<bean id="UserRoleCache" class="com.yxw.cache.component.UserRoleCache" />
+	<bean id="WhiteListCache" class="com.yxw.cache.component.WhiteListCache" />
+	<bean id="AreaCache" class="com.yxw.cache.component.AreaCache" />
+	<bean id="AppLocationCache" class="com.yxw.cache.component.AppLocationCache" />
+	<bean id="AppOptionalCache" class="com.yxw.cache.component.AppOptionalCache" />
+	<bean id="CarrieroperatorCache" class="com.yxw.cache.component.CarrieroperatorCache" />
+	<bean id="AppColorCache" class="com.yxw.cache.component.AppColorCache" />
+	<bean id="PlatformCache" class="com.yxw.cache.component.PlatformCache" />
+	<bean id="PayInfoCache" class="com.yxw.cache.component.PayInfoCache" />
+	<bean id="ReInvokeLockCache" class="com.yxw.cache.component.ReInvokeLockCache" />
+
+	<!-- 注册回调处理器bean -->
+	<bean id="callbackProcessor" class="com.yxw.cache.core.process.CachedCallbackProcessor">
+		<!-- 注入缓存组件 -->
+    	<property name="serviceBeanMap">
+    		<map>
+				<entry key="AccessTokenCache" value-ref="AccessTokenCache" />
+				<entry key="ComponentVerifyTicketCache" value-ref="ComponentVerifyTicketCache" />
+				<entry key="ClinicExceptionCache" value-ref="ClinicExceptionCache" />
+				<entry key="ClinicRecordCache" value-ref="ClinicRecordCache" />
+				<entry key="CommonCache" value-ref="CommonCache" />
+				<entry key="DepositExceptionCache" value-ref="DepositExceptionCache" />
+				<entry key="DepositRecordCache" value-ref="DepositRecordCache" />
+				<entry key="DeptCache" value-ref="DeptCache" />
+				<entry key="DoctorCache" value-ref="DoctorCache" />
+				<entry key="HadRegDoctorCache" value-ref="HadRegDoctorCache" />
+				<entry key="HospitalAndOptionCache" value-ref="HospitalAndOptionCache" />
+				<entry key="HospitalCache" value-ref="HospitalCache" />
+				<entry key="HospitalRuleCache" value-ref="HospitalRuleCache" />
+				<entry key="MedicalCardCache" value-ref="MedicalCardCache" />
+				<entry key="MsgTempCache" value-ref="MsgTempCache" />
+				<entry key="RegisterExceptionCache" value-ref="RegisterExceptionCache" />
+				<entry key="RegisterRecordCache" value-ref="RegisterRecordCache" />
+				<entry key="RegisterSourceCache" value-ref="RegisterSourceCache" />
+				<entry key="RegisterInfoCache" value-ref="RegisterInfoCache" />
+				<entry key="RoleResourceCache" value-ref="RoleResourceCache" />
+				<entry key="StopRegisterExceptionCache" value-ref="StopRegisterExceptionCache" />
+				<entry key="UserRoleCache" value-ref="UserRoleCache" />
+				<entry key="WhiteListCache" value-ref="WhiteListCache" />
+				<entry key="AreaCache" value-ref="AreaCache" />
+				<entry key="AppLocationCache" value-ref="AppLocationCache" />
+				<entry key="AppOptionalCache" value-ref="AppOptionalCache" />
+				<entry key="CarrieroperatorCache" value-ref="CarrieroperatorCache" />
+				<entry key="AppColorCache" value-ref="AppColorCache" />
+				<entry key="PlatformCache" value-ref="PlatformCache" />
+				<entry key="PayInfoCache" value-ref="PayInfoCache" />
+				<entry key="ReInvokeLockCache" value-ref="ReInvokeLockCache" />
+			</map>
+    	</property>
+    </bean>
+	
+</beans>	

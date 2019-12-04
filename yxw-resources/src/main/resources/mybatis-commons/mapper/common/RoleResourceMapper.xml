@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- modify by  Yuce  不要使用多个ResultMap   一个文件里面最好就只用一个-->
+<mapper namespace="com.yxw.commons.entity.platform.privilege.RoleResource">
+
+    <resultMap type="RoleResource" id="roleResourceMap">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        
+        <result column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+        <result column="RESOURCE_ID" property="resourceId" jdbcType="VARCHAR" />
+    </resultMap>
+    
+	<select id="findListByPage" resultMap="roleResourceMap" >
+      select * from SYS_ROLE_RESOURCE t 
+       order by t.ROLE_ID desc
+    </select>
+	
+	<select id="findById" parameterType="string" resultMap="roleResourceMap">
+		select * from SYS_ROLE_RESOURCE where id=#{id}
+	</select>
+	
+	<select id="findResourceByRoleIds" parameterType="string" resultType="Resource">
+		select DISTINCT t2.* 
+		from SYS_ROLE_RESOURCE t1 join SYS_RESOURCE t2
+			on t1.RESOURCE_ID=t2.id
+		where t1.ROLE_ID in
+		<foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="findResourceByRoleId" parameterType="string" resultType="Resource">
+		select DISTINCT t2.* 
+		from SYS_ROLE_RESOURCE t1 join SYS_RESOURCE t2
+			on t1.RESOURCE_ID=t2.id
+		where t1.ROLE_ID=#{id}
+	</select>
+	
+	<delete id="deleteById" parameterType="string">
+		DELETE FROM SYS_ROLE_RESOURCE WHERE ID=#{id}
+	</delete>
+	
+	<delete id="deleteByRoleIds" parameterType="string">
+		DELETE FROM SYS_ROLE_RESOURCE 
+		WHERE ROLE_ID IN
+		<foreach collection="list" item="item" index="index" open="(" close=")" separator="," >  
+	         #{item}
+	    </foreach>  
+	</delete>
+	
+	<insert id="add" parameterType="RoleResource" >
+		INSERT INTO
+		SYS_ROLE_RESOURCE(ID,ROLE_ID,RESOURCE_ID)
+		VALUES 
+		 (#{id},#{roleId},#{resourceId})
+	</insert> 
+	
+	<insert id="batchInsert" parameterType="java.util.List">
+		 INSERT INTO 
+		 SYS_ROLE_RESOURCE(ID,ROLE_ID,RESOURCE_ID)
+		 VALUES
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	         (#{item.id},#{item.roleId},#{item.resourceId})
+	    </foreach>  
+	</insert>
+	
+	<update id="update" parameterType="RoleResource">
+		update SYS_ROLE_RESOURCE t 
+		<trim prefix="SET" suffixOverrides=",">
+				<if test="roleId!=null">
+					t.ROLE_ID=#{roleId},
+				</if>
+				<if test="resourceId!=null">
+					t.RESOURCE_ID=#{resourceId},
+				</if>
+		</trim>
+		where id=#{id}
+	</update>
+	
+	<select id="findByIds" resultMap="roleResourceMap">
+        select * from SYS_ROLE_RESOURCE
+        where id in
+        <foreach collection="list"  item="item" index="index" open="(" close=")" separator=",">
+           #{item}
+       </foreach>
+    </select>
+    
+</mapper>

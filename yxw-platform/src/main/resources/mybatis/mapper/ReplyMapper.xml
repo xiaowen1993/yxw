@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.message.Reply">
+	
+	<!-- 新增一条回复 -->
+	<insert id="add" parameterType="Reply" >
+		INSERT INTO SYS_MSG_REPLY(ID,TYPE,CONTENT_TYPE,THIRD_TYPE,HOSPITAL_ID,HOSPITAL_BRANCH_ID,
+		CONTENT,PIC_PATHS,CP,CT,EP,ET,STATE)
+		VALUES(#{id},#{type},#{contentType},#{thirdType},#{hospitalId},#{hospitalBranchId},
+		#{content},#{picPaths},#{cp},now(),#{ep},now(),1)
+	</insert>
+	<!-- end -->
+	
+	
+	
+	<!-- 根据医院ID查找回复 -->
+	<select id="find" parameterType="Reply" >
+		select 
+		t.ID as id,
+		t.TYPE as type,
+		t.HOSPITAL_ID as hospitalId,
+		t.HOSPITAL_BRANCH_ID as hospitalBranchId,
+		t.CONTENT as content,
+		t.PIC_PATHS as picPaths,
+		t.STATE as state
+		from SYS_MSG_REPLY t where t.TYPE=1 and t.HOSPITAL_ID=#{hospitalId}
+	</select>
+	<!-- end -->
+	
+	
+	
+	<!-- 添加回复素材关联关系 单图文 -->
+	<insert id="addReplyMeterial" parameterType="Map" >
+			INSERT INTO SYS_MSG_REPLY_METERIAL(ID,REPLY_ID,MIXED_METERIAL_ID,STATE)
+			VALUES(#{id},#{replyId},#{MeterialId},1)
+	</insert>
+	<!-- end -->
+	
+	
+	
+	<!-- 添加回复素材关联关系 多图文 -->
+	<insert id="addReplyMeterials" parameterType="java.util.List" >
+		INSERT INTO SYS_MSG_REPLY_METERIAL(ID,REPLY_ID,MIXED_METERIAL_ID,STATE)
+		VALUES
+	    <foreach collection="list" item="item" index="index" separator="," >  
+      		('${item.id}','${item.replyId}','${item.MeterialId}',1)  
+  		</foreach> 
+	</insert>
+	<!-- end -->
+	
+	
+	
+	<!-- 添加回复 规则关联关系 -->
+	<insert id="addReplyRule" parameterType="java.util.List" >
+			INSERT INTO SYS_MSG_RULE_REPLY(ID,REPLY_ID,RULE_ID,STATE)
+			VALUES
+		    <foreach collection="list" item="item" index="index" separator="," >  
+       			('${item.id}','${item.replyId}','${item.ruleId}',1)  
+   		    </foreach> 
+	</insert>
+	<!-- end -->
+	
+	
+	
+	<!-- 删除回复 -->
+	<delete id="delete" parameterType="map" >
+		DELETE FROM SYS_MSG_REPLY   where HOSPITAL_ID=#{hospitalId} and THIRD_TYPE=#{thirdType}
+	</delete>
+	<!-- end -->
+	
+	
+	
+	<!--=========================== 消息管理主页显示医院消息情况 ===========================-->
+	<select id="findHospListByPage" resultMap="hospitalMap" parameterType="Map" >
+			SELECT * FROM SYS_HOSPITAL t WHERE t.STATUS=1
+		<if test="search!=null">
+			AND t.NAME like '%${search}%' 
+		</if>
+		<if test="hospitalIds != null" >
+			and t.ID in
+			<foreach item="item" index="index" collection="hospitalIds" open="(" separator="," close=")">  
+	  			#{item}
+	  		</foreach> 
+		</if>
+	</select>
+	<resultMap id="hospitalMap" type="com.yxw.platform.vo.MsgHospitalVO">
+		<id column="ID" property="hospitalid"/>
+		<result column="NAME" property="hospitalname"/>
+		<collection  property="replyList"  ofType="com.yxw.platform.vo.MsgReplyVO" column="id"  select="getReply"></collection>
+	</resultMap>
+	<select id="getReply" parameterType="string" resultType="com.yxw.platform.vo.MsgReplyVO">
+		SELECT (select s.USER_NAME from SYS_USER s where s.ID=t.EP) as ep,DATE_FORMAT(t.ET,'%Y年%m月%d日 %T') as et FROM SYS_MSG_REPLY t 
+		WHERE t.HOSPITAL_ID=#{id} AND t.STATE=1 ORDER BY t.ET desc
+	</select>
+	<!-- end -->
+	
+	
+	
+
+	<!--=================================根据规则查询回复-=============================-->
+	<select id="findListByRuleId" parameterType="string" resultMap="replyMap">
+		SELECT * FROM SYS_MSG_REPLY t2 
+			LEFT JOIN SYS_MSG_RULE_REPLY t1 	
+			ON t1.REPLY_ID=t2.ID
+			WHERE t2.STATE=1 AND t1.RULE_ID=#{id} 
+	</select>
+	<resultMap type="Reply" id="replyMap">
+		<id column="ID" property="id"/>
+		<result column="TYPE" property="type"/>
+		<result column="CONTENT_TYPE" property="contentType"/>
+		<result column="THIRD_TYPE" property="thirdType"/>
+		<result column="HOSPITAL_ID" property="hospitalId"/>
+		<result column="HOSPITAL_BRANCH_ID" property="hospitalBranchId"/>
+		<result column="CONTENT" property="content"/>
+		<result column="PIC_PATHS" property="picPaths"/>
+		<result column="CP" property="cp"/>
+		<result column="EP" property="ep"/>
+		<collection property="mixedMeterialList" ofType="MixedMeterial" column="id" select="findMixMeterialByReply"></collection>
+	</resultMap>
+	<select id="findMixMeterialByReply" parameterType="string" resultMap="mixedMeterialMap">
+		  SELECT *
+		  FROM SYS_MSG_MIXED_METERIAL t1 LEFT JOIN SYS_MSG_REPLY_METERIAL t2 ON t1.ID=t2.MIXED_METERIAL_ID
+		  WHERE t2.REPLY_ID=#{id} AND ( t1.IS_PARENT=1 OR t1.TYPE=1 )
+	</select>
+	
+	<resultMap type="MixedMeterial" id="mixedMeterialMap">
+		<id column="ID" property="id"/>
+		<result column="TITLE" property="title"/>
+		<result column="AUTHOR" property="author"/>
+		<result column="DESCRIPTION" property="description"/>
+		<result column="CONTENT" property="content"/>
+		<result column="LINK" property="link"/>
+		<result column="TYPE" property="type"/>
+		<result column="COVER_PIC_PATH" property="coverPicPath"/>
+		<result column="STATE" property="state"/>
+		<result column="IS_PARENT" property="isParent"/>
+		<result column="PARENT_ID" property="parentId"/>
+		<collection property="subMixedMeterialList" ofType="MixedMeterial" column="id" select="findSubMixMeterial"></collection>
+	</resultMap>
+	
+	<select id="findSubMixMeterial" parameterType="string" resultType="MixedMeterial">
+		  SELECT t.TITLE as title,
+		  t.AUTHOR as author,
+		  t.DESCRIPTION as description,
+		  t.CONTENT as content,
+		  t.LINK as link,
+		  t.COVER_PIC_PATH as coverPicPath,
+		  t.IS_PARENT as isParent,
+		  t.PARENT_ID as parentId,
+		  t.STATE as state
+		  FROM SYS_MSG_MIXED_METERIAL t 
+		  WHERE t.PARENT_ID=#{id} AND t.IS_PARENT=0 AND t.TYPE=2 
+	</select>
+	<!-- end -->
+	
+	
+	
+	
+	<!--==============================查询XXX医院的被关注回复==================================-->
+	<select id="getFocusedReply" parameterType="Map" resultMap="focusedReplyMap"> 
+		select * from SYS_MSG_REPLY r where r.HOSPITAL_ID=#{hospId}
+		and r.TYPE=1 and r.THIRD_TYPE=#{thirdType} and r.STATE=1
+	</select>
+	
+	<resultMap id="focusedReplyMap" type="com.yxw.commons.entity.platform.message.Reply">
+		<id column="ID" property="id"/>
+		<result column="TYPE" property="type"/>
+		<result column="CONTENT_TYPE" property="contentType"/>
+		<result column="THIRD_TYPE" property="thirdType"/>
+		<result column="HOSPITAL_ID" property="hospitalId"/>
+		<result column="CONTENT" property="content"/>
+		<result column="PIC_PATHS" property="picPaths"/>
+		<result column="CP" property="cp"/>
+		<result column="CT" property="ct"/>
+		<result column="EP" property="ep"/>
+		<result column="ET" property="et"/>
+		<collection property="mixedMeterialList" ofType="MixedMeterial" column="id" select="findMixMeterialByReply"></collection>
+	</resultMap>
+	<!-- end -->
+	
+	
+	<!--===================================查询XX医院的关键字为XX对应的回复==================================-->
+	<select id="getKeywordReply" parameterType="Map" resultMap="keywordReplyMap">
+		SELECT
+		re.ID,
+		re.TYPE,
+		re.CONTENT_TYPE,
+		re.THIRD_TYPE,
+		re.HOSPITAL_ID,
+		re.CONTENT,
+		re.PIC_PATHS,
+		re.CP,
+		re.CT,
+		re.EP,
+		re.ET
+		FROM
+			SYS_MSG_REPLY re
+		JOIN SYS_MSG_RULE_REPLY rr ON rr.REPLY_ID = re.ID
+		JOIN SYS_MSG_KEYWORD k ON k.RULE_ID = rr.RULE_ID
+		WHERE
+			re.HOSPITAL_ID = '#{hospId}'
+		AND re.TYPE = 2
+		AND re.THIRD_TYPE = 1
+		AND re.STATE = 1
+		AND rr.STATE = 1
+		AND re.STATE = 1
+		AND k.CONTENT LIKE '%#{keyword}%'
+	</select>
+	<resultMap type="com.yxw.commons.entity.platform.message.Reply" id="keywordReplyMap">
+		<id column="ID" property="id"/>
+		<result column="TYPE" property="type"/>
+		<result column="CONTENT_TYPE" property="contentType"/>
+		<result column="THIRD_TYPE" property="thirdType"/>
+		<result column="HOSPITAL_ID" property="hospitalId"/>
+		<result column="CONTENT" property="content"/>
+		<result column="PIC_PATHS" property="picPaths"/>
+		<result column="CP" property="cp"/>
+		<result column="CT" property="ct"/>
+		<result column="EP" property="ep"/>
+		<result column="ET" property="et"/>
+		<collection property="mixedMeterialList" ofType="MixedMeterial" column="id" select="findMixMeterialByReply"></collection>
+	</resultMap>
+	<!-- end -->
+	
+	<!-- 根据ID查找reply -->
+	<select id="findById" parameterType="string" resultMap="findByIdMap">
+		select 
+		t.ID as id,
+		t.CONTENT_TYPE as contentType,
+		t.PIC_PATHS as picPaths
+		from SYS_MSG_REPLY t where t.ID=#{id}
+	</select>
+	<resultMap type="com.yxw.commons.entity.platform.message.Reply" id="findByIdMap">
+		<id column="ID" property="id"/>
+		<result column="CONTENT_TYPE" property="contentType"/>
+		<result column="PIC_PATHS" property="picPaths"/>
+	</resultMap>
+	<!-- end -->
+	
+	<!-- 根据ID删除回复 -->
+	<delete id="deleteById" parameterType="string">
+		DELETE FROM SYS_MSG_REPLY where ID=#{id}
+	</delete>
+	
+	<!-- 根据回复ID删除回复与图文关联关系 -->
+	<delete id="deleteReplyMixed" parameterType="string">
+		DELETE FROM SYS_MSG_REPLY_METERIAL WHERE REPLY_ID=#{id}
+	</delete>
+	
+</mapper>

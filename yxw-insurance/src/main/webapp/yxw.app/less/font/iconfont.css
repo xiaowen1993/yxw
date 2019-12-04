@@ -1,0 +1,76 @@
+
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot'); /* IE9*/
+  src: url('iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff') format('woff'), /* chrome、firefox */
+  url('iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-close:before { content: "\e601"; }
+.icon-arrowleft:before { content: "\e602"; }
+.icon-arrowright:before { content: "\e603"; }
+.icon-arrowdown:before { content: "\e600"; }
+.icon-arrowup:before { content: "\e604"; }
+.icon-evaluationdown:before { content: "\e607"; }
+.icon-evaluationup:before { content: "\e608"; }
+.icon-name:before { content: "\e609"; }
+.icon-papers:before { content: "\e60a"; }
+.icon-password:before { content: "\e60b"; }
+.icon-phone:before { content: "\e60c"; }
+.icon-agreenot:before { content: "\e605"; }
+.icon-agreealt:before { content: "\e606"; }
+.icon-sharp:before { content: "\e60d"; }
+.icon-guaadd:before { content: "\e60e"; }
+.icon-guadetails:before { content: "\e60f"; }
+.icon-guadistribution:before { content: "\e610"; }
+.icon-guadistributionsucceed:before { content: "\e611"; }
+.icon-guahosptal:before { content: "\e612"; }
+.icon-guainform:before { content: "\e613"; }
+.icon-guanavigation:before { content: "\e614"; }
+.icon-guapack:before { content: "\e615"; }
+.icon-guapay:before { content: "\e616"; }
+.icon-guarefresh:before { content: "\e617"; }
+.icon-guaregistrationnot:before { content: "\e618"; }
+.icon-guaregistrationyes:before { content: "\e619"; }
+.icon-guasearch:before { content: "\e61a"; }
+.icon-guaselectnot:before { content: "\e61b"; }
+.icon-guaselectyes:before { content: "\e61c"; }
+.icon-guatransform:before { content: "\e61d"; }
+.icon-guaunfold:before { content: "\e61e"; }
+.icon-zhuappointment:before { content: "\e62b"; }
+.icon-warn:before { content: "\e629"; }
+.icon-zhuarchives:before { content: "\e62a"; }
+.icon-zhucircle:before { content: "\e61f"; }
+.icon-zhucloud:before { content: "\e620"; }
+.icon-zhudoctor:before { content: "\e621"; }
+.icon-zhuguide:before { content: "\e622"; }
+.icon-zhulife:before { content: "\e623"; }
+.icon-zhupay:before { content: "\e624"; }
+.icon-zhupharmacy:before { content: "\e625"; }
+.icon-zhureport:before { content: "\e626"; }
+.icon-zhusearch:before { content: "\e627"; }
+.icon-zhuwaiting:before { content: "\e628"; }
+.icon-zhuregister:before { content: "\e62c"; }
+.icon-gecase:before { content: "\e62d"; }
+.icon-gecenter:before { content: "\e62e"; }
+.icon-geconsult:before { content: "\e62f"; }
+.icon-gedoctor:before { content: "\e630"; }
+.icon-geevaluation:before { content: "\e631"; }
+.icon-gefamily:before { content: "\e632"; }
+.icon-gehealth:before { content: "\e633"; }
+.icon-geman:before { content: "\e63a"; }
+.icon-genews:before { content: "\e634"; }
+.icon-gequestionnaire:before { content: "\e635"; }
+.icon-gerecord:before { content: "\e636"; }
+.icon-geregistration:before { content: "\e637"; }
+.icon-geserve:before { content: "\e638"; }
+.icon-gewoman:before { content: "\e639"; }

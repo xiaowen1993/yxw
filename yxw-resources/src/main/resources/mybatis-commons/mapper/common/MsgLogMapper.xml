@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.msgpush.MsgLog">
+
+	<resultMap id="msgLogMap" type="com.yxw.commons.entity.platform.msgpush.MsgLog">
+		<id column="ID" property="id" />
+		<result column="MSG_CODE" property="msgCode" />
+		<result column="ERROR_CODE" property="errorCode" />
+		<result column="ERROR_MSG" property="errorMsg" />
+		<result column="APP_ID" property="appId" />
+		<result column="HOSPITAL_ID" property="hospitalId" />
+		<result column="OPEN_ID" property="openId" />
+		<result column="SOURCE" property="source" />
+		<result column="PUSH_STATUS" property="pushStatus" />
+		<result column="PUSH_FAILED_NUM" property="pushFailedNum" />
+		<result column="PUSH_CONTENT" property="pushContent" />
+		<result column="PUSH_DATE" property="pushDate" />
+	</resultMap>
+
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.msgpush.MsgLog">
+		INSERT INTO SYS_MSG_LOG(ID,MSG_CODE,ERROR_CODE,ERROR_MSG,APP_ID,HOSPITAL_ID,OPEN_ID,SOURCE,
+		PUSH_STATUS,PUSH_FAILED_NUM,PUSH_CONTENT,PUSH_DATE)
+		VALUES
+		(#{id},#{msgCode},#{errorCode},#{errorMsg},#{appId},#{hospitalId}, #{openId}, #{source}, #{pushStatus}, #{pushFailedNum},
+		#{pushContent}, #{pushDate});
+	</insert>
+</mapper>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.mobile.biz.nih.NihRecord">
+	<resultMap id="resultMap" type="com.yxw.commons.entity.mobile.biz.nih.NihRecord">
+		<id column="ID" property="id" jdbcType="VARCHAR"/>
+		<result column="APP_CODE" property="appCode" jdbcType="VARCHAR" />
+		<result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="MOBILE_NO" property="mobileNo" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="desc" jdbcType="VARCHAR" />
+		<result column="IS_VALID" property="isValid" jdbcType="SMALLINT" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="BIGINT" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="BIGINT" />
+	</resultMap>
+	
+	<sql id="All_Column">
+		ID, APP_CODE, USER_ID, NAME, MOBILE_NO, DESCRIPTION, IS_VALID, CREATE_TIME, UPDATE_TIME
+	</sql>
+	
+	<sql id="Choose_Hash_Table_Name">
+		<choose>
+			<when test="hashTableName == 'BIZ_NIH_RECORD_1'">
+	             BIZ_NIH_RECORD_1 
+	        </when>
+	        <when test="hashTableName == 'BIZ_NIH_RECORD_2'">
+	             BIZ_NIH_RECORD_2 
+	        </when>
+	        <when test="hashTableName == 'BIZ_NIH_RECORD_3'">
+	             BIZ_NIH_RECORD_3 
+	        </when>
+	        <when test="hashTableName == 'BIZ_NIH_RECORD_4'">
+	             BIZ_NIH_RECORD_4 
+	        </when>
+	        <when test="hashTableName == 'BIZ_NIH_RECORD_5'">
+	             BIZ_NIH_RECORD_5 
+	        </when>
+	        <when test="hashTableName == 'BIZ_NIH_RECORD_6'">
+	             BIZ_NIH_RECORD_6 
+	        </when>
+	        <when test="hashTableName == 'BIZ_NIH_RECORD_7'">
+	             BIZ_NIH_RECORD_7 
+	        </when>
+	        <when test="hashTableName == 'BIZ_NIH_RECORD_8'">
+	             BIZ_NIH_RECORD_8 
+	        </when>
+	        <when test="hashTableName == 'BIZ_NIH_RECORD_9'">
+	             BIZ_NIH_RECORD_9 
+	        </when>
+	        <when test="hashTableName == 'BIZ_NIH_RECORD_10'">
+	             BIZ_NIH_RECORD_10 
+	        </when>
+    	</choose>
+  	</sql>
+  
+	<insert id="add" parameterType="NihRecord"> 
+		insert into
+    		<include refid="Choose_Hash_Table_Name" />
+    	(<include refid="All_Column" />)
+ 		values 
+ 		(
+	 		#{id}, #{appCode}, #{userId}, #{name}, #{mobileNo}, #{desc}, #{isValid}, #{createTime}, #{updateTime}
+    	)
+  	</insert>
+  	
+  	<update id="update" parameterType="NihRecord">
+  		update   
+			<include refid="Choose_Hash_Table_Name" />
+		<set>
+			<if test="isValid != null">
+				STATE = #{isValid},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime},
+			</if>
+		</set>
+		where ID=#{id}
+  	</update>
+  	
+  	<!-- 通过openId + appCode 找记录 -->
+	<select id="findByUserIdAndAppCode" parameterType="java.util.Map" resultMap="resultMap"> 
+		select  
+			<include refid="All_Column" />
+		from 
+   			<include refid="Choose_Hash_Table_Name" />
+       	where 
+       		USER_ID = #{userId}
+       	and APP_CODE = #{appCode}
+       	order by UPDATE_TIME DESC
+	</select>
+	
+	<!-- 通过openId 找记录 -->
+	<select id="findByUserId" parameterType="java.util.Map" resultMap="resultMap"> 
+		select  
+			<include refid="All_Column" />
+		from 
+   			<include refid="Choose_Hash_Table_Name" />
+       	where 
+       		USER_ID = #{userId}
+       	order by UPDATE_TIME DESC
+	</select>
+	
+	<!-- 分页查询模板库列表 -->
+	<select id="findListByPage" parameterType="java.util.Map" resultMap="resultMap">
+		SELECT 
+			<include refid="All_Column" />
+	 	FROM 
+			<include refid="Choose_Hash_Table_Name" /> h
+ 		WHERE h.USER_ID= #{userId} 
+ 		AND   h.APP_CODE=#{appCode}
+ 		order by h.CREATE_TIME DESC
+	</select>
+	
+	<!-- 后台使用：通过appCode找记录 -->
+	<select id="findByAppCode" parameterType="java.util.Map" resultMap="resultMap"> 
+		select  
+			<include refid="All_Column" />
+		from 
+   			<include refid="Choose_Hash_Table_Name" />
+       	where 
+       		APP_CODE = #{appCode}
+	</select>
+</mapper>

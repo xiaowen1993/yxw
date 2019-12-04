@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.hospital.ExtensionDetail">
+	<resultMap id="extensionDetailResultMap" type="com.yxw.commons.entity.platform.hospital.ExtensionDetail">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="EXTENSION_ID" property="extensionId" jdbcType="VARCHAR" />
+		<result column="CONCERN_TIME" property="createTime" jdbcType="BIGINT" />
+		<result column="OPEN_ID" property="openId" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<select id="findListByPage" resultMap="extensionDetailResultMap">
+		select * from SYS_EXTENSION_DETAIL e where e.EXTENSION_ID = #{extensionId}
+	</select>
+	
+	<select id="findExtensionDetailByExtensionId" resultMap="extensionDetailResultMap">
+		select * from SYS_EXTENSION_DETAIL e where e.EXTENSION_ID = #{extensionId}
+	</select>
+	
+	<select id="findExtensionDetailByExtensionIdAndOpenId" resultMap="extensionDetailResultMap">
+		select * from SYS_EXTENSION_DETAIL e where e.EXTENSION_ID = #{extensionId} and e.OPEN_ID = #{openId}
+	</select>
+	
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.hospital.ExtensionDetail">
+		insert into
+		SYS_EXTENSION_DETAIL(ID,EXTENSION_ID,CONCERN_TIME,OPEN_ID)
+		values
+		(#{id},#{extensionId},#{createTime},#{openId})
+	</insert>
+</mapper>

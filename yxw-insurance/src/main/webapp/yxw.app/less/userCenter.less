@@ -1,0 +1,149 @@
+/*less*/
+@import "var.less";
+#myCenter{
+  li.user_pic{position: relative; min-height: 50px;
+    img{position: absolute;top: 8px;right: 20px;display: block;border-radius: 50%;width: 40px;height: 40px}
+  }
+  li{
+    .icon-arrow {
+      display: inline-block;
+      height: 19px;
+      margin-top: -10px;
+      position: absolute;
+      right: .8em;
+      top: 50%;
+      width: 12px;
+    }
+  }
+  .yx-list{
+
+    &.userList{   min-height: 60px;
+      li{ position: relative;
+        .topVal{ margin-top: 10px;}
+        &.pic{ height: auto;
+          img{  border-radius: 50%;  float: left;  margin-right: 15px;}
+          .info{   position: relative;  padding-top: 3px; white-space: nowrap; text-overflow:ellipsis; overflow: hidden;;  margin-right: 1em;  min-width: 5em;
+            .title{ line-height: 2;}
+            .name{ line-height: 1;}
+          }
+          .btn{
+            &.btn-Invert{background-color: transparent;line-height: 1.8;color: @skinbgColor;padding: 5px 16px;border: 1px solid @skinbgColor;width: auto; margin: 10px 0 0; float: right;
+              #myCenter .yx-list li .u-img .iconfont
+              &:hover{background-color: @skinbgColor;color: #fff}
+              }
+          }
+          .item-right{ top:50%; right: 15px; margin-top:-15px; position: absolute;
+            .tag{ line-height: 1; font-size: @size14; padding: 2px 8px;
+              &.blue{ background-color:#4ca9ec; }
+            }
+          }
+        }
+      }
+    }
+    &:first-child{
+      &:before{background-color: #fff;}
+    }
+    li{
+      &.arrow{
+        &:before{ margin-top: -5px;}
+      }
+      .u-img{position: relative;; width: 28px; height: 28px; display: inline;; margin-right: 5px;
+        .iconfont{ color: #ccc; font-size: 40px;  line-height: 1;vertical-align: top;
+          &.i-orange{ color: #ff9446;}
+          &.i-blue{ color: #4ca9ec;}
+          &.i-yellow{ color: #fabf13;}
+          &.i-green{ color: #39c29f;}
+
+        }
+      }
+      .iconfont{
+        &.icon-girl{ color: #ff4b47;}
+        &.icon-man{ color: #0aa4ea;}
+      }
+    }
+  }
+  .listRow{
+    li{ line-height: 40px;}
+  }
+}
+
+//客服中心
+.s-list{ background-color: #fff; padding: 3px .8em 2px;  position:relative;
+  &:before{content: ' ';  display: block;  position: absolute;  width: 100%;  left: 0;  top: 0px;  height: 1px;  background-color:@borderColor;  transform: scaleY(0.5);overflow: hidden;}
+  &:after{.li-halfLine(0);}
+}
+.feedback-view{position: relative; width: 100%; height: 200px; background-color: #fff; display: block;
+
+  .frm-textarea{ width: 100%; height: 200px; border:0; outline: none; font-size: 95%; color: #999; padding: 5px .8em 5px; box-sizing: border-box; display: block;}
+
+}
+.page-title.line{ text-align: center; position: relative;
+  &:after{content: ' ';  display: block;  position: absolute;  width: 100%;  left: 0;  top:50%; margin-top:3px;  height: 1px;  background-color:@borderColor;  transform: scaleY(0.5);overflow: hidden;}
+  .word{ background-color: #eee; padding: 0 10px; position: relative;z-index: 2;}
+}
+/*医院回复*/
+.replayList{
+  li{   padding: 1em .8em; margin-bottom: 15px; background-color: #fff; position: relative;;
+    &:before{content: ' ';  display: block;  position: absolute;  width: 100%;  left: 0;  top: 0px;  height: 1px;  background-color:@borderColor;  transform: scaleY(0.5);overflow: hidden;}
+    &:after{.li-halfLine(0);}
+    &.nodatatext{ background: none; line-height: 100px; color: #999; text-align:center;font-size: @size16; position: relative;
+      &:before{content: ' ';  display: block;  position: absolute;  width: 100%;  left: 0;  top: 0px;  height: 0px;  background-color:@borderColor;  transform: scaleY(0.5);overflow: hidden;}
+      &:after{content: ' ';  display: block;  position: absolute;  width: 100%;  left: 0;  bottom: 0;  height: 0px;  background-color:@borderColor;  transform: scaleY(0.5);overflow: hidden;}
+    }
+    .title{ color: #999; font-size: @size16; text-align: left; line-height: 22px; padding-bottom: .5em; position: relative;
+      &:after{.li-halfLine(0);}
+      }
+    .des{ color: #333; font-size: @size16; text-align: left; line-height: 20px; padding-top: .5em;}
+  }
+}
+
+/*就诊卡资料*/
+.qrcode{ background-color: #fff; text-align: center; padding: 20px 5px; position: relative;
+  &:before{
+    .li-halfLine-t(0);
+  }
+  &:after{
+    .li-halfLine(0);
+  }
+  img{
+    max-height: 100px;
+    max-width: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+  .textNum{display: block; line-height: 30px; text-align: center; }
+}
+
+/*同步就诊卡信息*/
+.btn-async{  background-color: @skinbgColor;  border: 1px solid @skinbgColorHover;  border-radius: 2px;  display: inline-block;
+  line-height: 2em;  text-align: center;  color: #fff;  padding: 0 1.3em;  margin: 0;}
+
+/*添加家人*/
+.familyInfo{
+  label{ text-align: right; position: relative; display: block;;
+    .iconfont{ color: #666; font-size: 12px; display: inline-block; }
+  }
+  .yx-list li.line:after{ background-color: @borderColor; bottom:1px;}
+  select.select-screen-box{ width: 100%; text-align: center; position: absolute; left: 0; top :0; right: 0; bottom: 0; outline: none; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; display: inline-block; border: 0;     -webkit-appearance: none; opacity: 0;
+    option{ text-align: center;}
+  }
+  .yx-input{ width: 100%; -webkit-appearance: none; border: 0; outline: none; text-align: right; color: #666;  }
+  ::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #666;
+  }
+  :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #666;
+  }
+  ::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #666;
+  }
+  :-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #666;
+  }
+  .noFamily{ width: 100%; height: 130px; line-height: 130px; color: #999; text-align: center; background-color: #fff; position: relative;
+    &:before{.li-halfLine-t(0);}
+    &:after{.li-halfLine(0);}
+  }
+}
+
+.codeBtn{ background-color: @skinbgColor; color: #fff; border-radius: 20px; padding: 0 5px; min-width: 100px; font-size: 14px; line-height: 23px; margin-left: 5px;}

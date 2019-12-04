@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.app.optional.AppOptional">
+
+	<resultMap id="appOptionalResultMap" type="com.yxw.commons.entity.platform.app.optional.AppOptional">
+		<result column="ID" property="id"></result>
+		<result column="CODE" property="code"></result>
+		<result column="NAME" property="name"></result>
+		<result column="ICON" property="icon"></result>
+		<result column="ICON_CSS" property="iconCss"></result>
+		<result column="SHOW_SORT" property="showSort"></result>
+		<result column="VISIBLE" property="visible"></result>
+		<result column="URL" property="url"></result>
+		<result column="DESCRIPTION" property="description"></result>
+		<result column="CP" property="cp"></result>
+		<result column="CT" property="ct"></result>
+		<result column="EP" property="ep"></result>
+		<result column="ET" property="et"></result>
+
+		<!-- <result column="MODULE_ID" property="moduleId"></result> -->
+		<association column="MODULE_ID" property="appOptionalModule" javaType="AppOptionalModule" select="com.yxw.commons.entity.platform.app.optional.AppOptionalModule.findById"></association>
+	</resultMap>
+
+	<sql id="All_Column">
+		ID, MODULE_ID, CODE, NAME, ICON, ICON_CSS, SHOW_SORT, VISIBLE, URL, DESCRIPTION, CP, CT, EP, ET
+	</sql>
+	<sql id="Table_Name">SYS_APP_OPTIONAL</sql>
+
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.app.optional.AppOptional">
+		insert into
+		<include refid="Table_Name"></include>
+		(MODULE_ID, CODE, NAME, ICON, ICON_CSS,
+		SHOW_SORT, VISIBLE, URL, DESCRIPTION, CP, CT, EP, ET)
+		values (#{appOptionalModule.id},
+		#{code}, #{name},
+		#{icon}, #{iconCss},
+		#{showSort}, #{visible}, #{url},
+		#{description}, #{cp},
+		now(), #{ep}, #{et})
+	</insert>
+
+	<update id="update" parameterType="com.yxw.commons.entity.platform.app.optional.AppOptional">
+		update
+		<include refid="Table_Name"></include>
+		set MODULE_ID = #{appOptionalModule.id}
+		<if test="code != null">
+			, CODE = #{code}
+		</if>
+		<if test="name != null">
+			, NAME = #{name}
+		</if>
+		<if test="icon != null">
+			, ICON = #{icon}
+		</if>
+		<if test="iconCss != null">
+			, ICON_CSS = #{iconCss}
+		</if>
+		<if test="showSort != null">
+			, SHOW_SORT = #{showSort}
+		</if>
+		<if test="visible != null">
+			, VISIBLE = #{visible}
+		</if>
+		<if test="url != null">
+			, URL = #{url}
+		</if>
+		<if test="description != null">
+			, DESCRIPTION = #{description}
+		</if>
+		<if test="ep != null">
+			, EP = #{ep}
+		</if>
+		, ET = now()
+		where ID = ${id}
+	</update>
+
+	<select id="findListByPage" resultMap="appOptionalResultMap">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Table_Name"></include>
+		<where>
+			1=1
+			<if test="search!=null">
+				and NAME like '%${search}%'
+			</if>
+		</where>
+		order by MODULE_ID, SHOW_SORT
+	</select>
+
+	<select id="findById" resultMap="appOptionalResultMap">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Table_Name"></include>
+		where ID = #{id}
+	</select>
+
+	<select id="findByModuleId" resultMap="appOptionalResultMap">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Table_Name"></include>
+		where MODULE_ID = #{moduleId}
+		order by SHOW_SORT
+	</select>
+
+	<select id="findAll" resultMap="appOptionalResultMap">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Table_Name"></include>
+		order by MODULE_ID, SHOW_SORT
+	</select>
+
+</mapper>

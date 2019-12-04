@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.mobile.biz.clinic.ClinicPartRefundRecord">
+	<resultMap id="clinicPartRefundRecordResultMap" type="com.yxw.commons.entity.mobile.biz.clinic.ClinicPartRefundRecord">
+		<id column="ID" property="id" jdbcType="VARCHAR"/>
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+        <result column="HOSPITAL_CODE" property="hospitalCode" jdbcType="VARCHAR" />
+        <result column="HOSPITAL_NAME" property="hospitalName" jdbcType="VARCHAR" />
+		<result column="BRANCH_ID" property="branchHospitalId" jdbcType="VARCHAR" />
+		<result column="BRANCH_CODE" property="branchHospitalCode" jdbcType="VARCHAR" />
+		<result column="CARD_TYPE" property="cardType" jdbcType="SMALLINT" />
+		<result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+		<result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+		<result column="IS_EXCEPTION" property="isException" jdbcType="SMALLINT" />
+		<result column="IS_HANDLE_SUCCESS" property="isHandleSuccess" jdbcType="SMALLINT" />
+		<result column="HANDLE_COUNT" property="handleCount" jdbcType="SMALLINT" />
+		<result column="HANDLE_LOG" property="handleLog" jdbcType="VARCHAR" />
+		<result column="PATIENT_NAME" property="patientName" jdbcType="VARCHAR" />
+		<result column="REFUND_ORDER_NO" property="refundOrderNo" jdbcType="VARCHAR" />
+		<result column="ORDER_NO" property="orderNo" jdbcType="VARCHAR" />
+		<result column="REFUND_ORDER_NO_HASH_VAL" property="refundOrderNoHashVal" jdbcType="VARCHAR" />
+		<result column="AGT_REFUND_ORD_NUM" property="agtRefundOrdNum" jdbcType="VARCHAR" />
+		<result column="FEE_DESC" property="feeDesc" jdbcType="VARCHAR" />
+		<result column="IS_HAD_CALL_BACK" property="isHadCallBack" jdbcType="SMALLINT" />
+		<result column="RECORD_TITLE" property="recordTitle" jdbcType="VARCHAR" />
+		<result column="FAILURE_MSG" property="failureMsg" jdbcType="VARCHAR" />
+		<result column="PATIENT_MOBILE" property="patientMobile" jdbcType="VARCHAR" />
+		<result column="REFUND_STATUS" property="refundStatus" jdbcType="SMALLINT" />
+		<result column="TOTAL_FEE" property="totalFee" jdbcType="BIGINT" />
+		<result column="REFUND_FEE" property="refundFee" jdbcType="BIGINT" />
+		<result column="TRADE_MODE" property="tradeMode" jdbcType="SMALLINT" />
+		<result column="REFUND_MODE" property="refundMode" jdbcType="SMALLINT" />
+		<result column="HIS_ORD_NO" property="hisOrdNo" jdbcType="VARCHAR" />
+		<result column="REFUND_HIS_ORD_NO" property="refundHisOrdNo" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="BIGINT" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="BIGINT" />
+		<result column="REFUND_TIME" property="refundTime" jdbcType="BIGINT" />
+		<result column="AGT_ORD_NUM" property="agtOrdNum" jdbcType="BIGINT" />
+		<result column="PAY_TIME" property="payTime" jdbcType="BIGINT" />
+		<result column="ORDER_NO_HASH_VAL" property="orderNoHashVal" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="All_Column">
+		ID, HOSPITAL_ID, HOSPITAL_CODE, HOSPITAL_NAME, BRANCH_ID, BRANCH_CODE,
+		CARD_TYPE, CARD_NO, OPEN_ID, IS_EXCEPTION, IS_HANDLE_SUCCESS, HANDLE_COUNT, HANDLE_LOG,
+		PATIENT_NAME, REFUND_ORDER_NO, REFUND_ORDER_NO_HASH_VAL, ORDER_NO, REFUND_HIS_ORD_NO,
+		AGT_REFUND_ORD_NUM, FEE_DESC, IS_HAD_CALL_BACK, RECORD_TITLE, FAILURE_MSG, REFUND_STATUS, 
+		TOTAL_FEE, REFUND_FEE, TRADE_MODE, REFUND_MODE, HIS_ORD_NO, CREATE_TIME, UPDATE_TIME, REFUND_TIME,
+		PATIENT_MOBILE, AGT_ORD_NUM, PAY_TIME, ORDER_NO_HASH_VAL
+	</sql>
+	
+	
+	<!-- 查询该订单能否进行部分退费操作 -->
+	<select id="countTotalRefundFeeByRefOrderNo" resultType="java.lang.String" parameterType="java.util.Map">
+		SELECT
+			SUM(REFUND_FEE) as refundFee
+		FROM
+			BIZ_CLINIC_PART_REFUND_RECORD
+		WHERE
+			ORDER_NO = #{orderNo}  
+		AND HOSPITAL_CODE = #{hospitalCode}
+		AND REFUND_STATUS = 31
+		GROUP BY
+			ORDER_NO
+    </select> 
+    
+    
+</mapper>

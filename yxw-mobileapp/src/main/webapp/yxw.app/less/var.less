@@ -1,0 +1,53 @@
+/*this is var css*/
+@skinbgColor:#38c2a0 ;  //背景颜色  -- 蓝色
+@skinbgColorHover:#2dab8c;  //hover颜色 -- 蓝色
+@borderColor:#ccc;  // 边框颜色
+
+@whtie:#fff;
+@orange:#ff9400; //金额--橙色
+@yellow:#fbbf13; //金额--橙色
+@color999:#999;
+@color333:#333;
+
+@colorBlue:#4ca9ec;
+
+
+@imgPathDefault:'../images';  //一级地址
+
+@imgPath :'../images/greenSkin';  //一级地址 --绿色皮肤
+
+@arrowContent:'\e603';  //向右箭头
+
+
+//字体大小
+@size12:1.2rem;
+@size14:1.4rem;
+@size16:1.6rem;
+@sizenormal:1.4rem;
+//@size14:1.6rem;
+//@size16:1.8rem;
+
+@size18:1.8rem;
+
+//高度
+@topBtnHeight:25%;
+@topBtnHeights:20%;
+@topIconHeight:70px;
+@bgColor: @skinbgColor;
+
+
+
+
+/*0.5像素 横向*/
+.li-halfLine-t(@w:0px){content: ' ';  display: block;  position: absolute;  width: 100%;  left: 0;  top: @w;  height: 1px;  background-color:@borderColor;  transform: scaleY(0.5);overflow: hidden;}
+.li-halfLine(@c:0px){content: ' ';  display: block;  position: absolute;  width: 100%;  left: 0;  bottom: @c;  height: 1px;  background-color:@borderColor;  transform: scaleY(0.5);overflow: hidden;}
+.li-halfLine-x(@c:0px){content: ' ';  display: block;  position: absolute;  height: 100%;  right: 0;  bottom: 0;  width: 1px;  background-color:@borderColor;  transform: scaleX(0.5);overflow: hidden;}
+
+//引入图表字体定义宏
+.iconfont(){
+  font-family:"iconfont" !important;
+  font-size:16px;font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}

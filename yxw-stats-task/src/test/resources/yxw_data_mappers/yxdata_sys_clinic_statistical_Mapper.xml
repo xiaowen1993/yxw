@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.stats.entity.stats.YxDataSysClinicStatistical">
+
+  <resultMap id="BaseResultMap" type="com.yxw.stats.entity.stats.YxDataSysClinicStatistical" >
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DATE" property="date" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+    <result column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
+    <result column="PAYMENT" property="payment" jdbcType="INTEGER" />
+    <result column="NO_PAYMENT" property="noPayment" jdbcType="INTEGER" />
+    <result column="REFUND" property="refund" jdbcType="INTEGER" />
+    <result column="CLINIC_PAY_FEE" property="clinicPayFee" jdbcType="DOUBLE" />
+    <result column="CLINIC_REFUND_FEE" property="clinicRefundFee" jdbcType="DOUBLE" />
+    <result column="PART_REFUND" property="partRefund" jdbcType="DOUBLE" />
+    <result column="BIZ_MODE" property="bizMode" jdbcType="INTEGER" />
+    <result column="PAYMENT_WECHAT" property="paymentWechat" jdbcType="INTEGER" />
+    <result column="NO_PAYMENT_WECHAT" property="noPaymentWechat" jdbcType="INTEGER" />
+    <result column="REFUND_WECHAT" property="refundWechat" jdbcType="INTEGER" />
+    <result column="CLINIC_PAY_FEE_WECHAT" property="clinicPayFeeWechat" jdbcType="DOUBLE" />
+    <result column="CLINIC_REFUND_FEE_WECHAT" property="clinicRefundFeeWechat" jdbcType="DOUBLE" />
+    <result column="PART_REFUND_WECHAT" property="partRefundWechat" jdbcType="DOUBLE" />
+    <result column="PAYMENT_ALIPAY" property="paymentAlipay" jdbcType="INTEGER" />
+    <result column="NO_PAYMENT_ALIPAY" property="noPaymentAlipay" jdbcType="INTEGER" />
+    <result column="REFUND_ALIPAY" property="refundAlipay" jdbcType="INTEGER" />
+    <result column="CLINIC_PAY_FEE_ALIPAY" property="clinicPayFeeAlipay" jdbcType="DOUBLE" />
+    <result column="CLINIC_REFUND_FEE_ALIPAY" property="clinicRefundFeeAlipay" jdbcType="DOUBLE" />
+    <result column="PART_REFUND_ALIPAY" property="partRefundAlipay" jdbcType="DOUBLE" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    ID, DATE, HOSPITAL_ID, BRANCH_ID, PAYMENT, NO_PAYMENT, REFUND, CLINIC_PAY_FEE, CLINIC_REFUND_FEE, 
+    PART_REFUND, BIZ_MODE, PAYMENT_WECHAT, NO_PAYMENT_WECHAT, REFUND_WECHAT, CLINIC_PAY_FEE_WECHAT, 
+    CLINIC_REFUND_FEE_WECHAT, PART_REFUND_WECHAT, PAYMENT_ALIPAY, NO_PAYMENT_ALIPAY, 
+    REFUND_ALIPAY, CLINIC_PAY_FEE_ALIPAY, CLINIC_REFUND_FEE_ALIPAY, PART_REFUND_ALIPAY
+  </sql>
+  
+  	<select id="findCurrClinicStatsMaxDate" resultType="java.lang.String" parameterType="java.lang.String">
+		select max(DATE) as maxDate from SYS_CLINIC_STATISTICAL
+		where HOSPITAL_ID = #{hospitalId, jdbcType=VARCHAR}
+	</select>
+
+	<insert id="batchInsertClinicStatsData" parameterType="java.util.Map" >
+		INSERT INTO 
+			SYS_CLINIC_STATISTICAL
+			(<include refid="Base_Column_List"></include>)
+			VALUES
+		<foreach collection="sysClinicStatistical" item="item" index="index" separator=",">
+			 (
+				 #{item.id},#{item.date},#{item.hospitalId},#{item.branchId},#{item.payment},#{item.noPayment},#{item.refund},#{item.clinicPayFee},
+			 	 #{item.clinicRefundFee},#{item.partRefund},#{item.bizMode},
+			 	 #{item.paymentWechat}, #{item.noPaymentWechat}, #{item.refundWechat}, #{item.clinicPayFeeWechat}, #{item.clinicRefundFeeWechat}, #{item.partRefundWechat},
+			 	 #{item.paymentAlipay}, #{item.noPaymentAlipay}, #{item.refundAlipay}, #{item.clinicPayFeeAlipay}, #{item.clinicRefundFeeAlipay}, #{item.partRefundAlipay}
+		 	 )
+		</foreach>
+	</insert>
+	
+</mapper>

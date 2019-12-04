@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.stats.entity.platform.MedicalCardCount">
+
+	<resultMap id="medicalCardCountResultMap" type="com.yxw.stats.entity.platform.MedicalCardCount">
+		<id column="ID" property="id" jdbcType="VARCHAR"/>
+		<result column="DATE" property="date" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
+		<result column="COUNT" property="count" jdbcType="INTEGER" />
+		<result column="PLATFORM" property="platform" jdbcType="INTEGER" />
+		<result column="WECHAT_COUNT" property="wechatCount" jdbcType="INTEGER" />
+		<result column="ALIPAY_COUNT" property="alipayCount" jdbcType="INTEGER" />
+	</resultMap>
+	
+	
+	<select id="findMedicalCardCountByDate" resultMap="medicalCardCountResultMap" parameterType="map">
+		SELECT 
+			from_UNIXTIME(#{startDate} / 1000,'%Y-%m-%d') as DATE, 
+			SUM(COUNT) AS COUNT, 
+			HOSPITAL_ID AS HOSPITAL_ID, 
+			BRANCH_ID AS BRANCH_ID,
+			PLATFORM AS PLATFORM
+		FROM 
+		(SELECT 
+			COUNT(*) as COUNT,
+			HOSPITAL_ID AS HOSPITAL_ID,
+			BRANCH_ID AS BRANCH_ID,
+			PLATFORM AS PLATFORM
+		FROM 
+		<choose>
+        	<when test="hashTableName == 'BIZ_MEDICAL_CARD_1'">
+             	BIZ_MEDICAL_CARD_1 
+        	</when>
+        	<when test="hashTableName == 'BIZ_MEDICAL_CARD_2'">
+             	BIZ_MEDICAL_CARD_2 
+        	</when>
+        	<when test="hashTableName == 'BIZ_MEDICAL_CARD_3'">
+             	BIZ_MEDICAL_CARD_3 
+        	</when>
+        	<when test="hashTableName == 'BIZ_MEDICAL_CARD_4'">
+             	BIZ_MEDICAL_CARD_4
+        	</when>
+        	<when test="hashTableName == 'BIZ_MEDICAL_CARD_5'">
+             	BIZ_MEDICAL_CARD_5 
+        	</when>
+        	<when test="hashTableName == 'BIZ_MEDICAL_CARD_6'">
+             	BIZ_MEDICAL_CARD_6 
+        	</when>
+        	<when test="hashTableName == 'BIZ_MEDICAL_CARD_7'">
+             	BIZ_MEDICAL_CARD_7 
+        	</when>
+        	<when test="hashTableName == 'BIZ_MEDICAL_CARD_8'">
+             	BIZ_MEDICAL_CARD_8 
+        	</when>
+        	<when test="hashTableName == 'BIZ_MEDICAL_CARD_9'">
+             	BIZ_MEDICAL_CARD_9 
+        	</when>
+        	<when test="hashTableName == 'BIZ_MEDICAL_CARD_10'">
+             	BIZ_MEDICAL_CARD_10 
+        	</when>
+		</choose>
+		where CREATE_TIME BETWEEN #{startDate} AND  #{endDate} 
+		GROUP BY CREATE_TIME,BRANCH_ID,PLATFORM) AS r GROUP BY DATE, BRANCH_ID,PLATFORM
+	</select>
+	
+	<!-- 批量插入 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		 INSERT INTO 
+		 SYS_MEDICAL_CARD_STATISTICAL(ID,DATE,HOSPITAL_ID,BRANCH_ID,COUNT,PLATFORM,WECHAT_COUNT,
+			ALIPAY_COUNT)
+		 VALUES
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (#{item.id},#{item.date},#{item.hospitalId},#{item.branchId},#{item.count},#{item.platform},#{item.wechatCount},#{item.alipayCount})
+	    </foreach>  
+	</insert>
+	
+</mapper>

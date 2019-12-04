@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.statistics.biz.hospitalmanager.entity.Branch">
+	<resultMap id="branch" type="Branch">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 根据hospoitalId查询 -->
+	<select id="findAllByHospitalId" resultMap="branch">
+		SELECT
+		ID, NAME, CODE
+		FROM BIZ_BRANCH
+		WHERE HOSPITAL_ID = #{hospitalId, jdbcType=VARCHAR}
+	</select>
+
+	<!-- 通过医院名查询医院 -->
+	<select id="findByNameAndHospitalId" resultMap="branch">
+		SELECT
+		ID, NAME, CODE
+		FROM BIZ_BRANCH
+		WHERE NAME = #{name}
+	</select>
+	
+	<!-- 通过Name, code查询医院 -->
+	<select id="findByNameOrCode" resultMap="branch" parameterType="com.yxw.statistics.biz.hospitalmanager.entity.Branch">
+		SELECT
+			ID, NAME, CODE
+		FROM BIZ_BRANCH
+		WHERE ID != #{id} 
+		AND HOSPITAL_ID = #{hospitalId}
+		AND (NAME = #{name} OR CODE = #{code})
+	</select>
+	
+	<!-- 通过医院名查询医院 -->
+	<select id="findByCodeAndHospitalId" resultMap="branch">
+		SELECT
+		ID, NAME, CODE
+		FROM BIZ_BRANCH
+		WHERE CODE = #{code}
+	</select>
+
+	<!-- 新增 -->
+	<insert id="add" parameterType="branch">
+		INSERT INTO
+		BIZ_BRANCH
+			(ID, NAME, CODE, HOSPITAL_ID)
+		VALUES
+			(#{id}, #{name}, #{code}, #{hospitalId})
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="update" parameterType="branch">
+		UPDATE
+		BIZ_BRANCH
+		<set >
+	    	<if test="name != null" >
+	        NAME = #{name},
+	      	</if>
+	      	<if test="code != null" >
+	        CODE = #{code},
+	      	</if>
+	    </set>
+		WHERE ID = #{id}	
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		DELETE FROM BIZ_BRANCH WHERE ID = #{id}   
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="deleteAllByHospitalId" parameterType="java.lang.String">
+		DELETE FROM BIZ_BRANCH WHERE HOSPITAL_ID = #{hospitalId}   
+	</delete>
+
+</mapper>

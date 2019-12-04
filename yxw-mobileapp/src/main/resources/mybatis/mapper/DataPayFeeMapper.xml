@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.easyhealth.biz.datastorage.clinic.entity.DataPayFee">
+
+	<resultMap id="dataPayFeeResultMap" type="DataPayFee">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_CODE" property="hospitalCode" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_NAME" property="hospitalName" jdbcType="VARCHAR" />
+		<result column="BRANCH_ID" property="branchHospitalId" jdbcType="VARCHAR" />
+		<result column="BRANCH_CODE" property="branchHospitalCode" jdbcType="VARCHAR" />
+		<result column="BRANCH_NAME" property="branchHospitalName" jdbcType="VARCHAR" />
+		<result column="STORAGE_TIME" property="storageTime" jdbcType="BIGINT" />
+		<result column="PATIENT_NAME" property="name" jdbcType="VARCHAR" />
+		<result column="CARD_TYPE" property="cardType" jdbcType="SMALLINT" />
+		<result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+		<result column="MZ_FEE_ID" property="mzFeeId" jdbcType="VARCHAR" />
+		<result column="HIS_ORD_NUM" property="hisOrdNum" jdbcType="VARCHAR" />
+		<result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
+		<result column="DOCTOR_NAME" property="doctorName" jdbcType="VARCHAR" />
+		<result column="PAY_AMOUT" property="payAmout" jdbcType="VARCHAR" />
+		<result column="PAY_TIME" property="payTime" jdbcType="VARCHAR" />
+		<result column="PAY_MODE" property="payMode" jdbcType="VARCHAR" />
+		<!-- <result column="PAY_STATUS" property="payStatus" jdbcType="VARCHAR" /> -->
+		<result column="RECEIPT_NUM" property="receiptNum" jdbcType="VARCHAR" />
+		<result column="BARCODE" property="barcode" jdbcType="VARCHAR" />
+		<result column="HIS_MESSAGE" property="hisMessage" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="All_Column">
+		ID,HOSPITAL_ID,HOSPITAL_CODE,HOSPITAL_NAME,BRANCH_ID,BRANCH_CODE,BRANCH_NAME,STORAGE_TIME,PATIENT_NAME,CARD_TYPE,CARD_NO,MZ_FEE_ID,
+		HIS_ORD_NUM,DEPT_NAME,DOCTOR_NAME,PAY_AMOUT,PAY_TIME,PAY_MODE,RECEIPT_NUM,BARCODE,HIS_MESSAGE
+	</sql>
+	
+	<select id="findByBranchHospitalCodeAndMzFeeId" resultMap="dataPayFeeResultMap" parameterType="map">
+		SELECT  
+			<include refid="All_Column"></include>
+		FROM
+			DATA_PAY_FEE AS a
+		WHERE
+			a.BRANCH_CODE = #{branchHospitalCode}
+		AND a.MZ_FEE_ID = #{mzFeeId}
+	</select>
+	
+	
+	<select id="findByBranchHospitalCodeAndMzFeeIds" resultType="java.lang.String" parameterType="map">
+		SELECT  
+			a.MZ_FEE_ID
+		FROM
+			DATA_PAY_FEE AS a
+		WHERE
+			a.HOSPITAL_CODE = #{hospitalCode}
+		<!-- AND	a.BRANCH_CODE = #{branchHospitalCode} -->
+		AND a.MZ_FEE_ID in
+		<foreach collection="mzFeeIds" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<insert id="batchInsert" parameterType="java.util.List">
+		 INSERT INTO 
+		 	DATA_PAY_FEE(<include refid="All_Column"></include>)
+		 VALUES
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (
+	         #{item.id}, #{item.hospitalId}, #{item.hospitalCode}, #{item.hospitalName}, #{item.branchHospitalId},
+	         #{item.branchHospitalCode}, #{item.branchHospitalName}, #{item.storageTime}, #{item.name}, #{item.cardType},
+	         #{item.cardNo}, #{item.mzFeeId}, #{item.hisOrdNum}, #{item.deptName}, #{item.doctorName}, #{item.payAmout}, 
+	         #{item.payTime}, #{item.payMode}, #{item.receiptNum}, #{item.barcode}, #{item.hisMessage}
+	        )
+	    </foreach>  
+	</insert>
+
+	<insert id="add" parameterType="DataPayFee" useGeneratedKeys="true" keyProperty="id">
+		insert into 
+			DATA_PAY_FEE(<include refid="All_Column"></include>)
+		values 
+			(
+	         #{id}, #{hospitalId}, #{hospitalCode}, #{hospitalName}, #{branchHospitalId},
+	         #{branchHospitalCode}, #{branchHospitalName}, #{storageTime}, #{name}, #{cardType},
+	         #{cardNo}, #{mzFeeId}, #{hisOrdNum}, #{deptName}, #{doctorName}, #{payAmout}, 
+	         #{payTime}, #{payMode}, #{receiptNum}, #{barcode}, #{hisMessage}
+	        )
+	</insert>
+
+</mapper>

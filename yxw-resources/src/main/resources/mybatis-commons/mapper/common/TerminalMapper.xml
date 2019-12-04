@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.terminal.Terminal">
+
+	<resultMap id="terminalResultMap" type="com.yxw.commons.entity.platform.terminal.Terminal">
+		<result column="ID" property="id"></result>
+		<result column="DEVICE_ID" property="deviceId"></result>
+		<result column="HOSPITAL_ID" property="hospitalId"></result>
+		<result column="CODE" property="code"></result>
+		<result column="POSITION" property="position"></result>
+		<result column="APP_VERSION" property="appVersion"></result>
+		<result column="STATE" property="state"></result>
+		<result column="NOTE" property="note"></result>
+
+	</resultMap>
+
+	<sql id="All_Column">
+		ID, DEVICE_ID, HOSPITAL_ID, CODE, POSITION, APP_VERSION, STATE, NOTE
+	</sql>
+	<sql id="Table_Name">SYS_TERMINAL</sql>
+
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.terminal.Terminal">
+		insert into
+		<include refid="Table_Name"></include>
+		(ID, DEVICE_ID, HOSPITAL_ID, CODE, POSITION, APP_VERSION, STATE, NOTE)
+		values (#{id},#{deviceId},
+		#{hospitalId}, #{code},
+		#{position}, #{appVersion},
+		#{state}, #{note})
+	</insert>
+
+	<update id="update" parameterType="com.yxw.commons.entity.platform.terminal.Terminal">
+		update
+		<include refid="Table_Name"></include>
+		set CODE = #{code}
+		<if test="position != null">
+			, POSITION = #{position}
+		</if>
+		<if test="appVersion != null">
+			, APP_VERSION = #{appVersion}
+		</if>
+		<if test="state != null">
+			, STATE = #{state}
+		</if>
+		<if test="note != null">
+			, NOTE = #{note}
+		</if>
+		where ID = #{id}
+	</update>
+
+	<select id="findListByPage" resultMap="terminalResultMap">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Table_Name"></include>
+		<where>
+			HOSPITAL_ID = #{hospitalId}
+			<if test="search!=null">
+				and CODE like '${search}%'
+			</if>
+		</where>
+	</select>
+
+	<select id="findById" resultMap="terminalResultMap">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Table_Name"></include>
+		where ID = #{id}
+	</select>
+
+	<select id="findByHospitalId" resultMap="terminalResultMap">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Table_Name"></include>
+		where HOSPITAL_ID = #{hospitalId}
+	</select>
+
+	<select id="findAll" resultMap="terminalResultMap">
+		select
+		<include refid="All_Column"></include>
+		from
+		<include refid="Table_Name"></include>
+	</select>
+
+</mapper>

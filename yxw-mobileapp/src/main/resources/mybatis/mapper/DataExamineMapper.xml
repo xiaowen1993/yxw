@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.easyhealth.biz.datastorage.reports.entity.DataExamine">
+	<resultMap id="dataExamineResultMap" type="DataExamine">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_CODE" property="hospitalCode" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_NAME" property="hospitalName" jdbcType="VARCHAR" />
+		<result column="BRANCH_ID" property="branchHospitalId" jdbcType="VARCHAR" />
+		<result column="BRANCH_CODE" property="branchHospitalCode" jdbcType="VARCHAR" />
+		<result column="BRANCH_NAME" property="branchHospitalName" jdbcType="VARCHAR" />
+		<result column="STORAGE_TIME" property="storageTime" jdbcType="BIGINT" />
+		<result column="PATIENT_NAME" property="name" jdbcType="VARCHAR" />
+		<result column="CARD_TYPE" property="cardType" jdbcType="SMALLINT" />
+		<result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+		<result column="ID_NO" property="idNo" jdbcType="VARCHAR" />
+		<result column="CHECK_ID" property="checkId" jdbcType="VARCHAR" />
+		<result column="CHECK_NAME" property="checkName" jdbcType="VARCHAR" />
+		<result column="CHECK_TYPE" property="checkType" jdbcType="VARCHAR" />
+		<result column="CHECK_TYPE_NAME" property="checkTypeName" jdbcType="VARCHAR" />
+		<result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
+		<result column="DOCTOR_NAME" property="doctorName" jdbcType="VARCHAR" />
+		<result column="CHECK_TIME" property="checkTime" jdbcType="VARCHAR" />
+		<result column="ORDER_DOCTOR" property="orderDoctor" jdbcType="VARCHAR" />
+		<result column="ORDER_DOCTOR_CODE" property="orderDoctorCode" jdbcType="VARCHAR" />
+		<result column="ORDER_DEPT" property="orderDept" jdbcType="VARCHAR" />
+		<result column="REPORT_TIME" property="reportTime" jdbcType="VARCHAR" />
+		<result column="FILE_ADDRESS" property="fileAddress" jdbcType="VARCHAR" />
+		<result column="CHECK_PART" property="checkPart" jdbcType="VARCHAR" />
+		<result column="CHECK_METHOD" property="checkMethod" jdbcType="VARCHAR" />
+		<result column="CHECK_SITUATION" property="checkSituation" jdbcType="VARCHAR" />
+		<result column="OPINION" property="option" jdbcType="VARCHAR" />
+		<result column="ADVICE" property="advice" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	
+	<resultMap id="dataReportResultMap" type="com.yxw.easyhealth.biz.vo.ReportsParamsVo">
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_CODE" property="hospitalCode" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_NAME" property="hospitalName" jdbcType="VARCHAR" />
+		<result column="BRANCH_ID" property="branchHospitalId" jdbcType="VARCHAR" />
+		<result column="BRANCH_CODE" property="branchHospitalCode" jdbcType="VARCHAR" />
+		<result column="BRANCH_NAME" property="branchHospitalName" jdbcType="VARCHAR" />
+		<result column="PATIENT_NAME" property="patCardName" jdbcType="VARCHAR" />
+		<result column="CARD_TYPE" property="patCardType" jdbcType="SMALLINT" />
+		<result column="CARD_NO" property="patCardNo" jdbcType="VARCHAR" />
+		<result column="ID_NO" property="idNo" jdbcType="VARCHAR" />
+		<result column="REPORT_NAME" property="reportName" jdbcType="VARCHAR" />
+		<result column="REPORT_ID" property="reportId" jdbcType="VARCHAR" />
+		<result column="REPORT_TYPE" property="reportType" jdbcType="VARCHAR" />
+		<result column="REPORT_TIME" property="reportTime" jdbcType="VARCHAR" />
+		<result column="FILE_ADDRESS" property="fileAddress" jdbcType="VARCHAR" />
+		<result column="DOCTOR_NAME" property="doctorName" jdbcType="VARCHAR" />
+		<result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 通过身份证找数据 -->
+	<select id="findReportsByIdNo" resultMap="dataReportResultMap" parameterType="map">
+		SELECT a.* from (
+			SELECT
+				ID, HOSPITAL_ID, HOSPITAL_CODE, HOSPITAL_NAME, BRANCH_ID, 
+				BRANCH_CODE, BRANCH_NAME, PATIENT_NAME, CARD_TYPE, CARD_NO, 
+				ID_NO, CHECK_NAME AS REPORT_NAME, ID AS REPORT_ID, 2 REPORT_TYPE,
+				REPORT_TIME, DOCTOR_NAME, DEPT_NAME, FILE_ADDRESS
+			FROM
+				DATA_EXAMINE AS DE
+			WHERE
+				DE.ID_NO = #{idNo}
+			UNION
+			SELECT
+				ID, HOSPITAL_ID, HOSPITAL_CODE, HOSPITAL_NAME, BRANCH_ID, 
+				BRANCH_CODE, BRANCH_NAME, PATIENT_NAME, CARD_TYPE, CARD_NO, 
+				ID_NO, INSPECT_NAME AS REPORT_NAME, ID AS REPORT_ID, 1 REPORT_TYPE,
+				REPORT_TIME, INSPECT_DOCTOR AS DOCTOR_NAME, DEPT_NAME, FILE_ADDRESS
+			FROM
+				DATA_INSPECT AS DI
+			WHERE
+				DI.ID_NO = #{idNo}
+		) a 
+		ORDER BY a.REPORT_NAME ASC
+	</select>
+	
+	<sql id="All_Column">
+		ID, HOSPITAL_ID, HOSPITAL_CODE, HOSPITAL_NAME, BRANCH_ID, 
+		BRANCH_CODE, BRANCH_NAME, STORAGE_TIME, PATIENT_NAME, CARD_TYPE, 
+		CARD_NO, ID_NO, CHECK_ID, CHECK_NAME, CHECK_TYPE, CHECK_TYPE_NAME, 
+		DEPT_NAME, DOCTOR_NAME, CHECK_TIME, ORDER_DOCTOR, ORDER_DOCTOR_CODE, 
+		ORDER_DEPT, REPORT_TIME, FILE_ADDRESS, CHECK_PART, CHECK_METHOD, 
+		CHECK_SITUATION, OPINION, ADVICE
+	</sql>
+	
+	<!-- 查询单个的检查数据是否存在 -->
+	<select id="findByBranchHospitalCodeAndcheckId" resultMap="dataExamineResultMap" parameterType="map">
+		SELECT
+			<include refid="All_Column"></include>
+		FROM
+			DATA_EXAMINE AS DE
+		WHERE
+			DE.BRANCH_CODE = #{branchHospitalCode}
+		AND DE.CHECK_ID = #{checkId}
+	</select>
+	
+	<!-- 批量查询检查数据是否存在 -->
+	<select id="findByBranchHospitalCodeAndcheckIds" resultType="java.lang.String" parameterType="map">
+		SELECT
+			DE.CHECK_ID
+		FROM
+			DATA_EXAMINE AS DE
+		WHERE
+			DE.HOSPITAL_CODE = #{hospitalCode}
+		<!-- AND	DE.BRANCH_CODE = #{branchHospitalCode} -->
+		AND DE.CHECK_ID in 
+		<foreach collection="checkIds" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- 通过身份证找数据 -->
+	<select id="findByIdNo" resultMap="dataExamineResultMap" parameterType="map">
+		SELECT
+			ID, HOSPITAL_ID, HOSPITAL_CODE, HOSPITAL_NAME, BRANCH_ID, 
+			BRANCH_CODE, BRANCH_NAME, STORAGE_TIME, PATIENT_NAME, CARD_TYPE, 
+			CARD_NO, ID_NO, CHECK_ID, CHECK_NAME, CHECK_TYPE, CHECK_TYPE_NAME, 
+			DEPT_NAME, DOCTOR_NAME, CHECK_TIME, ORDER_DOCTOR, ORDER_DOCTOR_CODE, 
+			ORDER_DEPT, REPORT_TIME, FILE_ADDRESS
+		FROM
+			DATA_EXAMINE AS DE
+		WHERE
+			DE.ID_NO = #{idNo}
+		ORDER BY REPORT_TIME DESC
+	</select>
+	
+	<!-- 通过身份证找数据 -->
+	<select id="findByExamineId" resultMap="dataExamineResultMap" parameterType="map">
+		SELECT
+			ID, CHECK_PART, CHECK_METHOD, CHECK_SITUATION, OPINION, ADVICE
+		FROM
+			DATA_EXAMINE AS DE
+		WHERE
+			DE.ID = #{examineId}
+	</select>
+	
+	<!-- 批量插入 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		 INSERT INTO 
+		 DATA_EXAMINE(<include refid="All_Column"></include>)
+		 VALUES
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (
+	         #{item.id}, #{item.hospitalId}, #{item.hospitalCode}, #{item.hospitalName}, #{item.branchHospitalId},
+	         #{item.branchHospitalCode}, #{item.branchHospitalName}, #{item.storageTime}, #{item.name}, #{item.cardType},
+	         #{item.cardNo}, #{item.idNo}, #{item.checkId}, #{item.checkName}, #{item.checkType}, #{item.checkTypeName}, 
+	         #{item.deptName}, #{item.doctorName}, #{item.checkTime}, #{item.orderDoctor}, #{item.orderDoctorCode}, 
+	         #{item.orderDept}, #{item.reportTime}, #{item.fileAddress}, #{item.checkPart}, #{item.checkMethod}, 
+	         #{item.checkSituation}, #{item.option}, #{item.advice}
+	        )
+	    </foreach>  
+	</insert>
+	
+
+	<insert id="add" parameterType="DataExamine" useGeneratedKeys="true" keyProperty="id">
+		insert into 
+		DATA_EXAMINE(<include refid="All_Column"></include>)
+		 values 
+		(
+		 #{id}, #{hospitalId}, #{hospitalCode}, #{hospitalName}, #{branchHospitalId},
+         #{branchHospitalCode}, #{branchHospitalName}, #{storageTime}, #{name}, #{cardType},
+         #{cardNo}, #{idNo}, #{checkId}, #{checkName}, #{checkType}, #{checkTypeName}, 
+         #{deptName}, #{doctorName}, #{checkTime}, #{orderDoctor}, #{orderDoctorCode}, 
+         #{orderDept}, #{reportTime}, #{fileAddress}, #{checkPart}, #{checkMethod}, 
+         #{checkSituation}, #{option}, #{advice}
+		)
+	</insert>
+
+</mapper>

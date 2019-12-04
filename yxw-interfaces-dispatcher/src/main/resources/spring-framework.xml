@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd 
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd 
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd 
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd"
+	default-lazy-init="false">
+	
+	<!-- 注入spring助手类,以便直接在代码中获取bean对象 -->
+    <bean class="com.yxw.framework.common.spring.ext.SpringContextHolder"/>
+
+    <!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
+    <context:component-scan base-package="com.yxw">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+    	<context:exclude-filter type="regex" expression=".*.framework.*.dao.*"/>
+        <context:exclude-filter type="regex" expression=".*.framework.*.service.*"/>
+    </context:component-scan>
+    
+    <!-- 加载资源文件 -->
+    <bean id="springProperty" class="com.yxw.framework.common.spring.ext.config.YxwPropertyPlaceholderConfigurer">
+        <!-- 设置可以从JVM中取值 -->
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+        <!-- 忽略不存在的资源文件 -->
+        <property name="ignoreResourceNotFound" value="false" />
+        <property name="locations">
+            <list>
+                <value>classpath*:/framework_dev.properties</value>
+                <!-- <value>classpath*:/framework_rc.properties</value> -->
+            </list>
+        </property>
+    </bean>
+    
+    <!-- 配置StatFilter -->
+    <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+        <!-- 执行时间超过5秒的sql将被记录 -->
+        <property name="slowSqlMillis" value="5000" />
+        <property name="logSlowSql" value="true" />
+        <!-- 合并sql -->
+        <property name="mergeSql" value="true" />
+    </bean>
+
+
+    <!-- 配置输出日志 -->
+    <bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
+        <!-- 输出可执行的SQL -->
+        <property name="statementExecutableSqlLogEnable" value="true" />
+        <!-- 所有连接上发生异常的日志 -->
+        <property name="connectionLogErrorEnabled" value="true" />
+        <!-- 所有Statement发生异常的日志 -->
+        <property name="statementLogErrorEnabled" value="true" />
+    </bean>
+
+    <!-- 性能拦截统计 -->
+    <bean id="methodTimeAdvice" class="com.yxw.framework.interceptor.MethodTimeAdviceInterceptor" />
+    <aop:config>
+        <aop:advisor id="methodTimeLog" advice-ref="methodTimeAdvice" pointcut="execution(* com.yxw.interfaces.service..*.*(..))" />
+    </aop:config>
+    
+    
+    <import resource="classpath*:/dubbo/dubbo-service.xml" />
+
+</beans>    

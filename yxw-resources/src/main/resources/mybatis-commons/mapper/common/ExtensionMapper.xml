@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.hospital.Extension">
+	<resultMap id="extensionResultMap" type="com.yxw.commons.entity.platform.hospital.Extension">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="DISTRICT" property="district" jdbcType="VARCHAR" />
+		<result column="EXTENSION_MODE" property="extensionMode" jdbcType="INTEGER" />
+		<result column="SCENEID" property="sceneid" jdbcType="VARCHAR" />
+		<result column="OUTSIDE_URL" property="outsideUrl" jdbcType="VARCHAR" />
+		<result column="INSIDE_URL" property="insideUrl" jdbcType="VARCHAR" />
+		<result column="SIGN" property="sign" jdbcType="VARCHAR" />
+		<result column="APPID" property="appId" jdbcType="VARCHAR" />
+		<result column="COUNT" property="count" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<select id="findListByPage" resultMap="extensionResultMap">
+		select * from SYS_EXTENSION e where e.HOSPITAL_ID = #{hospitalId}
+	</select>
+	
+	<select id="findExtensionByhospitalIdAndAppCode" resultMap="extensionResultMap">
+		select * from SYS_EXTENSION e where e.HOSPITAL_ID = #{hospitalId} and e.EXTENSION_MODE = #{extensionMode}
+	</select>
+	
+	<select id="findExtensionByhospitalIdAndAppCodeAndDistrict" resultMap="extensionResultMap">
+		select * from SYS_EXTENSION e where e.HOSPITAL_ID = #{hospitalId} and e.EXTENSION_MODE = #{extensionMode} and e.DISTRICT = #{district}
+	</select>
+	
+	<select id="findExtensionByAppIdAndSceneid" resultMap="extensionResultMap">
+		select * from SYS_EXTENSION e where e.APPID = #{appId} and e.SCENEID = #{sceneid}
+	</select>
+	
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.hospital.Extension">
+		insert into
+		SYS_EXTENSION(ID,HOSPITAL_ID,DISTRICT,EXTENSION_MODE,SCENEID,OUTSIDE_URL,INSIDE_URL,SIGN,APPID,COUNT)
+		values
+		(#{id},#{hospitalId},#{district},#{extensionMode},#{sceneid},#{outsideUrl},#{insideUrl},#{sign},#{appId},#{count})
+	</insert>
+	
+	<insert id="update" parameterType="com.yxw.commons.entity.platform.hospital.Extension">
+		 update SYS_EXTENSION 
+	      <set >
+		      <if test="hospitalId != null" >
+		        HOSPITAL_ID = #{hospitalId},
+		      </if>
+		      <if test="district != null" >
+		        DISTRICT = #{district},
+		      </if>
+		      <if test="extensionMode != null" >
+		        EXTENSION_MODE = #{extensionMode},
+		      </if>
+		      <if test="sceneid != null" >
+		        SCENEID = #{sceneid},
+		      </if>
+		      <if test="outsideUrl != null" >
+		        OUTSIDE_URL = #{outsideUrl},
+		      </if>
+		      <if test="insideUrl != null" >
+		        INSIDE_URL = #{insideUrl},
+		      </if>
+		      <if test="sign != null" >
+		        SIGN = #{sign},
+		      </if>
+		      <if test="appId != null" >
+		        APPID = #{appId},
+		      </if>
+	          <if test="count != null" >
+		        COUNT = #{count},
+		      </if>
+	      </set>
+	    where ID = #{id,jdbcType=VARCHAR}
+	</insert>
+	
+</mapper>

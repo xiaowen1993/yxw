@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd 
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd 
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd 
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd"
+	default-lazy-init="true">
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="${taskExecutor.corePoolSize}" />
+		<property name="keepAliveSeconds" value="${taskExecutor.keepAliveSeconds}" />
+		<property name="maxPoolSize" value="${taskExecutor.maxPoolSize}" />
+		<property name="queueCapacity" value="${taskExecutor.queueCapacity}" />
+	</bean>
+
+	<!-- =================================== 绑卡统计 =================================== -->
+	<bean id="statsCardTask" class="com.yxw.task.taskitem.StatsCardTask" />
+	<bean id="statsCardJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="statsCardTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="statsCardCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="statsCardJobDetail" />
+		<property name="cronExpression" value="${task.cron1}" />
+	</bean>
+	<!-- =================================== 关注统计 =================================== -->
+	<bean id="statsSubscribeTask" class="com.yxw.task.taskitem.StatsSubscribeTask" />
+	<bean id="statsSubscribeJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="statsSubscribeTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="statsSubscribeCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="statsSubscribeJobDetail" />
+		<property name="cronExpression" value="${task.cron2}" />
+	</bean>
+	<!-- =================================== 挂号统计 =================================== -->
+	<bean id="statsRegTask" class="com.yxw.task.taskitem.StatsRegTask" />
+	<bean id="statsRegJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="statsRegTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="statsRegCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="statsRegJobDetail" />
+		<property name="cronExpression" value="${task.cron3}" />
+	</bean>
+	<!-- =================================== 门诊统计 =================================== -->
+	<bean id="statsClinicTask" class="com.yxw.task.taskitem.StatsClinicTask" />
+	<bean id="statsClinicJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="statsClinicTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="statsClinicCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="statsClinicJobDetail" />
+		<property name="cronExpression" value="${task.cron4}" />
+	</bean>
+	<!-- =================================== 押金统计 =================================== -->
+	<bean id="statsDepositTask" class="com.yxw.task.taskitem.StatsDepositTask" />
+	<bean id="statsDepositJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="statsDepositTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="statsDepositCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="statsDepositJobDetail" />
+		<property name="cronExpression" value="${task.cron5}" />
+	</bean>
+
+	<!-- =================================== 归属地统计 =================================== -->
+	<bean id="statsAttributionTask" class="com.yxw.task.taskitem.StatsAttributionTask" />
+	<bean id="statsAttributionJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="statsAttributionTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="statsAttributionCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="statsAttributionJobDetail" />
+		<property name="cronExpression" value="${task.cron6}" />
+	</bean>
+	
+	<!-- =================================== 性别和年龄段统计 =================================== -->
+	<bean id="statsCardInfosTask" class="com.yxw.task.taskitem.StatsCardInfosTask" />
+	<bean id="statsCardInfosJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="statsCardInfosTask" />
+		<property name="targetMethod" value="startUp" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="statsCardInfosCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="statsCardInfosJobDetail" />
+		<property name="cronExpression" value="${task.cron7}" />
+	</bean>
+
+	<!-- =================================== 调度设置 =================================== -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!-- <ref bean="statsCardCronTrigger" />
+				<ref bean="statsSubscribeCronTrigger" />
+				<ref bean="statsRegCronTrigger" />
+				<ref bean="statsClinicCronTrigger" />
+				<ref bean="statsDepositCronTrigger" />
+				<ref bean="statsAttributionCronTrigger" />
+				<ref bean="statsCardInfosCronTrigger" /> -->
+			</list>
+		</property>
+		<property name="taskExecutor" ref="taskExecutor" />
+	</bean>
+
+</beans>

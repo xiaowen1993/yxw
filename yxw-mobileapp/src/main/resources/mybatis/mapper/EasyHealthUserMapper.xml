@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.mobileapp.biz.user.entity.EasyHealthUser">
+
+	<resultMap id="easyHealthUserResult"
+		type="com.yxw.mobileapp.biz.user.entity.EasyHealthUser">
+		<id column="ID" property="id" />
+		<result column="ACCOUNT" property="account" />
+		<result column="NAME" property="name" />
+		<result column="MOBILE" property="mobile" />
+		<result column="CARD_TYPE" property="cardType" />
+		<result column="CARD_NO" property="cardNo" />
+		<result column="BIRTHDAY" property="birthDay" />
+		<result column="SEX" property="sex" />
+		<result column="ADDRESS" property="address" />
+		<result column="ALIPAY_ID" property="alipayId" />
+		<result column="WECHAT_ID" property="wechatId" />
+		<result column="UNIONPAY_ID" property="unionPayId" />
+		<result column="PASS_WORD" property="passWord" />
+		<result column="LOGIN_NONCE" property="loginNonce" />
+		<result column="DEVICE_NUMBER" property="deviceNumber" />
+		<result column="REGISTER_TIME" property="registerTime" />
+		<result column="LAST_LOGIN_TIME" property="lastLoginTime" />
+	</resultMap>
+
+	<sql id="All_Column">
+		ID, ACCOUNT, NAME, MOBILE, CARD_TYPE, CARD_NO, BIRTHDAY,
+		SEX, ADDRESS, ALIPAY_ID, WECHAT_ID, UNIONPAY_ID, PASS_WORD, LOGIN_NONCE,
+		DEVICE_NUMBER, REGISTER_TIME, LAST_LOGIN_TIME
+	</sql>
+
+	<sql id="Choose_Hash_Table_Name">
+		<choose>
+			<when test="hashTableName == 'EH_USER_1'">
+				EH_USER_1
+			</when>
+			<when test="hashTableName == 'EH_USER_2'">
+				EH_USER_2
+			</when>
+			<when test="hashTableName == 'EH_USER_3'">
+				EH_USER_3
+			</when>
+			<when test="hashTableName == 'EH_USER_4'">
+				EH_USER_4
+			</when>
+			<when test="hashTableName == 'EH_USER_5'">
+				EH_USER_5
+			</when>
+			<when test="hashTableName == 'EH_USER_6'">
+				EH_USER_6
+			</when>
+			<when test="hashTableName == 'EH_USER_7'">
+				EH_USER_7
+			</when>
+			<when test="hashTableName == 'EH_USER_8'">
+				EH_USER_8
+			</when>
+			<when test="hashTableName == 'EH_USER_9'">
+				EH_USER_9
+			</when>
+			<when test="hashTableName == 'EH_USER_10'">
+				EH_USER_10
+			</when>
+		</choose>
+	</sql>
+
+	<!-- 实体插入 -->
+	<insert id="add" parameterType="com.yxw.mobileapp.biz.user.entity.EasyHealthUser">
+		INSERT INTO
+		<include refid="Choose_Hash_Table_Name" />
+		(
+		<include refid="All_Column"></include>
+		)
+		VALUES (
+		#{id},
+		#{account},
+		#{name},
+		#{mobile},
+		#{cardType},
+		#{cardNo},
+		#{birthDay},
+		#{sex},
+		#{address},
+		#{alipayId},
+		#{wechatId},
+		#{unionPayId},
+		#{passWord},
+		#{loginNonce},
+		#{deviceNumber},
+		#{registerTime},
+		#{lastLoginTime}
+		)
+	</insert>
+
+	<!-- 实体更新 -->
+	<update id="update" parameterType="com.yxw.mobileapp.biz.user.entity.EasyHealthUser">
+		update
+		<include refid="Choose_Hash_Table_Name" />
+		<set>
+			<if test="account != null">
+				ACCOUNT = #{account}
+			</if>
+			<if test="name != null">
+				,NAME = #{name}
+			</if>
+			<if test="mobile != null">
+				,MOBILE = #{mobile}
+			</if>
+			<if test="cardType != null">
+				,CARD_TYPE = #{cardType}
+			</if>
+			<if test="cardNo != null">
+				,CARD_NO = #{cardNo}
+			</if>
+			<if test="birthDay != null">
+				,BIRTHDAY = #{birthDay}
+			</if>
+			<if test="sex != null">
+				,SEX = #{sex}
+			</if>
+			<if test="address != null">
+				,ADDRESS = #{address}
+			</if>
+			<if test="alipayId != null">
+				,ALIPAY_ID = #{alipayId}
+			</if>
+			<if test="wechatId != null">
+				,WECHAT_ID = #{wechatId}
+			</if>
+			<if test="unionPayId != null">
+				,UNIONPAY_ID = #{unionPayId}
+			</if>
+			<if test="passWord != null">
+				,PASS_WORD = #{passWord}
+			</if>
+			<if test="loginNonce != null">
+				,LOGIN_NONCE = #{loginNonce}
+			</if>
+			<if test="deviceNumber != null">
+				,DEVICE_NUMBER = #{deviceNumber}
+			</if>
+			<if test="lastLoginTime != null">
+				,LAST_LOGIN_TIME = #{lastLoginTime}
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+
+	<!-- 检查证件号是否已经注册 -->
+	<select id="findEasyHealthForCardNo" resultMap="easyHealthUserResult"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		FROM
+		<include refid="Choose_Hash_Table_Name" />
+		where CARD_NO = #{cardNo}
+	</select>
+
+
+	<!-- 登录 -->
+	<select id="findEasyHealthForCardNoAndPassWord" resultMap="easyHealthUserResult"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		FROM
+		<include refid="Choose_Hash_Table_Name" />
+		where CARD_NO = #{cardNo} AND PASS_WORD = #{passWord}
+	</select>
+
+
+	<select id="findEasyHealthUserByMobile" resultMap="easyHealthUserResult"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		FROM
+		<include refid="Choose_Hash_Table_Name" />
+		where MOBILE = #{mobile}
+	</select>
+
+	<select id="findEasyHealthUserByCardNoAndMobile" resultMap="easyHealthUserResult"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		FROM
+		<include refid="Choose_Hash_Table_Name" />
+		where CARD_NO = #{cardNo} and MOBILE != #{mobile}
+	</select>
+
+	<select id="findEasyHealthUserByAccount" resultMap="easyHealthUserResult"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		FROM
+		<include refid="Choose_Hash_Table_Name" />
+		where ACCOUNT = #{account}
+	</select>
+
+	<select id="findEasyHealthUserByAlipayId" resultMap="easyHealthUserResult"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		FROM
+		<include refid="Choose_Hash_Table_Name" />
+		where ALIPAY_ID = #{alipayId}
+	</select>
+	
+	<select id="findEasyHealthUserByWechatId" resultMap="easyHealthUserResult"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		FROM
+		<include refid="Choose_Hash_Table_Name" />
+		where WECHAT_ID = #{wechatId}
+	</select>
+	
+	<select id="findEasyHealthUserByUnionpayId" resultMap="easyHealthUserResult"
+		parameterType="java.util.Map">
+		select
+		<include refid="All_Column"></include>
+		FROM
+		<include refid="Choose_Hash_Table_Name" />
+		where UNIONPAY_ID = #{unionPayId}
+	</select>
+</mapper>

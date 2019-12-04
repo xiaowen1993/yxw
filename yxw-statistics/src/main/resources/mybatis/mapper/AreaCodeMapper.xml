@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.statistics.biz.hospitalmanager.entity.Area">
+	<resultMap id="area" type="com.yxw.statistics.biz.hospitalmanager.entity.Area">
+		<result column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+		<result column="LEVEL" property="level" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 查询所有符合的level -->
+	<select id="findAllByLevel" resultMap="area">
+		SELECT
+			ID, NAME, PARENT_ID, LEVEL
+		FROM
+			SYS_AREAS
+		WHERE
+			1 = 1
+		<if test="level != null and level != ''">
+			AND LEVEL = #{level}
+		</if>
+		ORDER BY LEVEL ASC;
+	</select>
+	
+	<!-- 查询包含的level, 如2，则查询1,2级 即省市。 -->
+	<select id="findAllHyperLevel" resultMap="area">
+		SELECT
+			ID, NAME, PARENT_ID, LEVEL
+		FROM
+			SYS_AREAS
+		WHERE
+			1 = 1
+		<if test="level != null and level != ''">
+			AND LEVEL &lt;= #{level}
+		</if>
+		ORDER BY LEVEL ASC;
+	</select>
+
+</mapper>

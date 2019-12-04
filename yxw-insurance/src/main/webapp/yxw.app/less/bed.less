@@ -1,0 +1,44 @@
+/*less*/
+@import "var.less";
+/*床位*/
+/*医院列表*/
+.yx-bedList{margin: 0; background-color: @whtie; padding:0 0.8em 0; position: relative;
+  &:before{content: ' ';  display: block;  position: absolute;  width: 100%;  left: 0;  top: 0px;  height: 1px;  background-color:@borderColor;  transform: scaleY(0.5);overflow: hidden;}
+  li{padding: 0.8em 0;overflow: hidden;  box-sizing: border-box; position: relative;white-space:nowrap;
+    &:after{.li-halfLine(0);}
+    .states{width: 85px;height: 75px; vertical-align: middle; display: inline-block;
+      .num{width: 100%;font-size: 30px; text-align: center; color: @skinbgColor; line-height: 1.5; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; display: block;}
+      .text{border-radius: 30px; background-color: @skinbgColor; color: #fff; display: block; font-size: 14px; text-align:center; line-height: 1.5;}
+    }
+    &.orange{
+      .num{ color:#fabf13; }
+      .text{ background-color: #fabf13;}
+    }
+    &.grey{
+      .num{ color:#999; }
+      .text{ background-color: #999;}
+    }
+    .info{line-height: 30px;display: inline-block;vertical-align: middle;padding-right: 25px;width: 100%;padding-left: 85px;transform: translateX(-70px);
+      .des{color: #666;line-height: 25px; font-size: @size14;}
+      div{text-overflow:ellipsis ;overflow: hidden;width: 100%;}
+      .tag{ display: block; padding: 0; margin-top: -3px;
+        .styleTag{ font-style: normal; font-size: 12px; color: #fff; line-height: 1; background-color: @skinbgColor; border-radius: 30px; padding: 2px 8px; }
+      }
+    }
+    &.arrow:before{
+      font-family: "iconfont" !important;
+      font-size: 12px;
+      font-style: normal;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-stroke-width: 0.2px;
+      content: '@{arrowContent}';
+      position: absolute;
+      display: block;
+      height: 16px;
+      line-height: 1;
+      color: #d4d4d4;
+      right: 0; top:50%; margin-top: 0px;
+    }
+
+  }
+}

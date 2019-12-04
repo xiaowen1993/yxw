@@ -1,0 +1,128 @@
+h3.title{
+    height: auto;
+}
+h3.title a.tab{
+    color: #666;
+    text-decoration: none;
+    padding: 0 5px;
+}
+h3.title a.tab:hover{
+    color: #37b494;
+    text-decoration: underline;
+}
+h3.title .tab.active{
+    color: #37b494;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+}
+//.c_item_w{
+//    overflow: hidden;
+//}
+//.c_item_w .c_item{
+//    float: left;
+//    width: 20%;
+//    box-sizing: border-box;
+//    padding: 3% 0;
+//    min-width: 150px;
+//    text-align: center;
+//    background-color: #37b494;
+//    color: #fff;
+//    border: solid 1px #f0f3f6;;
+//    line-height: 1.5;
+//}
+//.c_item_w .c_item span{
+//    font-size: 150%;
+//    font-weight: bold;
+//}
+//.c_item_w.tongji .c_item{
+//    width: 16.666%;
+//    background-color: #fff;
+//    border: solid 1px #ddd;
+//    border-left: none;
+//    color: #37b494;
+//    padding: 1% 0;
+//}
+//.c_item_w.tongji .c_item:first-child{
+//    border-left: solid 1px #ddd;
+//}
+//.c_item_w.tongji .c_item span{
+//    font-size: 110%;
+//    font-weight: normal;
+//}
+
+.tongjiTab{
+    overflow: hidden;
+    width: 100%;
+}
+.tongjiTab span{
+    padding: 15px;
+    border: solid 1px #ddd;
+    border-left: none;
+    display: block;
+    float: left;
+    min-width: 120px;
+    text-align: center;
+    box-sizing: border-box;
+    font-weight: bold;
+    width: 16.666%;
+
+}
+.tongjiTab.first span{
+    background-color: #dae1e8;
+    width: 14.285%;
+}
+.tongjiTab .tag_a{
+    cursor: pointer;
+}
+.tongjiTab span:first-child{
+    border-left: solid 1px #ddd;
+}
+.tongjiTab span.active{
+    background-color: #37b494;
+    color: #fff;
+}
+.g-time{
+    background-color: #fff;
+    cursor: pointer;
+}
+.g-time .input-small{
+    height: 20px;
+    padding: 2px 10px;
+
+}
+
+.typeTab{
+    width: 100%;
+    display: block;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    background: #dae1e8;
+    li{
+        width: auto;
+        height: 50px;
+        line-height: 50px;
+        padding: 0  40px;
+        margin: 0;
+        display: inline-block;
+        zoom: 1;
+        *display: inline;
+        cursor: pointer;
+        &.active{
+            background-color:#37b494;
+            color: #fff;
+        }
+    }
+}
+.typeContent{
+    table.table thead tr th{
+        background-color: #fff;
+    }
+}
+.allDatas{
+    table.table thead tr th{
+        background-color: #37b494;
+        color: #fff;
+    }
+}

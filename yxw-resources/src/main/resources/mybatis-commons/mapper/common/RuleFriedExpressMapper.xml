@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.commons.entity.platform.rule.RuleFriedExpress">
+	<resultMap id="RuleFriedExpressResultMap" type="RuleFriedExpress">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+
+		<result column="IS_ACCESS_CLINIC" property="isAccessClinic"	jdbcType="INTEGER" />
+		<result column="IS_ACCESS_PAYED" property="isAccessPayed"	jdbcType="INTEGER" />
+		<result column="IS_CAN_OFF_BY_USER" property="isCanOffByUser" jdbcType="INTEGER" />
+		<result column="IS_ONLY_EXPRESS" property="isOnlyExpress" jdbcType="INTEGER" />
+		<result column="IS_SPLIT_RECIPE" property="isSplitRecipe" jdbcType="INTEGER" />
+		<result column="IS_FRIED_QUERY" property="isFriedQuery" jdbcType="INTEGER" />
+		<result column="IS_EXPRESS_QUERY" property="isExpressQuery"	jdbcType="INTEGER" />
+		<result column="FRIED_EXPRESS_RELATION" property="friedExpressRelation"	jdbcType="INTEGER" />
+		<result column="TIP_CONTENT" property="tipContent" jdbcType="VARCHAR" />
+
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<select id="findById" resultMap="RuleFriedExpressResultMap"	parameterType="java.lang.String">
+		select *
+		from SYS_RULE_FRIED_EXPRESS
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findAll" resultMap="RuleFriedExpressResultMap">
+		select * from SYS_RULE_FRIED_EXPRESS
+	</select>
+
+	<!-- 根据id查询 -->
+	<select id="findByHospitalId" resultMap="RuleFriedExpressResultMap"	parameterType="java.lang.String">
+		select *
+		from SYS_RULE_FRIED_EXPRESS
+		where HOSPITAL_ID = #{hospitalId,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from SYS_RULE_FRIED_EXPRESS
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="add" parameterType="RuleFriedExpress">
+		insert into SYS_RULE_FRIED_EXPRESS (
+			ID, HOSPITAL_ID, IS_ACCESS_CLINIC, IS_ACCESS_PAYED, IS_CAN_OFF_BY_USER, IS_ONLY_EXPRESS
+			, IS_SPLIT_RECIPE, IS_FRIED_QUERY, IS_EXPRESS_QUERY, FRIED_EXPRESS_RELATION, TIP_CONTENT
+			, CP, CT, EP, ET
+		)
+		values (
+			#{id},#{hospitalId},#{isAccessClinic},#{isAccessPayed},#{isCanOffByUser},#{isOnlyExpress}
+			,#{isSplitRecipe},#{isFriedQuery},#{isExpressQuery},#{friedExpressRelation},#{tipContent}
+			,#{cp},#{ct},#{ep},#{et}
+		)
+	</insert>
+	<update id="update" parameterType="RuleFriedExpress">
+		update SYS_RULE_FRIED_EXPRESS
+		<set>
+			<if test="hospitalId != null">
+				HOSPITAL_ID = #{hospitalId},
+			</if>
+			<if test="isAccessClinic != null">
+				IS_ACCESS_CLINIC = #{isAccessClinic},
+			</if>
+			<if test="isAccessPayed != null">
+				IS_ACCESS_PAYED = #{isAccessPayed},
+			</if>
+			<if test="isCanOffByUser != null">
+				IS_CAN_OFF_BY_USER = #{isCanOffByUser},
+			</if>
+			<if test="isOnlyExpress != null">
+				IS_ONLY_EXPRESS = #{isOnlyExpress},
+			</if>
+			<if test="isSplitRecipe != null">
+				IS_SPLIT_RECIPE = #{isSplitRecipe},
+			</if>
+			<if test="isFriedQuery != null">
+				IS_FRIED_QUERY = #{isFriedQuery},
+			</if>
+			<if test="isExpressQuery != null">
+				IS_EXPRESS_QUERY = #{isExpressQuery},
+			</if>
+			<if test="friedExpressRelation != null">
+				FRIED_EXPRESS_RELATION = #{friedExpressRelation},
+			</if>
+			<if test="tipContent != null">
+				TIP_CONTENT=#{tipContent},
+			</if>
+			
+			<if test="cp != null">
+				CP = #{cp,jdbcType=INTEGER},
+			</if>
+			<if test="ct != null">
+				CT = #{ct,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ep != null">
+				EP = #{ep,jdbcType=INTEGER},
+			</if>
+			<if test="et != null">
+				ET = #{et,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

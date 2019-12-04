@@ -1,0 +1,56 @@
+.search-icon{
+  width: 40px;
+  text-align: center;
+  i{
+    line-height: 1;
+    font-size: 20px;
+    color: #ccc;
+  }
+}
+.mod-search.v2{
+  @c:#aaa;
+  .search-select-btn{
+    width: 70px;
+  }
+  .search-main.mtSpace{
+    transform: translateY(20%);
+  }
+  .grid_title{
+    color: @c;
+    font-size: 20px;
+    line-height: 3;
+  }
+  .icon_grid{
+    color: @c;
+    text-align: center;
+    span{
+      line-height: 1.5;
+      display: inline-block;
+      padding: 20px 6%;
+
+
+    }
+    i{
+      font-size: 5rem;
+      color: @c + 30;
+      line-height: 1;
+    }
+  }
+  .search-load-more{
+    color:@skinbgColor ;
+  }
+}
+.space15{
+  height: 15px;
+  &.grey{
+    background-color: #eee;
+  }
+}
+
+@media screen and (min-device-height:627px){
+  .mod-search.v2{
+    .search-main.mtSpace{
+      transform: translateY(30%);
+    }
+  }
+}

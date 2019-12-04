@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.hospital.PlatformOptional">
+
+	<resultMap id="platformOptionalResultMap" type="PlatformOptional">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="PLATFORM_SETTINGS_ID" property="platformSettingsId" jdbcType="VARCHAR" />
+		<association column="OPTIONAL_ID" property="optional" javaType="Optional"
+			select="com.yxw.commons.entity.platform.hospital.Optional.findById" />
+	</resultMap>
+
+	<resultMap id="platformOptionalVoResultMap" type="com.yxw.commons.vo.PlatformOptionalVo">
+		<id column="PLATFORM_SETTINGS_OPTIONAL_ID" property="platformSettingsOptionalId" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_CODE" property="hospitalCode" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_NAME" property="hospitalName" jdbcType="VARCHAR" />
+		<result column="PLATFORM_SETTINGS_ID" property="platformSettingsId" jdbcType="VARCHAR" />
+		<result column="PLATFORM_CODE" property="platformCode" jdbcType="VARCHAR" />
+		<result column="PLATFORM_ID" property="platformId" jdbcType="VARCHAR" />
+		<result column="PLATFORM_NAME" property="platformName" jdbcType="VARCHAR" />
+		<result column="PLATFORM_SETTINGS_OPTIONAL_ID" property="platformSettingsOptionalId" jdbcType="VARCHAR" />
+		<collection column="PLATFORM_SETTINGS_ID" property="optionals" ofType="com.yxw.commons.entity.platform.hospital.Optional"
+			select="com.yxw.commons.entity.platform.hospital.Optional.findByPlatformSettingsId" />
+	</resultMap>
+
+	<select id="findByHospital" resultMap="platformOptionalResultMap">
+		select ID, OPTIONAL_ID, PLATFORM_SETTINGS_ID
+		from SYS_PLATFORM_OPTIONAL ho
+		left join SYS_HOSPITAL_PLATFORM_SETTINGS hps
+		on hps.PLATFORM_SETTINGS_ID = ho.PLATFORM_SETTINGS_ID
+		where hps.HOSPITAL_ID = #{hospitalId}
+	</select>
+
+	<select id="findAllByHospitalId" resultMap="platformOptionalVoResultMap" parameterType="String">
+		SELECT
+		h.`NAME` AS HOSPITAL_NAME,
+		h.`CODE` AS HOSPPITAL_CODE,
+		h.ID AS HOSPITAL_ID,
+		p.ID AS PLATFORM_ID,
+		p.`CODE` AS PLATFORM_CODE,
+		p.`NAME` AS PLATFORM_NAME,
+		hps.PLATFORM_SETTINGS_ID AS PLATFORM_SETTINGS_ID
+		FROM
+		SYS_HOSPITAL_PLATFORM_SETTINGS hps
+		LEFT JOIN SYS_HOSPITAL h ON h.ID = hps.HOSPITAL_ID
+		LEFT JOIN SYS_PLATFORM_SETTINGS ps ON ps.ID =
+		hps.PLATFORM_SETTINGS_ID
+		LEFT JOIN SYS_PLATFORM p ON p.ID = ps.PLATFORM_ID
+		WHERE
+		hps.HOSPITAL_ID = #{hospitalId}
+	</select>
+
+	<select id="findByPlatformSettingsId" resultMap="platformOptionalResultMap">
+		select ID, OPTIONAL_ID, PLATFORM_SETTINGS_ID
+		from
+		SYS_PLATFORM_OPTIONAL ho
+		where ho.PLATFORM_SETTINGS_ID = #{platformSettingsId}
+	</select>
+
+	<insert id="add" parameterType="PlatformOptional">
+		insert into
+		SYS_PLATFORM_OPTIONAL(ID,OPTIONAL_ID,PLATFORM_SETTINGS_ID)
+		values
+		(#{id},#{optional.id},#{platformSettingsId})
+	</insert>
+
+	<delete id="deleteByPlatformSettingsId" parameterType="String">
+		delete from SYS_PLATFORM_OPTIONAL where
+		PLATFORM_SETTINGS_ID = #{platformSettingsId}
+	</delete>
+
+</mapper>

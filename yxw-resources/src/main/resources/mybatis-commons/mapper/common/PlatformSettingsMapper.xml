@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.hospital.PlatformSettings">
+
+	<resultMap id="platformSettingsResultMap" type="PlatformSettings">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+		<result column="PRIVATE_KEY" property="privateKey" jdbcType="VARCHAR" />
+		<result column="PUBLIC_KEY" property="publicKey" jdbcType="VARCHAR" />
+		<result column="TOKEN" property="token" jdbcType="VARCHAR" />
+		<result column="WECHAT_ACCOUNT" property="wechatAccount" jdbcType="VARCHAR" />
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+		<!--  <result column="PLATFORM_ID" property="platformId" jdbcType="BIGINT" />-->
+		<!-- <association column="ID" property="platform" javaType="Platform" select="com.yxw.platform.hospital.entity.Platform.findById" /> -->
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="HPS_ID" property="hpsId" jdbcType="VARCHAR" />
+		<result column="PF_ID" property="pfId" jdbcType="VARCHAR" />
+		<association column="HOSPITAL_ID" property="hospital" javaType="Hospital" select="queryHospital">
+			<id column="ID" property="id" jdbcType="VARCHAR" />
+			<result column="CODE" property="code" jdbcType="VARCHAR" />  
+			<result column="NAME" property="name" jdbcType="VARCHAR" />  
+			<result column="AREA_CODE" property="areaCode" jdbcType="VARCHAR" />
+			<result column="STATUS" property="status" jdbcType="INTEGER" />  
+		</association>
+	</resultMap>
+	
+	<resultMap id="hospitalResultMap" type="Hospital">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="AREA_CODE" property="areaCode" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<select id="queryHospital" resultMap="hospitalResultMap">
+		SELECT
+			ID, CODE, NAME, AREA_CODE, STATUS
+		FROM
+			SYS_HOSPITAL
+		WHERE
+			ID = #{id}
+	</select>
+
+	<select id="findById" resultMap="platformSettingsResultMap">
+		select ID,APP_ID,PRIVATE_KEY,PUBLIC_KEY,TOKEN,WECHAT_ACCOUNT,CP,CT,EP,ET from SYS_PLATFORM_SETTINGS ps where ps.ID = #{id}
+	</select>
+	
+	<select id="findPlatformSettingsByAppId" resultMap="platformSettingsResultMap">
+		select ID,APP_ID,PRIVATE_KEY,PUBLIC_KEY,TOKEN,WECHAT_ACCOUNT,CP,CT,EP,ET from SYS_PLATFORM_SETTINGS ps where ps.APP_ID = #{appId}
+	</select>
+	
+	<select id="findByPrivateKey" resultMap="platformSettingsResultMap">
+		select ID,APP_ID,PRIVATE_KEY,PUBLIC_KEY,TOKEN,WECHAT_ACCOUNT,CP,CT,EP,ET from SYS_PLATFORM_SETTINGS ps where ps.PRIVATE_KEY = #{privateKey}
+	</select>
+
+	<select id="findByPublicKey" resultMap="platformSettingsResultMap">
+		select ID,APP_ID,PRIVATE_KEY,PUBLIC_KEY,TOKEN,WECHAT_ACCOUNT,CP,CT,EP,ET from SYS_PLATFORM_SETTINGS ps where ps.PUBLIC_KEY = #{publicKey}
+	</select>
+	
+	<select id="findByHospitalIdAndPlatformIds" resultMap="platformSettingsResultMap" parameterType="map">
+		select 
+		ps.ID,ps.APP_ID,ps.PRIVATE_KEY,ps.PUBLIC_KEY,ps.TOKEN,ps.WECHAT_ACCOUNT,ps.CP,ps.CT,ps.EP,ps.ET,pf.id as PF_ID,pf.code as CODE,hps.ID as HPS_ID, hps.HOSPITAL_ID as HOSPITAL_ID
+		from 
+			SYS_PLATFORM_SETTINGS ps LEFT JOIN SYS_HOSPITAL_PLATFORM_SETTINGS hps on ps.ID = hps.PLATFORM_SETTINGS_ID
+			LEFT JOIN SYS_PLATFORM pf ON pf.ID = ps.PLATFORM_ID
+		where hps.HOSPITAL_ID = #{hospitalId}
+		AND ps.PLATFORM_ID in 
+		<foreach item="item" index="index" collection="platformIds" open="(" separator="," close=")">  
+  			#{item}
+  		</foreach> 
+	</select>
+	
+	<select id="findByHospitalIdAndPlatformId" resultMap="platformSettingsResultMap" parameterType="map">
+		select 
+		ps.ID,ps.APP_ID,ps.PRIVATE_KEY,ps.PUBLIC_KEY,ps.TOKEN,ps.WECHAT_ACCOUNT,ps.CP,ps.CT,ps.EP,ps.ET,pf.id as PF_ID,pf.code as CODE,hps.ID as HPS_ID, hps.HOSPITAL_ID as HOSPITAL_ID
+		from 
+			SYS_PLATFORM_SETTINGS ps LEFT JOIN SYS_HOSPITAL_PLATFORM_SETTINGS hps on ps.ID = hps.PLATFORM_SETTINGS_ID
+			LEFT JOIN SYS_PLATFORM pf ON pf.ID = ps.PLATFORM_ID
+		WHERE hps.HOSPITAL_ID = #{hospitalId} and ps.PLATFORM_ID = #{platformId}
+	</select>
+
+	<select id="findByHospitalIdAndAppCode" resultMap="platformSettingsResultMap" parameterType="map">
+		select 
+		ps.ID,ps.APP_ID,ps.PRIVATE_KEY,ps.PUBLIC_KEY,ps.TOKEN,ps.WECHAT_ACCOUNT,ps.CP,ps.CT,ps.EP,ps.ET,pf.id as PF_ID,pf.code as CODE,hps.ID as HPS_ID, hps.HOSPITAL_ID as HOSPITAL_ID
+		from 
+			SYS_PLATFORM_SETTINGS ps LEFT JOIN SYS_HOSPITAL_PLATFORM_SETTINGS hps on ps.ID = hps.PLATFORM_SETTINGS_ID
+			LEFT JOIN SYS_PLATFORM pf ON pf.ID = ps.PLATFORM_ID
+		WHERE hps.HOSPITAL_ID = #{hospitalId} and pf.CODE = #{appCode}
+	</select>
+	
+	<select id="findAllPlatformRelations" resultMap="platformSettingsResultMap" parameterType="map">
+		SELECT
+			ps.ID,
+			ps.APP_ID,
+			ps.PRIVATE_KEY,
+			ps.PUBLIC_KEY,
+			ps.TOKEN,
+			ps.WECHAT_ACCOUNT,
+			ps.CP,
+			ps.CT,
+			ps.EP,
+			ps.ET,
+			pf.id AS PF_ID,
+			pf. CODE AS CODE,
+			hps.ID AS HPS_ID,
+			hps.HOSPITAL_ID AS HOSPITAL_ID
+				from 
+					SYS_PLATFORM_SETTINGS ps LEFT JOIN SYS_HOSPITAL_PLATFORM_SETTINGS hps on ps.ID = hps.PLATFORM_SETTINGS_ID
+					LEFT JOIN SYS_PLATFORM pf ON pf.ID = ps.PLATFORM_ID
+	</select>
+	
+	<insert id="add" parameterType="PlatformSettings" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		SYS_PLATFORM_SETTINGS(ID,APP_ID,PRIVATE_KEY,PUBLIC_KEY,TOKEN,WECHAT_ACCOUNT,PLATFORM_ID,CP,CT,EP,ET)
+		values
+		(#{id},#{appId},#{privateKey},#{publicKey},#{token},#{wechatAccount},#{platform.id},#{cp},now(),#{ep},#{et})
+	</insert>
+
+	<!-- 更新分院 -->
+	<update id="update" parameterType="PlatformSettings">
+		update SYS_PLATFORM_SETTINGS set APP_ID = #{appId}, PRIVATE_KEY = #{privateKey}, PUBLIC_KEY = #{publicKey},TOKEN = #{token},WECHAT_ACCOUNT = #{wechatAccount}, PLATFORM_ID = #{platform.id},EP = #{ep},ET = now() where ID = #{id}
+	</update>
+
+</mapper>

@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Fancybox,jquery弹出层" />
+<meta name="description" content="Helloweba演示平台，演示XHTML、CSS、jquery、PHP案例和示例" />
+<title>Fancybox丰富的弹出层效果</title>
+<link rel="stylesheet" type="text/css" href="../css/main.css" />
+<link rel="stylesheet" type="text/css" href="fancybox.css" />
+<style type="text/css">
+.demo{padding:20px 100px}
+.demo h4{line-height:30px}
+.login{width:420px; height:200px; overflow:hidden}
+#form{padding:10px}
+.login h3{height:28px; line-height:28px; background:#d3d3d3; font-size:14px}
+.login p{width:100%; line-height:26px; height:26px; padding:4px}
+.login p label{float:left; width:90px; text-align:right}
+.input{border:1px solid #ccc; padding:2px; width:160px}
+.btn{border:none; width:68px; height:24px; background:url(images/btn.gif) no-repeat; cursor:pointer}
+#login_msg{text-align:center}
+.red{color:#f30}
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="jquery.fancybox-1.3.1.pack.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#demo1").fancybox({
+	    'transitionIn'	: 'elastic',
+		'transitionOut'	: 'elastic',
+		'titlePosition' : 'inside'
+	});
+	$("a[rel=group]").fancybox({
+		'titlePosition' : 'over',
+		'cyclic'        : true,
+		'titleFormat'	: function(title, currentArray, currentIndex, currentOpts) {
+					return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+				}
+	});
+	$("#showdiv").fancybox({'centerOnScroll':true});
+	$("#ajax").fancybox({'width':400});
+	$("#iframe").fancybox({
+		'width':'75%',
+		'height':'75%',
+		'autoScale':false
+	});
+	$("#swf").fancybox({
+		'autoScale':false
+	});
+	$("#modal").fancybox({
+		'modal':false,
+		'overlayShow':true,
+		'hideOnOverlayClick':false,
+		'hideOnContentClick':false,
+		'enableEscapeButton':false,
+		'showCloseButton':false,
+		'centerOnScroll':true,
+		'autoScale':false,
+		'width':540,
+		'height':360
+	});
+});
+</script>
+</head>
+
+<body>
+<div id="header">
+   <div id="logo"><h1><a href="http://www.helloweba.com" title="返回helloweba首页">helloweba</a></h1></div>
+</div>
+
+<div id="main">
+  <h2 class="top_title"><a href="http://www.helloweba.com/view-blog-65.html">Fancybox丰富的弹出层效果</a></h2>
+  <div class="demo">
+     <h4>Demo1：动态效果</h4>
+     <p><a id="demo1" href="images/example/b1.jpg" title="Hello,this is a fancybox."><img src="images/example/s1.gif" alt="" /></a></p>
+  </div>
+  <div class="demo">
+     <h4>Demo2：图片集，支持键盘方向键</h4>
+     <p>
+     <a rel="group" href="http://www.helloweba.com/demo/fancybox/images/example/b1.jpg" title="图片标题"><img alt="" src="images/example/s1.gif" /></a>
+     <a rel="group" href="http://www.helloweba.com/demo/fancybox/images/example/b2.jpg" title="图片标题"><img alt="" src="images/example/s2.gif" /></a>
+     <a rel="group" href="http://www.helloweba.com/demo/fancybox/images/example/b3.jpg" title="蓝天白云绿草"><img alt="" src="images/example/s3.gif" /></a>
+     </p>
+  </div>
+  <div class="demo">
+     <h4>Demo3：加载DIV，并固定在浏览器中央</h4>
+     <p><a id="showdiv" href="#inline" title="显示一个DIV内容">点击这里</a>加载本页中一个隐藏的DIV。</p>
+  </div>
+  
+  <div class="demo">
+     <h4>Demo4：Ajax加载数据</h4>
+     <p><a id="ajax" href="ajax.php?id=1" title="通过Ajax加载的内容">点击这里</a>通过Ajax加载数据</p>
+  </div>
+  <div class="demo">
+     <h4>Demo5：加载Iframe</h4>
+     <p><a id="iframe" class="iframe" href="http://www.baidu.com" title="加载一个框架页面">点击这里</a>加载嵌入百度首页</p>
+  </div>
+  <div class="demo">
+     <h4>Demo6：加载FLASH影片</h4>
+     <p><a id="swf" class="swf" href="http://www.adobe.com/jp/events/cs3_web_edition_tour/swfs/perform.swf">点击这里</a>加载一个flash影片</p>
+  </div>
+  <div class="demo">
+     <h4>Demo7：使用模式窗口</h4>
+     <p><a id="modal" href="#inline2">点击这里</a>加载一个模式窗口</p>
+  </div>
+</div>
+<div id="footer">
+    <p>Powered by helloweba.com  允许转载、修改和使用本站的DEMO，但请注明出处：<a href="http://www.helloweba.com">www.helloweba.com</a></p>
+</div>
+
+<div style="display:none">
+     <div id="inline" style="width:400px; height:160px; overflow:auto">
+        <p>
+        <img src="images/example/s1.gif" alt="" style="float:left; margin:4px" />
+        我们在设计WEB前端时，从前端交互设计的角度考虑，如何使用让产品易用，有效而让人愉悦的技术，了解目标用户和他们的期望，了解用户在同产品交互时彼此的行为，了解“人”本身的心理和行为特点，同时，还包括了解各种有效的交互方式，并对它们进行增强和扩充。</p>
+        <p>交互设计是一个过程，它不仅仅是画线框图。交互设计最关键的两个环节是页面流程和页面布局，前者建立清晰的架构和严密的逻辑，后者整合零散的信息并确定分明的主次关系。这一切都是为了我们的终极目标——让我们的界面符合用户的预期，不带给他们任何的意外。一切都在用户的意料之中。</p>
+     </div>
+     <div id="inline2" style="width:400px; height:120px">
+        <p>
+        交互设计是一个过程，它不仅仅是画线框图。交互设计最关键的两个环节是页面流程和页面布局，前者建立清晰的架构和严密的逻辑，后者整合零散的信息并确定分明的主次关系。这一切都是为了我们的终极目标——让我们的界面符合用户的预期，不带给他们任何的意外。一切都在用户的意料之中。
+        </p>
+        <p style="text-align:center"><a href="javascript:;" onclick="$.fancybox.close();">关闭</a></p>
+     </div>
+</div>
+<p id="stat"><script type="text/javascript" src="http://js.tongji.linezing.com/1870888/tongji.js"></script></p>
+</body>
+</html>

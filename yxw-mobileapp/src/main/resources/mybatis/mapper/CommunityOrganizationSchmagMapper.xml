@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxw.commons.entity.mobile.biz.community.CommunityOrganizationSchmag" >
+  <resultMap id="CommunityHealthMap" type="CommunityOrganizationSchmag" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ORGANIZATION_ID" property="organizationId" jdbcType="VARCHAR" />
+    <result column="ORGANIZATION_NAME" property="organizationName" jdbcType="VARCHAR" />
+    <result column="WEEK" property="week" jdbcType="VARCHAR" />
+    <result column="TIME_SLOT" property="timeSlot" jdbcType="VARCHAR" />
+    <result column="DOCTOR_NAME" property="doctorName" jdbcType="VARCHAR" />
+    <result column="POSITION" property="position" jdbcType="VARCHAR" />
+    <result column="SPECIALTY" property="specialty" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_NAME" property="hospitalName" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="BIGINT" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="BIGINT" />
+    <result column="AUX1" property="aux3" jdbcType="VARCHAR"/>
+    <result column="AUX2" property="aux3" jdbcType="VARCHAR" />
+    <result column="AUX3" property="aux3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID,ORGANIZATION_ID,ORGANIZATION_NAME,WEEK,TIME_SLOT,DOCTOR_NAME,POSITION,SPECIALTY,HOSPITAL_NAME,
+    HOSPITAL_ID,CREATE_TIME,UPDATE_TIME,AUX1,AUX2,AUX3
+  </sql>
+  
+  <select id="findById" resultMap="CommunityHealthMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from BIZ_COMMUNITY_ORGANIZATION_SCHMAG
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findAll" resultMap="CommunityHealthMap">
+    select 
+    <include refid="Base_Column_List" />
+    from BIZ_COMMUNITY_ORGANIZATION_SCHMAG ORDER BY ORGANIZATION_NAME ASC
+  </select>
+  
+  <!-- 根据条件查询 -->
+  <select id="findOrganizaionByCondition" resultMap="CommunityHealthMap">
+    select 
+    <include refid="Base_Column_List" />
+    from BIZ_COMMUNITY_ORGANIZATION_SCHMAG 
+    where 1=1
+    <if test="organizationId != null and organizationId != ''">
+		and ORGANIZATION_ID = #{organizationId}
+	</if>
+	<if test="organizationName != null and organizationName != ''">
+		and ORGANIZATION_NAME = #{organizationName}
+	</if>
+	<if test="week != null and week != ''">
+		and WEEK = #{week}
+	</if>
+	<if test="timeSlot != null and timeSlot != ''">
+		and TIME_SLOT = #{timeSlot}
+	</if>
+    <if test="hospitalId != null and hospitalId != ''">
+		and HOSPITAL_ID = #{hospitalId}
+	</if>
+	<if test="hospitalName != null and hospitalName != ''">
+		and HOSPITAL_NAME = #{hospitalName}
+	</if>
+	ORDER BY WEEK,TIME_SLOT ASC
+  </select>
+  
+  <!-- 添加  -->
+  <insert id="add" parameterType="CommunityOrganizationSchmag" >
+	   INSERT INTO BIZ_COMMUNITY_ORGANIZATION_SCHMAG
+			(<include refid="Base_Column_List"></include>)
+		VALUES 
+		 	(#{id},#{organizationId},#{organizationName},#{week},#{timeSlot},#{doctorName},#{position},#{specialty},
+		 	 #{hospitalName},#{hospitalId},#{createTime},#{updateTime},#{aux1},#{aux2},#{aux3})
+  </insert>
+  
+  <!-- 修改  -->
+  <update id="update" parameterType="CommunityOrganizationSchmag" >
+	   UPDATE BIZ_COMMUNITY_ORGANIZATION_SCHMAG
+	   <set>
+		 <if test="doctorName != null">
+			DOCTOR_NAME = #{doctorName},
+		 </if>
+		 <if test="position != null">
+			POSITION = #{position},
+		 </if>
+		 <if test="specialty != null">
+			SPECIALTY = #{specialty},
+		 </if>
+		 <if test="hospitalName != null">
+			HOSPITAL_NAME = #{hospitalName},
+		 </if>
+		 <if test="hospitalId != null">
+			HOSPITAL_ID = #{hospitalId},
+		 </if>
+		 <if test="updateTime != null">
+			UPDATE_TIME = #{updateTime},
+		 </if>
+	   </set>
+		where 
+			ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 删除 -->
+  <delete id="delete">
+      delete from BIZ_COMMUNITY_ORGANIZATION_SCHMAG
+      where  ID = #{id,jdbcType=VARCHAR}
+  </delete>
+
+</mapper>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.hospital.WhiteListDetail">
+	<resultMap id="whiteListMap" type="com.yxw.commons.entity.platform.hospital.WhiteListDetail">
+		<id column="ID" property="id" />
+		<result column="WHITE_LIST_ID" property="whiteListId" />
+		<result column="NAME" property="name" />
+		<result column="PHONE" property="phone" />
+		<result column="OPEN_ID" property="openId" />
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+	</resultMap>
+	
+	<select id="findByWhiteListId" parameterType="String" resultMap="whiteListMap">
+	   select * from SYS_WHITE_LIST_DETAIL where WHITE_LIST_ID=#{whiteListId} order by ct desc
+	</select>
+	
+	<select id="findWhiteListDetail" parameterType="Map" resultMap="whiteListMap">
+		select
+			ID,WHITE_LIST_ID,NAME,PHONE,OPEN_ID
+			,CP,CT,EP,ET
+		from
+			SYS_WHITE_LIST_DETAIL wld
+		where 1=1
+			<if test="whiteListId!=null and whiteListId!=''">
+				and WHITE_LIST_ID=#{whiteListId}
+			</if>
+			<if test="name!=null and name!=''">
+				and NAME=#{name}
+			</if>
+			<if test="phone!=null and phone!=''">
+				and PHONE=#{phone}
+			</if>
+			<if test="openId!=null and openId!=''">
+				and OPEN_ID=#{openId}
+			</if>
+	</select>
+	
+	<select id="findByWhiteListIdAndPhone" parameterType="Map" resultMap="whiteListMap">
+		select
+			ID,WHITE_LIST_ID,NAME,PHONE,OPEN_ID
+			,CP,CT,EP,ET
+		from
+			SYS_WHITE_LIST_DETAIL wld
+		where 
+			WHITE_LIST_ID=#{whiteListId} and PHONE=#{phone} 
+	</select>
+	
+	<select id="findByWhiteListIdAndOpenId" parameterType="Map" resultMap="whiteListMap">
+		select
+			ID,WHITE_LIST_ID,NAME,PHONE,OPEN_ID
+			,CP,CT,EP,ET
+		from
+			SYS_WHITE_LIST_DETAIL wld
+		where 
+			WHITE_LIST_ID=#{whiteListId} and OPEN_ID=#{openId} 
+	</select>
+	
+	<delete id="deleteById" parameterType="java.lang.String">
+	    DELETE FROM SYS_WHITE_LIST_DETAIL  where ID = #{id}
+	</delete>
+	
+	<resultMap id="WhiteListVoResultMap" type="com.yxw.commons.vo.cache.WhiteListVo">
+        <result column="ID" property="id" />
+        <result column="HOSPITAL_ID" property="hospitalId" />
+        <result column="APP_ID" property="appId" />
+        <result column="APP_CODE" property="appCode" />
+        <result column="IS_OPEN" property="isOpen" />
+        <result column="PHONE" property="phone" />
+        <result column="OPEN_ID" property="openId" />
+    </resultMap>
+	<select id="findAllWhiteInfo" resultMap="WhiteListVoResultMap">
+	    SELECT w.ID ,w.HOSPITAL_ID , w.APP_ID ,w.IS_OPEN , w.APP_CODE ,
+		      d.PHONE , d.OPEN_ID
+		from SYS_WHITE_LIST w  , SYS_WHITE_LIST_DETAIL d
+		where w.ID = d.WHITE_LIST_ID and w.IS_OPEN = 1
+	</select>
+	<select id="findWhiteDetailsByApp" resultMap="WhiteListVoResultMap" parameterType="Map">
+	   SELECT w.ID ,w.HOSPITAL_ID , w.APP_ID ,w.IS_OPEN , w.APP_CODE ,
+              d.PHONE , d.OPEN_ID
+        from SYS_WHITE_LIST w , SYS_WHITE_LIST_DETAIL d
+        where w.ID = d.WHITE_LIST_ID and w.IS_OPEN = 1 and w.APP_ID= #{appId} and w.APP_CODE = #{appCode}
+	</select>
+	
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.hospital.WhiteListDetail">
+		insert into SYS_WHITE_LIST_DETAIL(
+			ID,
+			WHITE_LIST_ID,
+			NAME,
+			PHONE,
+			OPEN_ID,
+			CP,
+			CT,
+			EP,
+			ET
+		)
+		values(
+			#{id},
+			#{whiteListId},
+			#{name},
+			#{phone},
+			#{openId},
+			#{cp},
+			#{ct},
+			#{ep},
+			#{et}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.yxw.commons.entity.platform.hospital.WhiteListDetail">
+		update SYS_WHITE_LIST_DETAIL t
+		<set>
+			<if test="whiteListId!=null">
+				t.WHITE_LIST_ID=#{whiteListId},
+			</if>
+			<if test="name!=null">
+				t.NAME=#{name},
+			</if>
+			<if test="phone!=null">
+				t.PHONE=#{phone},
+			</if>
+			<if test="openId!=null">
+				t.OPEN_ID=#{openId}
+			</if>
+			
+			<if test="cp != null">
+				t.CP = #{cp,jdbcType=INTEGER},
+			</if>
+			<if test="ct != null">
+				t.CT = #{ct,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ep != null">
+				t.EP = #{ep,jdbcType=INTEGER},
+			</if>
+			<if test="et != null">
+				t.ET = #{et,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<update id="updateOpenIdByPhone" parameterType="Map">
+		update SYS_WHITE_LIST_DETAIL d
+		set d.OPEN_ID = #{openId}
+		where d.WHITE_LIST_ID= (select w.ID from SYS_WHITE_LIST w where w.APP_ID = #{appId} and w.APP_CODE = #{appCode} and IS_OPEN = 1)
+		and d.PHONE = #{phone}
+	</update>
+</mapper>

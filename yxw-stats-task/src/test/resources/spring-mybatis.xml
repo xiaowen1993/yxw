@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<context:property-placeholder location="yxw_data_jdbc.properties"
+		ignore-unresolvable="true" />
+	<context:property-placeholder location="yxw_project_wechat_jdbc.properties"
+		ignore-unresolvable="true" />
+	<context:property-placeholder location="yxw_project_alipay_jdbc.properties"
+		ignore-unresolvable="true" />
+	<context:property-placeholder location="yxw_platform_jdbc.properties"
+		ignore-unresolvable="true" />
+
+	<!-- 注入spring助手类,以便直接在代码中获取bean对象 -->
+	<bean class="com.yxw.framework.common.spring.ext.SpringContextHolder" />
+
+	<!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
+	<context:component-scan base-package="com.yxw">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+		<context:exclude-filter type="regex"
+			expression=".*.framework.*.dao.*" />
+		<context:exclude-filter type="regex"
+			expression=".*.framework.*.service.*" />
+	</context:component-scan>
+
+	<!-- 配置StatFilter -->
+	<bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+		<!-- 执行时间超过1秒的sql将被记录 -->
+		<property name="slowSqlMillis" value="1000" />
+		<property name="logSlowSql" value="true" />
+		<!-- 合并sql -->
+		<property name="mergeSql" value="true" />
+	</bean>
+
+	<!-- druid防御sql注入攻击 <bean id="wall-filter" class="com.alibaba.druid.wall.WallFilter"> -->
+	<!-- 指定数据库类型 <property name="dbType" value="mysql" /> -->
+	<!-- 对被认为是攻击的SQL进行LOG.error输出 <property name="logViolation" value="false" 
+		/> -->
+	<!-- 对被认为是攻击的SQL抛出SQLExcepton <property name="throwException" value="true" 
+		/> </bean> -->
+
+	<!-- 配置输出日志 -->
+	<bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
+		<!-- 输出可执行的SQL -->
+		<property name="statementExecutableSqlLogEnable" value="true" />
+		<!-- 所有连接上发生异常的日志 -->
+		<property name="connectionLogErrorEnabled" value="true" />
+		<!-- 所有Statement发生异常的日志 -->
+		<property name="statementLogErrorEnabled" value="true" />
+	</bean>
+
+	<!-- 数据源配置, 使用 druid 数据库连接池 -->
+	<bean id="yxwDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
+		<property name="driverClassName" value="${yxw.data.jdbc.driverClassName}" />
+		<!-- 基本属性 url、user、password -->
+		<property name="url" value="${yxw.data.jdbc.url}" />
+		<property name="username" value="${yxw.data.jdbc.username}" />
+		<property name="password" value="${yxw.data.jdbc.password}" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${yxw.data.druid.initialSize}" />
+		<property name="minIdle" value="${yxw.data.druid.minIdle}" />
+		<property name="maxActive" value="${yxw.data.druid.maxActive}" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="${yxw.data.druid.maxWait}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis"
+			value="${yxw.data.druid.timeBetweenEvictionRunsMillis}" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="${yxw.data.druid.minEvictableIdleTimeMillis}" />
+		<property name="validationQuery" value="${yxw.data.druid.validationQuery}" />
+		<property name="testWhileIdle" value="${yxw.data.druid.testWhileIdle}" />
+		<property name="testOnBorrow" value="${yxw.data.druid.testOnBorrow}" />
+		<property name="testOnReturn" value="${yxw.data.druid.testOnReturn}" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小（Oracle使用） <property name="poolPreparedStatements" 
+			value="true" /> <property name="maxPoolPreparedStatementPerConnectionSize" 
+			value="20" /> -->
+		<property name="proxyFilters">
+			<list>
+				<ref bean="stat-filter" />
+				<!-- <ref bean="wall-filter" /> -->
+				<ref bean="log-filter" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- SqlSessionFactory -->
+	<bean id="yxwDataSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="yxwDataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:yxw_data_mappers/*.xml"></property>
+		<!-- <property name="plugins"> <array> <bean class="com.github.pagehelper.PageHelper"> 
+			<property name="properties"> <value> dialect=mysql offsetAsPageNum=false 
+			reasonable=false rowBoundsWithCount=false </value> </property> </bean> </array> 
+			</property> -->
+	</bean>
+
+	<!-- <bean id="yxwDataSqlSession" class="org.mybatis.spring.SqlSessionTemplate" 
+		scope="prototype"> <constructor-arg index="0" ref="yxwDataSqlSessionFactory" 
+		/> <constructor-arg index="1" value="BATCH" /> </bean> -->
+
+
+
+
+	<!-- 数据源配置2, 使用 druid 数据库连接池 -->
+	<bean id="yxwProjectWechatDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
+		<property name="driverClassName" value="${yxw.project.wechat.jdbc.driverClassName}" />
+		<!-- 基本属性 url、user、password -->
+		<property name="url" value="${yxw.project.wechat.jdbc.url}" />
+		<property name="username" value="${yxw.project.wechat.jdbc.username}" />
+		<property name="password" value="${yxw.project.wechat.jdbc.password}" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${yxw.project.wechat.druid.initialSize}" />
+		<property name="minIdle" value="${yxw.project.wechat.druid.minIdle}" />
+		<property name="maxActive" value="${yxw.project.wechat.druid.maxActive}" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="${yxw.project.wechat.druid.maxWait}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis"
+			value="${yxw.project.wechat.druid.timeBetweenEvictionRunsMillis}" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis"
+			value="${yxw.project.wechat.druid.minEvictableIdleTimeMillis}" />
+		<property name="validationQuery" value="${yxw.project.wechat.druid.validationQuery}" />
+		<property name="testWhileIdle" value="${yxw.project.wechat.druid.testWhileIdle}" />
+		<property name="testOnBorrow" value="${yxw.project.wechat.druid.testOnBorrow}" />
+		<property name="testOnReturn" value="${yxw.project.wechat.druid.testOnReturn}" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小（Oracle使用） <property name="poolPreparedStatements" 
+			value="true" /> <property name="maxPoolPreparedStatementPerConnectionSize" 
+			value="20" /> -->
+		<property name="proxyFilters">
+			<list>
+				<ref bean="stat-filter" />
+				<!-- <ref bean="wall-filter" /> -->
+				<ref bean="log-filter" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- SqlSessionFactory -->
+	<bean id="yxwProjectWechatSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="yxwProjectWechatDataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:yxw_project_mappers/*.xml"></property>
+		<!-- <property name="plugins"> <array> <bean class="com.github.pagehelper.PageHelper"> 
+			<property name="properties"> <value> dialect=mysql </value> </property> </bean> 
+			</array> </property> -->
+	</bean>
+
+
+
+<!-- 数据源配置2, 使用 druid 数据库连接池 -->
+	<bean id="yxwProjectAlipayDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
+		<property name="driverClassName" value="${yxw.project.alipay.jdbc.driverClassName}" />
+		<!-- 基本属性 url、user、password -->
+		<property name="url" value="${yxw.project.alipay.jdbc.url}" />
+		<property name="username" value="${yxw.project.alipay.jdbc.username}" />
+		<property name="password" value="${yxw.project.alipay.jdbc.password}" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${yxw.project.alipay.druid.initialSize}" />
+		<property name="minIdle" value="${yxw.project.alipay.druid.minIdle}" />
+		<property name="maxActive" value="${yxw.project.alipay.druid.maxActive}" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="${yxw.project.alipay.druid.maxWait}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis"
+			value="${yxw.project.alipay.druid.timeBetweenEvictionRunsMillis}" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis"
+			value="${yxw.project.alipay.druid.minEvictableIdleTimeMillis}" />
+		<property name="validationQuery" value="${yxw.project.alipay.druid.validationQuery}" />
+		<property name="testWhileIdle" value="${yxw.project.alipay.druid.testWhileIdle}" />
+		<property name="testOnBorrow" value="${yxw.project.alipay.druid.testOnBorrow}" />
+		<property name="testOnReturn" value="${yxw.project.alipay.druid.testOnReturn}" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小（Oracle使用） <property name="poolPreparedStatements" 
+			value="true" /> <property name="maxPoolPreparedStatementPerConnectionSize" 
+			value="20" /> -->
+		<property name="proxyFilters">
+			<list>
+				<ref bean="stat-filter" />
+				<!-- <ref bean="wall-filter" /> -->
+				<ref bean="log-filter" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- SqlSessionFactory -->
+	<bean id="yxwProjectAlipaySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="yxwProjectAlipayDataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:yxw_project_mappers/*.xml"></property>
+		<!-- <property name="plugins"> <array> <bean class="com.github.pagehelper.PageHelper"> 
+			<property name="properties"> <value> dialect=mysql </value> </property> </bean> 
+			</array> </property> -->
+	</bean>
+
+
+
+	<!-- 数据源配置2, 使用 druid 数据库连接池 -->
+	<bean id="yxwPlatformDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
+		<property name="driverClassName" value="${yxw.platform.jdbc.driverClassName}" />
+		<!-- 基本属性 url、user、password -->
+		<property name="url" value="${yxw.platform.jdbc.url}" />
+		<property name="username" value="${yxw.platform.jdbc.username}" />
+		<property name="password" value="${yxw.platform.jdbc.password}" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${yxw.platform.druid.initialSize}" />
+		<property name="minIdle" value="${yxw.platform.druid.minIdle}" />
+		<property name="maxActive" value="${yxw.platform.druid.maxActive}" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="${yxw.platform.druid.maxWait}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis"
+			value="${yxw.platform.druid.timeBetweenEvictionRunsMillis}" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis"
+			value="${yxw.platform.druid.minEvictableIdleTimeMillis}" />
+		<property name="validationQuery" value="${yxw.platform.druid.validationQuery}" />
+		<property name="testWhileIdle" value="${yxw.platform.druid.testWhileIdle}" />
+		<property name="testOnBorrow" value="${yxw.platform.druid.testOnBorrow}" />
+		<property name="testOnReturn" value="${yxw.platform.druid.testOnReturn}" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小（Oracle使用） <property name="poolPreparedStatements" 
+			value="true" /> <property name="maxPoolPreparedStatementPerConnectionSize" 
+			value="20" /> -->
+		<property name="proxyFilters">
+			<list>
+				<ref bean="stat-filter" />
+				<!-- <ref bean="wall-filter" /> -->
+				<ref bean="log-filter" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- SqlSessionFactory -->
+	<bean id="yxwPlatformSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="yxwPlatformDataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:yxw_platform_mappers/*.xml"></property>
+		<!-- <property name="plugins"> <array> <bean class="com.github.pagehelper.PageHelper"> 
+			<property name="properties"> <value> dialect=mysql </value> </property> </bean> 
+			</array> </property> -->
+	</bean>
+
+	<!-- <bean id="yxwPlatformSqlSession" class="org.mybatis.spring.SqlSessionTemplate" 
+		scope="prototype"> <constructor-arg index="0" ref="yxwPlatformSqlSessionFactory" 
+		/> <constructor-arg index="1" value="BATCH" /> </bean> -->
+
+
+	<bean id="sqlSessionTemplate"
+		class="com.yxw.stats.data.common.source.DynamicSqlSessionTemplate" scope="prototype">
+		<constructor-arg index="0" ref="yxwProjectWechatSqlSessionFactory" />
+		<property name="targetSqlSessionFactorys">
+			<map>
+				<entry value-ref="yxwDataSqlSessionFactory" key="yxwDataSqlSessionFactory" />
+				<entry value-ref="yxwProjectWechatSqlSessionFactory" key="yxwProjectWechatSqlSessionFactory" />
+				<entry value-ref="yxwProjectAlipaySqlSessionFactory" key="yxwProjectAlipaySqlSessionFactory" />
+				<entry value-ref="yxwPlatformSqlSessionFactory" key="yxwPlatformSqlSessionFactory" />
+			</map>
+		</property>
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.yxw.stats.dao.platform.*,com.yxw.stats.dao.project.alipay.*,com.yxw.stats.dao.project.wechat.*,com.yxw.stats.dao.stats.*" />
+		<!-- 注意注入sqlSessionTemplate -->
+		<property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate" />
+	</bean>
+
+
+	<!-- <bean id="dataSourceRouter" class="com.yxw.stats.data.common.source.DataSourceRouter"> 
+		<property name="targetDataSources"> <map key-type="java.lang.String"> <entry 
+		key="yxwDataSource" value-ref="yxwDataSource" /> <entry key="yxwProjectDataSource" 
+		value-ref="yxwProjectDataSource" /> <entry key="yxwPlatformDataSource" value-ref="yxwPlatformDataSource" 
+		/> </map> </property> <property name="defaultTargetDataSource" ref="yxwDataSource" 
+		/> </bean> -->
+
+	<bean id="dataSourceInterceptor" class="com.yxw.stats.data.common.source.DataSourceInterceptor" />
+
+	<!--spring事务 -->
+	<bean name="yxwDataTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="yxwDataSource"></property>
+	</bean>
+
+	<!--spring事务 -->
+	<bean name="yxwProjectWechatTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="yxwProjectWechatDataSource"></property>
+	</bean>
+	
+	<!--spring事务 -->
+	<bean name="yxwProjectAlipayTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="yxwProjectAlipayDataSource"></property>
+	</bean>
+
+	<!--spring事务 -->
+	<bean name="yxwPlatformTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="yxwPlatformDataSource"></property>
+	</bean>
+
+	<tx:advice id="yxwDataTxAdvice" transaction-manager="yxwDataTransactionManager">
+		<tx:attributes>
+			<tx:method name="delete*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception" no-rollback-for="java.lang.RuntimeException" />
+			<tx:method name="insert*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.RuntimeException" />
+			<tx:method name="batch*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.RuntimeException" />
+			<tx:method name="update*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception" />
+			<tx:method name="find*" propagation="SUPPORTS" />
+			<tx:method name="get*" propagation="SUPPORTS" />
+			<tx:method name="select*" propagation="SUPPORTS" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="yxw_data_pc"
+			expression="execution(* com.yxw.stats.service.stats.*.*(..))" />
+		<aop:advisor pointcut-ref="yxw_data_pc" advice-ref="yxwDataTxAdvice"
+			order="2" />
+
+	<aop:aspect id="dataSourceAspect" ref="dataSourceInterceptor"
+			order="1">
+			<aop:before method="setYxwDataSource"
+				pointcut="execution(* com.yxw.stats.service.stats.*.*(..))" />
+		</aop:aspect>
+		
+	</aop:config>
+
+
+	<tx:advice id="yxwProjectWechatTxAdvice" transaction-manager="yxwProjectWechatTransactionManager">
+		<tx:attributes>
+			<tx:method name="delete*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception" no-rollback-for="java.lang.RuntimeException" />
+			<tx:method name="insert*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.RuntimeException" />
+			<tx:method name="batch*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.RuntimeException" />
+			<tx:method name="update*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception" />
+			<tx:method name="find*" propagation="SUPPORTS" />
+			<tx:method name="get*" propagation="SUPPORTS" />
+			<tx:method name="select*" propagation="SUPPORTS" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="yxw_project_wechat_pc"
+			expression="execution(* com.yxw.stats.service.project.wechat.*.*(..))" />
+		<aop:advisor pointcut-ref="yxw_project_wechat_pc" advice-ref="yxwProjectWechatTxAdvice"
+			order="2" />
+
+		<aop:aspect id="dataSourceAspect" ref="dataSourceInterceptor"
+			order="1">
+			<aop:before method="setYxwProjectWechatDataSource"
+				pointcut="execution(* com.yxw.stats.service.project.wechat.*.*(..))" />
+		</aop:aspect>
+
+	</aop:config>
+	
+	
+	<tx:advice id="yxwProjectAlipayTxAdvice" transaction-manager="yxwProjectAlipayTransactionManager">
+		<tx:attributes>
+			<tx:method name="delete*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception" no-rollback-for="java.lang.RuntimeException" />
+			<tx:method name="insert*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.RuntimeException" />
+			<tx:method name="batch*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.RuntimeException" />
+			<tx:method name="update*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception" />
+			<tx:method name="find*" propagation="SUPPORTS" />
+			<tx:method name="get*" propagation="SUPPORTS" />
+			<tx:method name="select*" propagation="SUPPORTS" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+		<aop:pointcut id="yxw_project_alipay_pc"
+			expression="execution(* com.yxw.stats.service.project.alipay.*.*(..))" />
+		<aop:advisor pointcut-ref="yxw_project_alipay_pc" advice-ref="yxwProjectAlipayTxAdvice"
+			order="2" />
+
+		<aop:aspect id="dataSourceAspect" ref="dataSourceInterceptor"
+			order="1">
+			<aop:before method="setYxwProjectAlipayDataSource"
+				pointcut="execution(* com.yxw.stats.service.project.alipay.*.*(..))" />
+		</aop:aspect>
+
+	</aop:config>
+
+	<tx:advice id="yxwPlatformTxAdvice" transaction-manager="yxwPlatformTransactionManager">
+		<tx:attributes>
+			<tx:method name="delete*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception" no-rollback-for="java.lang.RuntimeException" />
+			<tx:method name="insert*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.RuntimeException" />
+			<tx:method name="batch*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.RuntimeException" />
+			<tx:method name="update*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception" />
+			<tx:method name="find*" propagation="SUPPORTS" />
+			<tx:method name="get*" propagation="SUPPORTS" />
+			<tx:method name="select*" propagation="SUPPORTS" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="yxw_platform_pc"
+			expression="execution(* com.yxw.stats.service.platform.*.*(..))" />
+		<aop:advisor pointcut-ref="yxw_platform_pc" advice-ref="yxwPlatformTxAdvice"
+			order="2" />
+
+		<aop:aspect id="dataSourceAspect" ref="dataSourceInterceptor"
+			order="1">
+			<aop:before method="setYxwPlatformDataSource"
+				pointcut="execution(* com.yxw.stats.service.platform.*.*(..))" />
+		</aop:aspect>
+
+	</aop:config>
+
+</beans>

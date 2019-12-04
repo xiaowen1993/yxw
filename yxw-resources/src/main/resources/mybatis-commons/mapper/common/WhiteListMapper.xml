@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.hospital.WhiteList">
+	<resultMap id="whiteListMap" type="com.yxw.commons.entity.platform.hospital.WhiteList">
+		<id column="ID" property="id" />
+		<result column="HOSPITAL_NAME" property="hospitalName" />
+		<result column="HOSPITAL_ID" property="hospitalId" />
+		<result column="HOSPITAL_CODE" property="hospitalCode" />
+		<result column="APP_ID" property="appId" />
+		<result column="APP_CODE" property="appCode" />
+		<result column="IS_OPEN" property="isOpen" />
+		
+		<result column="CP" property="cp" />
+		<result column="CT" property="ct" />
+		<result column="EP" property="ep" />
+		<result column="ET" property="et" />
+	</resultMap>
+
+	<select id="findByAppInfo" parameterType="Map"	resultMap="whiteListMap">
+		select
+			*
+		from
+			SYS_WHITE_LIST wl
+		where
+			APP_ID=#{appId} and APP_CODE=#{appCode} and IS_OPEN= 1
+	</select>
+	
+	<select id="findHospitalIdAndAppCode" parameterType="Map" resultMap="whiteListMap">
+		select
+			*
+		from
+			SYS_WHITE_LIST wl
+		where
+			HOSPITAL_ID=#{hospitalId} and APP_CODE=#{appCode}
+	</select>
+
+	<insert id="add" parameterType="com.yxw.commons.entity.platform.hospital.WhiteList">
+		insert into SYS_WHITE_LIST(
+			ID,HOSPITAL_NAME,HOSPITAL_ID,HOSPITAL_CODE,APP_ID,APP_CODE,
+			IS_OPEN,CP,CT,EP,ET
+		)
+		values(
+			#{id},#{hospitalName},#{hospitalId},#{hospitalCode},#{appId},
+			#{appCode},#{isOpen},#{cp},#{ct},#{ep},#{et}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.yxw.commons.entity.platform.hospital.WhiteList">
+		update SYS_WHITE_LIST t
+		<set>
+			<if test="hospitalName!=null">
+				t.HOSPITAL_NAME=#{hospitalName},
+			</if>
+			<if test="hospitalId!=null">
+				t.HOSPITAL_ID=#{hospitalId},
+			</if>
+			<if test="hospitalCode!=null">
+                t.HOSPITAL_CODE=#{hospitalCode},
+            </if>
+			<if test="appId!=null">
+				t.APP_ID=#{appId},
+			</if>
+			<if test="appCode!=null">
+				t.APP_CODE=#{appCode},
+			</if>
+			
+			<if test="isOpen!=null">
+				t.IS_OPEN=#{isOpen},
+			</if>
+
+			<if test="cp != null">
+				t.CP = #{cp,jdbcType=INTEGER},
+			</if>
+			<if test="ct != null">
+				t.CT = #{ct,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ep != null">
+				t.EP = #{ep,jdbcType=INTEGER},
+			</if>
+			<if test="et != null">
+				t.ET = #{et,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

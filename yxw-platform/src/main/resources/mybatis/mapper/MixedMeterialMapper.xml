@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.message.MixedMeterial">
+
+	<!-- 分页查询所有的图文 -->
+	<select id="findListByPage" resultMap="mixedMeterialMap">
+			SELECT
+			m.ID,
+			m.HOSPITAL_ID,
+			m.TITLE,
+			m.AUTHOR,
+			m.DESCRIPTION,
+			m.CONTENT,
+			m.LINK,
+			m.TYPE,
+			m.COVER_PIC_PATH,
+			m.WECHAT_PIC_PATH,
+			m.IS_PARENT,
+			m.PARENT_ID,
+			m.STATE,
+			m.CP,
+			m.CT,
+			m.EP,
+			m.ET
+			FROM
+				SYS_MSG_MIXED_METERIAL m
+			<where>
+				 m.STATE = 1
+				<if test="hospitalId!=null">
+					AND	m.HOSPITAL_ID = #{hospitalId}
+				</if>
+				AND (m.IS_PARENT = 1 OR m.TYPE = 1)
+			</where>
+		order by m.ET desc
+	</select>
+	<!-- end -->
+	
+	<!-- 删除图文BY Id -->
+	<delete id="deleteById" parameterType="string">
+		delete from SYS_MSG_MIXED_METERIAL  where id=#{id} 
+	</delete>
+	
+	<!-- 新增素材 -->
+	<insert id="add" parameterType="MixedMeterial" >
+		INSERT INTO 
+		SYS_MSG_MIXED_METERIAL(ID,HOSPITAL_ID,TITLE,AUTHOR,DESCRIPTION,CONTENT,LINK,TYPE,COVER_PIC_PATH,STATE,IS_PARENT,PARENT_ID,CT,ET)
+		VALUES(#{id},#{hospitalId},#{title},#{author},#{description},#{content},#{link},#{type},#{coverPicPath},#{state},#{isParent},#{parentId},now(),now())
+	</insert>
+	<!-- end -->
+	
+	
+	<!-- 查询素材 -->
+	<select id="findById" parameterType="string" resultMap="mixedMeterialMap">
+		SELECT 
+		t.ID,
+		t.HOSPITAL_ID,
+		t.TITLE,
+		t.AUTHOR,
+		t.DESCRIPTION,
+		t.CONTENT,
+		t.LINK,
+		t.TYPE,
+		t.PARENT_ID,
+		t.IS_PARENT,
+		t.COVER_PIC_PATH,
+		t.STATE,
+		DATE_FORMAT(t.ET,'%Y-%m-%d %T') as ET,
+		DATE_FORMAT(t.CT,'%Y-%m-%d %T') as CT
+		FROM SYS_MSG_MIXED_METERIAL t WHERE t.ID=#{id} AND t.STATE=1
+	</select>
+	<!-- end -->
+	
+	
+	<!-- 根据ID数组查询素材 -->
+	<select id="findEntityByIds"  resultMap="mixedMeterialMap">
+		SELECT * FROM SYS_MSG_MIXED_METERIAL t WHERE t.STATE=1 AND t.ID in
+		<foreach collection="array" index="index" item="item" close=")" open="(" separator=",">
+			'${item}'
+		</foreach>
+	</select>
+	<resultMap type="MixedMeterial" id="mixedMeterialMap">
+		<id column="ID" property="id" />
+	  	<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+	  	<result column="TITLE" property="title" jdbcType="VARCHAR" />
+		<result column="AUTHOR" property="author" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="CONTENT" property="content" jdbcType="VARCHAR" />
+		<result column="LINK" property="link" jdbcType="VARCHAR" />
+		<result column="TYPE" property="type" jdbcType="INTEGER" />
+		<result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+		<result column="IS_PARENT" property="isParent" jdbcType="INTEGER" />
+		<result column="COVER_PIC_PATH" property="coverPicPath" jdbcType="VARCHAR" />
+		<result column="STATE" property="state" jdbcType="INTEGER" />
+		<result column="CT" property="ct"   />
+		<result column="ET" property="et"   />
+		<collection property="subMixedMeterialList" ofType="MixedMeterial" column="id" select="getSubMixed" />
+	</resultMap>
+	<!-- end -->
+	
+	
+	<!-- 查询某个回复对应的素材 -->
+	<select id="getMeterialByReplyId" resultMap="wechatMeterialMap" parameterType="string">
+		select * from SYS_MSG_MIXED_METERIAL t1 join SYS_MSG_REPLY_METERIAL  t2
+		on t1.ID=t2.MIXED_METERIAL_ID where t2.REPLY_ID=#{id}
+	</select>
+	<resultMap type="MixedMeterial" id="wechatMeterialMap">
+		<id column="ID" property="id" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+	  	<result column="TITLE" property="title" jdbcType="VARCHAR" />
+		<result column="AUTHOR" property="author" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="CONTENT" property="content" jdbcType="VARCHAR" />
+		<result column="LINK" property="link" jdbcType="VARCHAR" />
+		<result column="TYPE" property="type" jdbcType="INTEGER" />
+		<result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+		<result column="IS_PARENT" property="isParent" jdbcType="INTEGER" />
+		<result column="COVER_PIC_PATH" property="coverPicPath" jdbcType="VARCHAR" />
+		<result column="STATE" property="state" jdbcType="INTEGER" />
+		<result column="CT" property="ct" />
+		<collection property="subMixedMeterialList" ofType="MixedMeterial" column="id" select="getSubMixed" />
+	</resultMap>
+	<select id="getSubMixed" parameterType="string" resultType="MixedMeterial">
+		  SELECT 
+		  t.ID as id,
+		  t.HOSPITAL_ID as hospitalId,
+		  t.TITLE as title,
+		  t.AUTHOR as author,
+		  t.DESCRIPTION as description,
+		  t.CONTENT as content,
+		  t.LINK as link,
+		  t.COVER_PIC_PATH as coverPicPath,
+		  t.WECHAT_PIC_PATH as wechatPicPath,
+		  t.IS_PARENT as isParent,
+		  t.PARENT_ID as parentId,
+		  t.STATE as state
+		  FROM SYS_MSG_MIXED_METERIAL t 
+		  WHERE t.PARENT_ID=#{id} AND t.IS_PARENT=0 AND t.TYPE=2 
+	</select>
+	<!-- end -->
+	
+	
+	<!-- 根据ID数组查询素材 -->
+	<select id="findMixedMeterialByIds"  resultMap="parentMixedMap">
+		SELECT * FROM SYS_MSG_MIXED_METERIAL t WHERE t.STATE=1 AND t.ID in
+		<foreach collection="array" index="index" item="item" close=")" open="(" separator=",">
+			'${item}'
+		</foreach>
+	</select>
+	<resultMap type="MixedMeterial" id="parentMixedMap">
+		<id column="ID" property="id" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+	  	<result column="TITLE" property="title" jdbcType="VARCHAR" />
+		<result column="AUTHOR" property="author" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="CONTENT" property="content" jdbcType="VARCHAR" />
+		<result column="LINK" property="link" jdbcType="VARCHAR" />
+		<result column="TYPE" property="type" jdbcType="INTEGER" />
+		<result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+		<result column="IS_PARENT" property="isParent" jdbcType="INTEGER" />
+		<result column="COVER_PIC_PATH" property="coverPicPath" jdbcType="VARCHAR" />
+		<result column="WECHAT_PIC_PATH" property="wechatPicPath" jdbcType="VARCHAR" />
+		<result column="STATE" property="state" jdbcType="INTEGER" />
+		<result column="CT" property="ct"   />
+		<collection property="subMixedMeterialList" ofType="MixedMeterial" column="id" select="getSubMixed" />
+	</resultMap>
+	<!-- end -->
+	
+	<update id="update" parameterType="MixedMeterial">
+		UPDATE SYS_MSG_MIXED_METERIAL 
+		<set>
+			ET=now(),
+			<if test="title!=null">
+				TITLE=#{title},
+			</if>
+			<if test="author!=null">
+				AUTHOR=#{author},
+			</if>
+			<if test="description!=null">
+				DESCRIPTION=#{description},
+			</if>
+			<if test="content!=null">
+				CONTENT=#{content},
+			</if>
+			<if test="link!=null">
+				LINK=#{link},
+			</if>
+			<if test="coverPicPath!=null">
+				COVER_PIC_PATH=#{coverPicPath},
+			</if>
+			<if test="wechatPicPath!=null">
+				WECHAT_PIC_PATH=#{wechatPicPath},
+			</if>
+		</set>
+		WHERE ID=#{id}
+	</update>
+	
+	
+</mapper>

@@ -1,0 +1,406 @@
+(function(){
+
+	var red = "#bf616a",
+         blue = "#5B90BF",
+         orange = "#d08770",
+         yellow = "#ebcb8b",
+         green = "#a3be8c",
+         teal = "#96b5b4",
+         pale_blue = "#8fa1b3",
+         purple = "#b48ead",
+         brown = "#ab7967";
+
+
+    var baseDataset = {
+                fill: 'rgba(222,225,232,0.4)',
+                stroke: 'rgba(222,225,232,1)',
+                highlight: 'rgba(222,225,232,0.8)',
+                highlightStroke: 'rgba(222,225,232,1)'
+            },
+            overlayDataset = {
+                fill: 'rgba(91,144,191,0.4)',
+                stroke: 'rgba(91,144,191,1)',
+                highlight: 'rgba(91,144,191,0.8)',
+                highlightStroke: 'rgba(91,144,191,1)'
+            };
+
+    var data = [],
+            barsCount = 50,
+            labels = new Array(barsCount),
+            updateDelayMax = 500,
+            $id = function(id){
+                return document.getElementById(id);
+            },
+            random = function(max){ return Math.round(Math.random()*100)},
+            helpers = Chart.helpers;
+
+
+    Chart.defaults.global.responsive = true;
+
+    // subscribe
+    (function(){
+    	commMethod("subscribe");
+    })();
+
+    // card
+    (function(){
+    	commMethod("card");
+    })();
+
+
+    // order
+    (function(){
+    	
+    	commOrderMethod({statsType:'1',statsField:'amount'});//累计交易金额
+    	
+    	commOrderMethod({statsType:'1',statsField:'count'});//累计交易金额
+    	
+    	commOrderMethod({statsType:'2',statsField:'amount'});//每月交易金额
+    	
+    	commOrderMethod({statsType:'2',statsField:'count'});//每月订单量
+    	
+    })();
+
+    
+     // sexProportion
+    (function(){
+
+    	 var canvas = $id('sexProportionDoughnut'),
+         colours = {
+             "male": blue,
+             "female": red
+         };
+
+		 var moduleData = [
+		     {
+		         value: 0,
+		         color: colours["male"],
+		         highlight: Colour(colours["male"], 10),
+//		         label: "男"
+		     },
+		     {
+		         value: 0,
+		         color: colours["female"],
+		         highlight: Colour(colours["female"], 10),
+//		         label: "女"
+		     }
+		 ];
+ 
+    	 var config = {
+    			 	segmentShowStroke : true,
+    			 	segmentStrokeWidth : 2,
+    			 	animateRotate : true,
+    			 	animateScale : false,
+    			 	tooltipTemplate : "<%if (label){%><%=label%> <%}%>"
+    	        };
+    	 
+    	 $.post('/portal/getSexProportionOrderDatas', function(data) {
+    		 console.log(data);
+    		 
+    		 if (data.status == 'OK') {
+     			//累计
+    			 console.log(data.message.genderScale);
+    			 moduleData[0].value = data.message.genderScale.values[0];
+    			 moduleData[1].value = data.message.genderScale.values[1];
+    			 moduleData[0].label = data.message.genderScale.legend[0] + "：" + data.message.genderScale.values[0];
+    			 moduleData[1].label = data.message.genderScale.legend[1] + "：" + data.message.genderScale.values[1];
+     			
+     			 var sexProportionPieChart = new Chart(canvas.getContext('2d')).Doughnut(moduleData,config);
+     	    	 
+     	    	 var legendHolder = document.createElement('div');
+     	         legendHolder.innerHTML = sexProportionPieChart.generateLegend();
+     	         // Include a html legend template after the module doughnut itself
+     	         helpers.each(legendHolder.firstChild.childNodes, function(legendNode, index){
+     	             helpers.addEvent(legendNode, 'mouseover', function(){
+     	                 var activeSegment = sexProportionPieChart.segments[index];
+     	                 console.log(activeSegment);
+     	                 activeSegment.save();
+     	                 activeSegment.fillColor = activeSegment.highlightColor;
+     	                 sexProportionPieChart.showTooltip([activeSegment]);
+     	                 activeSegment.restore();
+     	             });
+     	         });
+     	         helpers.addEvent(legendHolder.firstChild, 'mouseout', function(){
+     	        	 sexProportionPieChart.draw();
+     	         });
+     	         canvas.parentNode.parentNode.appendChild(legendHolder.firstChild);
+     	         
+    		 }
+    		 
+    	 });
+    	 
+    })();
+
+    function Colour(col, amt) {
+
+        var usePound = false;
+
+        if (col[0] == "#") {
+            col = col.slice(1);
+            usePound = true;
+        }
+
+        var num = parseInt(col,16);
+
+        var r = (num >> 16) + amt;
+
+        if (r > 255) r = 255;
+        else if  (r < 0) r = 0;
+
+        var b = ((num >> 8) & 0x00FF) + amt;
+
+        if (b > 255) b = 255;
+        else if  (b < 0) b = 0;
+
+        var g = (num & 0x0000FF) + amt;
+
+        if (g > 255) g = 255;
+        else if (g < 0) g = 0;
+
+        return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
+
+    }
+    
+    function commMethod(params){
+    	
+    	var url = "";
+    	var subscribeCumulateLineContexts = {}, subscribeMonthLineContexts = {};
+    	if (params == 'subscribe') {
+    		
+    		subscribeCumulateLineContexts.line = $id('subscribe-cumulate-line').getContext('2d');
+    		subscribeMonthLineContexts.line = $id('subscribe-month-line').getContext('2d');
+    		url = "/portal/getSubscribeDatas";
+		}
+       
+    	 var cardCumulateLineContexts = {}, cardMonthLineContexts = {};
+	     if (params == 'card') {
+	    	 cardCumulateLineContexts.line = $id('card-cumulate-line').getContext('2d');
+	    	 cardMonthLineContexts.line = $id('card-month-line').getContext('2d');
+	    	 url = "/portal/getCardDatas";
+	     }
+	     
+        var dataInfo = {
+            multiSets: {
+                /*labels: ["January", "February", "March", "April", "May", "June", "July"],*/
+                datasets: [
+                    {
+                        label: "",
+                        fillColor: overlayDataset.fill,
+                        strokeColor: overlayDataset.stroke,
+                        pointColor: overlayDataset.stroke,
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: overlayDataset.highlightStroke,
+                        highlightFill: overlayDataset.highlight/*,
+                        data: [28, 48, 40, 19, 96, 27, 100]*/
+                    }
+                ]
+            }
+        }
+
+
+        var config = {
+        		scaleShowGridLines: true,
+        		scaleShowGridLines : true,
+                scaleGridLineColor : "rgba(0,0,0,.05)",
+                scaleGridLineWidth : 1,
+                scaleShowHorizontalLines: true,
+                scaleShowVerticalLines: true,
+                bezierCurve : false,
+                bezierCurveTension : 0.4,
+                pointDot : true,
+                pointDotRadius : 4,
+                pointDotStrokeWidth : 1,
+                pointHitDetectionRadius : 10,
+                datasetStroke : true,
+                datasetStrokeWidth : 2,
+                datasetFill : true
+           /* animation: false,
+            datasetFill : false,
+            onAnimationComplete: function(){
+                this.options.animation = true;
+            }*/
+        };
+        
+        
+        $.post(url, function(data) {
+        	console.log(data);
+        	
+    		if (data.status == 'OK') {
+    			
+    			dataInfo.multiSets.labels = data.message.monthList;
+    			
+    			//累计
+    			console.log(data.message.datas);
+    			
+    			var cumulateData = []; 
+    			var monthData = [];
+    			
+    			$.each(data.message.datas, function(areaKey, areaValue) {
+    				var cumulateDataTemp = [];
+    				var monthDataTemp = [];
+    				
+    				$.each(areaValue, function(month, value) {
+//    					console.log(month + "----" +value);
+    					cumulateDataTemp.push(value.wxCumulateCountTillThisMonth + value.aliCumulateCountTillThisMonth);
+    					monthDataTemp.push(value.thisMonthWxIncCount + value.thisMonthAliIncCount);
+    				});
+//    				console.log(cumulateDataTemp);
+    				cumulateData.push(cumulateDataTemp);
+    				monthData.push(monthDataTemp);
+    			});
+    			
+    			var cumulateDataTarget = [];
+    			var monthDataTarget = [];
+    			
+    			$.each(cumulateData, function(k, v){
+    				var cumulateTemp = [];
+    				for (var i in v){
+    				    if (cumulateDataTarget.length > 0) {
+    				    	cumulateTemp.push(cumulateDataTarget[i] + v[i]);
+    					}else {
+    						cumulateTemp.push(v[i]);
+    					}
+    				}
+    				cumulateDataTarget = cumulateTemp;
+    			});
+    			
+    			console.log(cumulateDataTarget);//累计
+    			
+    			$.each(monthData, function(k, v){
+    				var monthTemp = [];
+    				for (var i in v){
+    				    if (monthDataTarget.length > 0) {
+    				    	monthTemp.push(monthDataTarget[i] + v[i]);
+    					}else {
+    						monthTemp.push(v[i]);
+    					}
+    				}
+    				monthDataTarget = monthTemp;
+    			});
+    			
+    			console.log(monthDataTarget);//每月
+    			
+    			if (params == 'subscribe') {
+    				dataInfo.multiSets.datasets[0].lable = "subscribe";
+    				dataInfo.multiSets.datasets[0].data = cumulateDataTarget;
+        			var subscribeCumulateLineChart = new Chart(subscribeCumulateLineContexts.line).Line(dataInfo.multiSets, config);
+        			
+        			dataInfo.multiSets.datasets[0].data = monthDataTarget/10000;
+        			var subscribeMonthLineChart = new Chart(subscribeMonthLineContexts.line).Line(dataInfo.multiSets, config);
+    			}
+    	       
+    		     if (params == 'card') {
+    		    	dataInfo.multiSets.datasets[0].lable = "card";
+    		    	dataInfo.multiSets.datasets[0].data = cumulateDataTarget;
+					var cardCumulateLineChart = new Chart(cardCumulateLineContexts.line).Line(dataInfo.multiSets, config)
+					
+					dataInfo.multiSets.datasets[0].data = monthDataTarget;
+					var cardMonthLineChart = new Chart(cardMonthLineContexts.line).Line(dataInfo.multiSets, config)
+    		     }
+    			
+    		}
+    	}, 'json');
+
+    }
+    
+    function commOrderMethod(params){
+    	
+//    	commOrderMethod({statsType:'1',statsField:'amount'});//累计交易金额
+//    	
+//    	commOrderMethod({statsType:'1',statsField:'count'});//累计交易金额
+//    	
+//    	commOrderMethod({statsType:'2',statsField:'amount'});//每月交易金额
+//    	
+//    	commOrderMethod({statsType:'2',statsField:'count'});//每月订单量
+    	var amountCumulateLineContexts = {}, amountMonthLineContexts = {}, countCumulateLineContexts = {}, countMonthLineContexts = {};
+    	var label = '';
+    	
+    	if (params.statsType == '1' && params.statsField == 'amount') {
+    		amountCumulateLineContexts.line = $id('amount-cumulate-line').getContext('2d');
+    		label = 'amount-cumulate-line';
+		}else if (params.statsType == '1' && params.statsField == 'count') {
+			countCumulateLineContexts.line = $id('count-cumulate-line').getContext('2d');
+			label = 'count-cumulate-line';
+		}else if (params.statsType == '2' && params.statsField == 'amount') {
+			amountMonthLineContexts.line = $id('amount-month-line').getContext('2d');
+			label = 'amount-month-line';
+		}else if (params.statsType == '2' && params.statsField == 'count') {
+			label = 'count-month-line';
+			countMonthLineContexts.line = $id('count-month-line').getContext('2d');
+		}
+    	
+        var dataInfo = {
+            multiSets: {
+                /*labels: ["January", "February", "March", "April", "May", "June", "July"],*/
+                datasets: [
+                    {
+                        label: label,
+                        fillColor: overlayDataset.fill,
+                        strokeColor: overlayDataset.stroke,
+                        pointColor: overlayDataset.stroke,
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: overlayDataset.highlightStroke,
+                        highlightFill: overlayDataset.highlight/*,
+                        data: [28, 48, 40, 19, 96, 27, 100]*/
+                    }
+                ]
+            }
+        }
+
+
+        var config = {
+        		scaleShowGridLines: true,
+        		scaleShowGridLines : true,
+                scaleGridLineColor : "rgba(0,0,0,.05)",
+                scaleGridLineWidth : 1,
+                scaleShowHorizontalLines: true,
+                scaleShowVerticalLines: true,
+                bezierCurve : false,
+                bezierCurveTension : 0.4,
+                pointDot : true,
+                pointDotRadius : 4,
+                pointDotStrokeWidth : 1,
+                pointHitDetectionRadius : 10,
+                datasetStroke : true,
+                datasetStrokeWidth : 2,
+                datasetFill : true
+        };
+        
+    	 $.post('/portal/getOrderDatas', params, function(data) {
+    		 console.log(data);
+    		 
+     		if (data.status == 'OK') {
+     			
+     			console.log(data.message.order);
+     			
+    			dataInfo.multiSets.labels = data.message.order.xData;
+    			
+    			var dataTarget = []; 
+    			
+    			$.each(data.message.order.yData, function(key, value) {
+    				console.log(value);
+    				dataTarget = value;
+    				return false;
+    			});
+    			
+    			dataInfo.multiSets.datasets[0].data = dataTarget;
+    			
+    			if (params.statsType == '1' && params.statsField == 'amount') {
+    				var amountCumulateLineChart = new Chart(amountCumulateLineContexts.line).Line(dataInfo.multiSets, config)
+    			}else if (params.statsType == '1' && params.statsField == 'count') {
+    				var countCumulateLineChart = new Chart(countCumulateLineContexts.line).Line(dataInfo.multiSets, config)
+    			}else if (params.statsType == '2' && params.statsField == 'amount') {
+    				var amountMonthLineChart = new Chart(amountMonthLineContexts.line).Line(dataInfo.multiSets, config)
+    			}else if (params.statsType == '2' && params.statsField == 'count') {
+    				var countMonthLineChart = new Chart(countMonthLineContexts.line).Line(dataInfo.multiSets, config)
+    			}
+    			
+     		}
+    	 });
+    }
+    
+})();
+
+

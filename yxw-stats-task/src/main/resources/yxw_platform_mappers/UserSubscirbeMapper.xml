@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.stats.entity.platform.UserSubscribe">
+	
+	<resultMap id="userSubscribeResultMap" type="com.yxw.stats.entity.platform.UserSubscribe">
+		<id column="ID" property="id" jdbcType="VARCHAR"/>
+		<result column="REF_DATE" property="refDate" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+		<result column="NEW_USER" property="newUser" jdbcType="INTEGER" />
+		<result column="CANCEL_USER" property="cancelUser" jdbcType="INTEGER" />
+		<result column="CUMULATE_USER" property="cumulateUser" jdbcType="INTEGER" />
+		<result column="PLATFORM_MODE" property="platformMode" jdbcType="VARCHAR" />
+		
+	</resultMap>
+	
+	<select id="getUserSubscribes" resultMap="userSubscribeResultMap" >
+		SELECT *
+		FROM 
+		SYS_USER_SUBSCRIBE u 
+	    <where>
+	    	1=1
+	    	<if test="beginDate!=null">
+	    		<![CDATA[ and u.REF_DATE >= #{beginDate}	 ]]>
+	    		
+	    	</if>
+	    	<if test="endDate!=null">
+	    		<![CDATA[ and u.REF_DATE <= #{endDate}	 ]]>
+	    	</if>
+	    	<if test="hospitalId!=null">
+	    		and	u.HOSPITAL_ID=#{hospitalId}	     
+	    	</if>
+	    	<if test="appId!=null">
+	    		and	u.APP_ID=#{appId}	     
+	    	</if>
+	    	<if test="platformMode!=null">
+	    		and	u.PLATFORM_MODE=#{platformMode}	     
+	    	</if>
+	    </where>
+	    order by u.REF_DATE DESC
+    </select>
+    
+    
+    <select id="getUserSubscribeByDate" resultMap="userSubscribeResultMap" >
+		SELECT *
+		FROM 
+		SYS_USER_SUBSCRIBE u 
+	    <where>
+	    	1=1
+	    	<if test="date!=null">
+	    		and	u.REF_DATE=#{date}
+	    	</if>
+	    	<if test="hospitalId!=null">
+	    		and	u.HOSPITAL_ID=#{hospitalId}	     
+	    	</if>
+	    	<if test="appId!=null">
+	    		and	u.APP_ID=#{appId}	     
+	    	</if>
+	    	<if test="platformMode!=null">
+	    		and	u.PLATFORM_MODE=#{platformMode}	     
+	    	</if>
+	    </where>
+	    order by u.REF_DATE DESC
+    </select>
+    
+	
+	<select id="getUserSubscribeLastOne" resultMap="userSubscribeResultMap" >
+		SELECT * FROM SYS_USER_SUBSCRIBE u 
+		<where>
+	    	1=1
+	    	<if test="hospitalId!=null">
+	    		and	u.HOSPITAL_ID=#{hospitalId}	     
+	    	</if>
+	    	<if test="appId!=null">
+	    		and	u.APP_ID=#{appId}	     
+	    	</if>
+	    	<if test="platformMode!=null">
+	    		and	u.PLATFORM_MODE=#{platformMode}	     
+	    	</if>
+	    </where>
+		 ORDER BY u.REF_DATE DESC LIMIT 0,1
+    </select>
+	
+	
+	<!-- 批量插入 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		 INSERT INTO 
+		 SYS_USER_SUBSCRIBE(
+		 ID,
+		 REF_DATE,
+		 HOSPITAL_ID,
+		 APP_ID,
+		 NEW_USER,
+		 CANCEL_USER,
+		 CUMULATE_USER,
+		 PLATFORM_MODE
+		 )
+		 VALUES
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (#{item.id},
+	        #{item.refDate},
+	        #{item.hospitalId},
+	        #{item.appId},
+	        #{item.newUser},
+	        #{item.cancelUser},
+	        #{item.cumulateUser},
+	        #{item.platformMode}
+	        )
+	    </foreach>  
+	</insert>
+</mapper>

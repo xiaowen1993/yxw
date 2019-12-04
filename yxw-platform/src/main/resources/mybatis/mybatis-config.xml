@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE configuration    
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="Organization" type="com.yxw.platform.privilege.entity.Organization"/>
+		<typeAlias alias="Meterial" type="com.yxw.commons.entity.platform.message.Meterial" />
+		<typeAlias alias="MeterialGroup" type="com.yxw.commons.entity.platform.message.MeterialGroup" />
+		<typeAlias alias="MixedMeterial" type="com.yxw.commons.entity.platform.message.MixedMeterial" />
+		<typeAlias alias="MsgTemplateLibrary" type="com.yxw.commons.entity.platform.msgpush.MsgTemplateLibrary" />
+		<typeAlias alias="MsgTemplateLibraryFunction" type="com.yxw.commons.entity.platform.msgpush.MsgTemplateLibraryFunction" />
+		<typeAlias alias="MsgTemplateFunction" type="com.yxw.commons.entity.platform.msgpush.MsgTemplateFunction" />
+		<typeAlias alias="MsgTemplate" type="com.yxw.commons.entity.platform.msgpush.MsgTemplate" />
+		<typeAlias alias="MsgTemp" type="com.yxw.commons.entity.platform.msgpush.MsgTemp" />
+		<typeAlias alias="MsgTemplateContent" type="com.yxw.commons.entity.platform.msgpush.MsgTemplateContent" />
+		<typeAlias alias="MsgRule" type="com.yxw.commons.entity.platform.message.Rule"/>
+		<typeAlias alias="Reply" type="com.yxw.commons.entity.platform.message.Reply" />
+	</typeAliases>
+</configuration>

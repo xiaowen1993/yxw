@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.platform.privilege.Role">
+
+	<resultMap type="Role" id="roleMap">
+		<id column="ID" property="id" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="MEMO" property="memo" jdbcType="VARCHAR" />
+		<result column="AVAILABLE" property="available" jdbcType="INTEGER" />
+		
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+	    <result column="CT" property="ct" jdbcType="TIMESTAMP" />
+	    <result column="EP" property="ep" jdbcType="VARCHAR" />
+	    <result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<select id="findListByPage" resultMap="roleMap" >
+      select * from SYS_ROLE t 
+      <where>
+		<if test="search!=null">
+			t.NAME like #{search} 
+		</if>
+	  </where>
+       order by t.AVAILABLE desc,t.ET desc
+    </select>
+	
+	<select id="findAll"  resultMap="roleMap">
+		select * from SYS_ROLE t
+	</select>
+	
+	<select id="findAllAvailable"  resultMap="roleMap">
+		select * from SYS_ROLE t where t.AVAILABLE=1 
+	</select>
+	
+	<select id="findById" parameterType="string" resultMap="roleMap">
+		select * from SYS_ROLE where id=#{id}
+	</select>
+	
+	<insert id="add" parameterType="Role">
+		INSERT INTO SYS_ROLE(ID,NAME,CODE,MEMO,AVAILABLE
+			,CP,CT,EP,ET)
+		VALUES
+			(#{id},#{name},#{code},#{memo},#{available}
+				,#{cp},#{ct},#{ep},#{et})
+	</insert>
+	
+	<update id="update" parameterType="Role">
+		UPDATE SYS_ROLE
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="name!=null">
+				NAME = #{name},
+			</if>
+			<if test="code!=null">
+				CODE = #{code},
+			</if>
+			<if test="memo!=null">
+				MEMO = #{memo},
+			</if>
+			<if test="available!=null">
+				AVAILABLE = #{available},
+			</if>
+			
+			<if test="ep!=null">
+				EP = #{ep},
+			</if>
+			<if test="et!=null">
+				ET = #{et}
+			</if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+	
+	<select id="findByRoleName" parameterType="string" resultMap="roleMap">
+		SELECT * FROM SYS_ROLE
+		WHERE NAME = #{name} 
+	</select>
+	
+	<select id="findByIds" resultMap="roleMap">
+		SELECT * FROM SYS_ROLE
+		WHERE ID IN
+		<foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="findByCode" parameterType="string" resultMap="roleMap">
+		SELECT * FROM SYS_ROLE
+		WHERE CODE = #{code} 
+	</select>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from SYS_ROLE
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		
+	</delete>
+</mapper>

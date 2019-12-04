@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- modify by  Yuce  不要使用多个ResultMap   一个文件里面最好就只用一个-->
+<mapper namespace="com.yxw.commons.entity.platform.privilege.UserRole">
+
+    <resultMap type="UserRole" id="userRoleMap">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+        <result column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+    </resultMap>
+    
+	<select id="findListByPage" resultMap="userRoleMap" >
+      select * from SYS_USER_ROLE t 
+       order by t.ET desc
+    </select>
+	
+	<select id="findById" parameterType="string" resultMap="userRoleMap">
+		select * from SYS_USER_ROLE where id=#{id}
+	</select>
+	
+	<!-- 查找用户拥有的角色 (只返回有效角色)-->
+	<select id="findRoleByUserId" parameterType="string" resultType="Role">
+		select DISTINCT t2.*
+		from 
+			SYS_USER_ROLE t1 JOIN SYS_ROLE t2 
+				ON t1.ROLE_ID=t2.id
+		where t1.USER_ID=#{id}
+	</select>
+	
+	<delete id="deleteById" parameterType="string">
+		DELETE FROM SYS_USER_ROLE WHERE ID=#{id}
+	</delete>
+	
+	<delete id="deleteByUserId" parameterType="string">
+		DELETE FROM SYS_USER_ROLE WHERE USER_ID=#{id}
+	</delete>
+	
+	<insert id="add" parameterType="UserRole" >
+		INSERT INTO
+		SYS_USER_ROLE(ID,USER_ID,ROLE_ID)
+		VALUES 
+		 (#{id},#{userId},#{roleId})
+	</insert> 
+	
+	<insert id="batchInsert" parameterType="java.util.List">
+		 INSERT INTO 
+		 SYS_USER_ROLE(ID,USER_ID,ROLE_ID)
+		 VALUES
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	         (#{item.id},#{item.userId},#{item.roleId})
+	    </foreach>  
+	</insert>
+	
+	<update id="update" parameterType="UserRole">
+		update SYS_USER_ROLE t 
+		<trim prefix="SET" suffixOverrides=",">
+				<if test="userId!=null">
+					t.USER_ID=#{userId},
+				</if>
+				<if test="roleId!=null">
+					t.ROLE_ID=#{roleId},
+				</if>
+		</trim>
+		where id=#{id}
+	</update>
+	
+	<select id="findByIds" resultMap="userRoleMap">
+        select * from SYS_USER_ROLE
+        where id in
+        <foreach collection="list"  item="item" index="index" open="(" close=")" separator=",">
+           #{item}
+       </foreach>
+    </select>
+    
+</mapper>

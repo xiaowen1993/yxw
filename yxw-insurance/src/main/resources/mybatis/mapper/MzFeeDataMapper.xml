@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.insurance.biz.entity.MzFeeData">
+
+	<resultMap id="mzFeeMap"  type="com.yxw.insurance.biz.entity.MzFeeData">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="TOTAL_FEE" property="totalAmout" jdbcType="VARCHAR" />
+		<result column="PAY_TIME" property="clinicTime" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+			 ID, TOTAL_FEE, PAY_TIME
+	</sql>
+	
+	<sql id="Choose_Hash_Table_Name">
+		<choose>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_1'">
+				BIZ_CLINIC_RECORD_1
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_2'">
+				BIZ_CLINIC_RECORD_2
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_3'">
+				BIZ_CLINIC_RECORD_3
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_4'">
+				BIZ_CLINIC_RECORD_4
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_5'">
+				BIZ_CLINIC_RECORD_5
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_6'">	
+				BIZ_CLINIC_RECORD_6
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_7'">
+				BIZ_CLINIC_RECORD_7
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_8'">
+				BIZ_CLINIC_RECORD_8
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_9'">
+				BIZ_CLINIC_RECORD_9
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_10'">
+				BIZ_CLINIC_RECORD_10
+			</when>
+		</choose>
+	</sql>
+	
+	<select id="findMzFee"  resultMap="mzFeeMap"  parameterType="java.util.Map">
+			 select 
+	 		<include refid="Base_Column_List" />
+			 from 
+			<include refid="Choose_Hash_Table_Name" />   
+             where  OPEN_ID=#{openId,jdbcType=VARCHAR} and MZFEE_ID=#{mzFeeId,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

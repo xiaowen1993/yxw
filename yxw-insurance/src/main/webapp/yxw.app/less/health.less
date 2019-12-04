@@ -1,0 +1,60 @@
+/*less*/
+@import 'var.less';
+#health{
+    li.flexWidth3{
+      position: relative;
+      .label{ font-size: @size14;}
+      div.flexWidth2{
+        position: relative;
+        text-align: center;
+        &:last-child .item:after{
+          width: 0;
+          overflow: hidden;
+        }
+      }
+      &:after{.li-halfLine(0); }
+      .item{
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        transform: translateY(-50%);
+        position: absolute;
+        margin: 0 auto;
+        width: 100%;
+        top: 50%;
+        //left: 0;
+        //right: 0;
+        padding: 10% 0;
+        &:after{
+          .li-halfLine-x(0)
+        }
+        &.hover{
+          background-color: #f1f1f1;
+        }
+      }
+        &:last-child:after{
+          height: 0;
+          overflow: hidden;
+        }
+      }
+  .icon .iconfont{
+    line-height: 1;
+    font-size: 64px;
+
+  }
+
+  .greed{
+    color: #39C29F;
+  }
+  .blue{
+    color: #3EC2FF;
+  }
+
+  .fen{
+    color: #F891A4;
+  }
+  .orange{
+    color: #FFCA13;
+  }
+  .label{line-height: 1.6; font-size:@sizenormal; color: #666;}
+
+}

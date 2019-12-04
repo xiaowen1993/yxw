@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.entity.mobile.biz.usercenter.Family">
+	<resultMap id="familyResultMap" type="Family">
+		<id column="ID" property="id" jdbcType="VARCHAR"/>
+		<result column="APP_CODE" property="appCode" jdbcType="VARCHAR" />
+		<result column="AREA_CODE" property="areaCode" jdbcType="VARCHAR" />
+		<result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" />
+		<result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+		<result column="OWNERSHIP" property="ownership" jdbcType="SMALLINT" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="SEX" property="sex" jdbcType="SMALLINT" />
+		<result column="BIRTH" property="birth" jdbcType="VARCHAR" />
+		<result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+		<result column="ID_TYPE" property="idType" jdbcType="SMALLINT" />
+		<result column="ID_NO" property="idNo" jdbcType="VARCHAR" />
+		<result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+		<result column="GUARD_NAME" property="guardName" jdbcType="VARCHAR" />
+		<result column="GUARD_ID_TYPE" property="guardIdType" jdbcType="SMALLINT" />
+		<result column="GUARD_ID_NO" property="guardIdNo" jdbcType="VARCHAR" />
+		<result column="GUARD_MOBILE" property="guardMobile" jdbcType="VARCHAR" />
+		<result column="MARK" property="mark" jdbcType="VARCHAR" />
+		<result column="STATE" property="state" jdbcType="SMALLINT" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="BIGINT" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="BIGINT" />
+	</resultMap>
+	
+	<sql id="All_Column">
+		ID, APP_CODE, AREA_CODE, AREA_NAME, OPEN_ID, OWNERSHIP,
+		NAME, SEX, BIRTH, MOBILE, ID_TYPE, ID_NO, ADDRESS, GUARD_NAME,
+		GUARD_ID_TYPE, GUARD_ID_NO, GUARD_MOBILE, MARK, STATE, CREATE_TIME, UPDATE_TIME
+	</sql>
+	
+	<sql id="Choose_Hash_Table_Name">
+		<choose>
+			<when test="hashTableName == 'BIZ_FAMILY_1'">
+	             BIZ_FAMILY_1 
+	        </when>
+	        <when test="hashTableName == 'BIZ_FAMILY_2'">
+	             BIZ_FAMILY_2 
+	        </when>
+	        <when test="hashTableName == 'BIZ_FAMILY_3'">
+	             BIZ_FAMILY_3 
+	        </when>
+	        <when test="hashTableName == 'BIZ_FAMILY_4'">
+	             BIZ_FAMILY_4 
+	        </when>
+	        <when test="hashTableName == 'BIZ_FAMILY_5'">
+	             BIZ_FAMILY_5 
+	        </when>
+	        <when test="hashTableName == 'BIZ_FAMILY_6'">
+	             BIZ_FAMILY_6 
+	        </when>
+	        <when test="hashTableName == 'BIZ_FAMILY_7'">
+	             BIZ_FAMILY_7 
+	        </when>
+	        <when test="hashTableName == 'BIZ_FAMILY_8'">
+	             BIZ_FAMILY_8 
+	        </when>
+	        <when test="hashTableName == 'BIZ_FAMILY_9'">
+	             BIZ_FAMILY_9 
+	        </when>
+	        <when test="hashTableName == 'BIZ_FAMILY_10'">
+	             BIZ_FAMILY_10 
+	        </when>
+    	</choose>
+  	</sql>
+  
+	<insert id="add" parameterType="Family"> 
+		insert into
+    		<include refid="Choose_Hash_Table_Name" />
+    	(<include refid="All_Column" />)
+ 		values 
+ 		(
+	 		#{id, jdbcType=VARCHAR}, #{appCode, jdbcType=VARCHAR}, #{areaCode, jdbcType=VARCHAR}, #{areaName, jdbcType=VARCHAR},
+	 		#{openId, jdbcType=VARCHAR}, #{ownership, jdbcType=VARCHAR}, #{name, jdbcType=VARCHAR}, #{sex, jdbcType=INTEGER},
+	 		#{birth, jdbcType=VARCHAR}, #{mobile, jdbcType=VARCHAR}, #{idType, jdbcType=INTEGER}, #{idNo, jdbcType=VARCHAR},
+	 		#{address, jdbcType=VARCHAR}, #{guardName, jdbcType=VARCHAR}, #{guardIdType, jdbcType=INTEGER}, #{guardIdNo, jdbcType=VARCHAR}, #{guardMobile, jdbcType=VARCHAR},
+	 		#{mark, jdbcType=VARCHAR}, #{state, jdbcType=INTEGER}, #{createTime, jdbcType=BIGINT}, #{updateTime, jdbcType=BIGINT}
+    	)
+  	</insert>
+  	
+  	<update id="update" parameterType="Family">
+  		update   
+			<include refid="Choose_Hash_Table_Name" />
+		<set>
+			<if test="ownership != null">
+				OWNERSHIP = #{ownership, jdbcType=SMALLINT},
+			</if>
+			<if test="address != null">
+				ADDRESS = #{address, jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				MOBILE = #{mobile, jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				SEX = #{sex, jdbcType=VARCHAR},
+			</if>
+			<if test="mark != null">
+				MARK = #{mark, jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				STATE = #{state, jdbcType=SMALLINT},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime, jdbcType=SMALLINT},
+			</if>
+		</set>
+		where ID=#{id}
+  	</update>
+  	
+  	<update id="unbindFamily" parameterType="java.util.Map" >
+  		update   
+			<include refid="Choose_Hash_Table_Name" />
+		<set>
+			STATE = 0
+		</set>
+		where ID=#{id}
+  	</update>
+  	
+  	<!-- 通过openId找人 -->
+	<select id="findById" parameterType="java.util.Map" resultMap="familyResultMap"> 
+		select  
+			<include refid="All_Column" />
+		from 
+   			<include refid="Choose_Hash_Table_Name" />
+       	where 
+       		ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 通过openId找人 -->
+	<select id="findFamiliesByOpenId" parameterType="java.util.Map" resultMap="familyResultMap"> 
+		select  
+			<include refid="All_Column" />
+		from 
+   			<include refid="Choose_Hash_Table_Name" />
+       	where 
+       		OPEN_ID = #{openId, jdbcType=VARCHAR}
+       	and OWNERSHIP != 1
+       	and STATE = #{state, jdbcType=INTEGER}
+	</select>
+	
+	<!-- 通过openId找人 -->
+	<select id="findAllFamilies" parameterType="java.util.Map" resultMap="familyResultMap"> 
+		select  
+			<include refid="All_Column" />
+		from 
+   			<include refid="Choose_Hash_Table_Name" />
+       	where 
+       		OPEN_ID = #{openId, jdbcType=VARCHAR}
+       	and STATE = #{state, jdbcType=INTEGER}
+       	order by ownership ASC;
+	</select>
+	
+	<!-- 通过idType和IdNo找人 -->
+	<select id="findFamiliesByOpenIdAndIdNo" parameterType="java.util.Map" resultMap="familyResultMap"> 
+		select  
+			<include refid="All_Column" />
+		from 
+   			<include refid="Choose_Hash_Table_Name" />
+       	where 
+       		OPEN_ID = #{openId, jdbcType=VARCHAR}
+       	and ID_NO = #{idNo, jdbcType=VARCHAR}
+       	and ID_TYPE = #{idType, jdbcType=INTEGER}
+       	and STATE = #{state, jdbcType=INTEGER}
+	</select>  
+	
+	<!-- 通过idType和IdNo找人 -->
+	<select id="findFamiliesByOpenIDAndNameAndGuardIdNo" parameterType="java.util.Map" resultMap="familyResultMap"> 
+		select  
+			<include refid="All_Column" />
+		from 
+   			<include refid="Choose_Hash_Table_Name" />
+       	where 
+       		OPEN_ID = #{openId, jdbcType=VARCHAR}
+       	and NAME = #{name, jdbcType=VARCHAR}
+       	and GUARD_ID_NO = #{guardIdNo, jdbcType=VARCHAR}
+       	and GUARD_ID_TYPE = #{guardIdType, jdbcType=INTEGER}
+       	<if test="state != -1">
+       	and STATE = #{state, jdbcType=INTEGER}
+       	</if>
+	</select>  
+	
+	<!-- 通过idType和IdNo找人 -->
+	<select id="findSelfInfo" parameterType="java.util.Map" resultMap="familyResultMap"> 
+		select  
+			<include refid="All_Column" />
+		from 
+   			<include refid="Choose_Hash_Table_Name" />
+       	where 
+       		OPEN_ID = #{openId, jdbcType=VARCHAR}
+       	and OWNERSHIP = 1
+       	and STATE = 1
+	</select>  
+	
+	<!-- 通过idType和IdNo找人 -->
+	<select id="findFamilyInfo" parameterType="java.util.Map" resultMap="familyResultMap"> 
+		select  
+			<include refid="All_Column" />
+		from 
+   			<include refid="Choose_Hash_Table_Name" />
+       	where 
+       		OPEN_ID = #{openId, jdbcType=VARCHAR}
+       	and ID = #{familyId, jdbcType=VARCHAR}
+       	and STATE = 1
+	</select>  
+</mapper>

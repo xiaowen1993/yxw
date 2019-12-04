@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.stats.entity.platform.ClinicOrderCount">
+	
+	<resultMap id="clinicOrderCountResultMap" type="com.yxw.stats.entity.platform.ClinicOrderCount">
+		<id column="ID" property="id" jdbcType="VARCHAR"/>
+		<result column="DATE" property="date" jdbcType="VARCHAR" />
+		<result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+		<result column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
+		<result column="COUNT" property="count" jdbcType="INTEGER" />
+		<result column="NO_PAYMENT" property="noPayment" jdbcType="INTEGER" />
+		<result column="PAYMENT" property="payment" jdbcType="INTEGER" />
+		<result column="REFUND" property="refund" jdbcType="INTEGER" />
+		<result column="CLINIC_PAY_FEE" property="clinicPayFee" jdbcType="DOUBLE" />
+		<result column="CLINIC_REFUND_FEE" property="clinicRefundFee" jdbcType="DOUBLE" />
+		<result column="PART_REFUND" property="partRefund" jdbcType="DOUBLE" />
+		
+		<result column="COUNT_WECHAT" property="countByWechat" jdbcType="INTEGER" />
+		<result column="NO_PAYMENT_WECHAT" property="noPaymentByWechat" jdbcType="INTEGER" />
+		<result column="PAYMENT_WECHAT" property="paymentByWechat" jdbcType="INTEGER" />
+		<result column="REFUND_WECHAT" property="refundByWechat" jdbcType="INTEGER" />
+		<result column="CLINIC_PAY_FEE_WECHAT" property="clinicPayFeeByWechat" jdbcType="DOUBLE" />
+		<result column="CLINIC_REFUND_FEE_WECHAT" property="clinicRefundFeeByWechat" jdbcType="DOUBLE" />
+		<result column="PART_REFUND_WECHAT" property="partRefundByWechat" jdbcType="DOUBLE" />
+		
+		<result column="COUNT_ALIPAY" property="countByAlipay" jdbcType="INTEGER" />
+		<result column="NO_PAYMENT_ALIPAY" property="noPaymentByAlipay" jdbcType="INTEGER" />
+		<result column="PAYMENT_ALIPAY" property="paymentByAlipay" jdbcType="INTEGER" />
+		<result column="REFUND_ALIPAY" property="refundByAlipay" jdbcType="INTEGER" />
+		<result column="CLINIC_PAY_FEE_ALIPAY" property="clinicPayFeeByAlipay" jdbcType="DOUBLE" />
+		<result column="CLINIC_REFUND_FEE_ALIPAY" property="clinicRefundFeeByAlipay" jdbcType="DOUBLE" />
+		<result column="PART_REFUND_ALIPAY" property="partRefundByAlipay" jdbcType="DOUBLE" />
+		<result column="BIZ_MODE" property="bizMode" jdbcType="INTEGER" />
+		<result column="PAY_MODE" property="payMode" jdbcType="INTEGER" />
+		<result column="MEDICARE_PAYMENTS" property="medicarePayments" jdbcType="INTEGER" />
+		
+	</resultMap>
+	
+	<!-- 统计每日订单 -->
+	<select id="findClinicOrderCountByDate" resultMap="clinicOrderCountResultMap" parameterType="map">
+		SELECT 
+			from_UNIXTIME(#{startDate} / 1000,'%Y-%m-%d') as DATE,
+			r1.HOSPITAL_ID AS HOSPITAL_ID,
+			r1.BRANCH_ID AS BRANCH_ID,
+			sum(CASE r1.PAY_STATUS when 1 then r1.count else 0 END) as NO_PAYMENT,
+			sum(CASE r1.PAY_STATUS when 2 then r1.count else 0 END) as PAYMENT,
+			sum(CASE r1.PAY_STATUS when 3 then r1.count else 0 END) as REFUND,
+			sum(CASE r1.PAY_STATUS when 2 then r1.PAY_FEE else 0 END) as CLINIC_PAY_FEE,
+			sum(CASE r1.PAY_STATUS when 3 then r1.PAY_FEE else 0 END) as CLINIC_REFUND_FEE,
+			sum(CASE r1.CLINIC_STATUS when 30 then r1.PART_REFUND else 0 END) as PART_REFUND,
+			r1.BIZ_MODE,
+			r1.PAY_MODE,
+			r1.MEDICARE_PAYMENTS
+		FROM (
+			SELECT 
+				COUNT(1) as count, 
+				a.PAY_STATUS as PAY_STATUS, 
+				a.HOSPITAL_ID AS HOSPITAL_ID, 
+				a.BRANCH_ID AS BRANCH_ID,
+				SUM(a.PAY_FEE) AS PAY_FEE,
+				a.CLINIC_STATUS AS CLINIC_STATUS,
+				SUM(b.refund_fee) as PART_REFUND,
+				a.PAY_MODE AS BIZ_MODE,
+				ifnull(
+					a.IS_MEDICARE_PAYMENTS,
+					0
+				) AS MEDICARE_PAYMENTS,
+				 
+				ifnull(
+					a.IS_QR,
+					0
+				) as PAY_MODE
+			
+				
+			FROM 
+				<choose>
+				    <when test="hashTableName == 'BIZ_CLINIC_RECORD_1'">
+                		BIZ_CLINIC_RECORD_1 
+		            </when>
+		            <when test="hashTableName == 'BIZ_CLINIC_RECORD_2'">
+		                BIZ_CLINIC_RECORD_2 
+		            </when>
+		            <when test="hashTableName == 'BIZ_CLINIC_RECORD_3'">
+		                BIZ_CLINIC_RECORD_3 
+		            </when>
+		            <when test="hashTableName == 'BIZ_CLINIC_RECORD_4'">
+		                BIZ_CLINIC_RECORD_4 
+		            </when>
+		            <when test="hashTableName == 'BIZ_CLINIC_RECORD_5'">
+		                BIZ_CLINIC_RECORD_5 
+		            </when>
+		            <when test="hashTableName == 'BIZ_CLINIC_RECORD_6'">
+		                BIZ_CLINIC_RECORD_6 
+		            </when>
+		            <when test="hashTableName == 'BIZ_CLINIC_RECORD_7'">
+		                BIZ_CLINIC_RECORD_7 
+		            </when>
+		            <when test="hashTableName == 'BIZ_CLINIC_RECORD_8'">
+		                BIZ_CLINIC_RECORD_8 
+		            </when>
+		            <when test="hashTableName == 'BIZ_CLINIC_RECORD_9'">
+		                BIZ_CLINIC_RECORD_9 
+		            </when>
+		            <when test="hashTableName == 'BIZ_CLINIC_RECORD_10'">
+		                BIZ_CLINIC_RECORD_10 
+		            </when> 
+			    </choose>
+			    as a
+			    LEFT JOIN BIZ_CLINIC_PART_REFUND_RECORD b ON a.order_no=b.order_no
+			WHERE 
+				a.CREATE_TIME BETWEEN #{startDate} AND  #{endDate} OR 
+				a.PAY_TIME BETWEEN #{startDate} AND  #{endDate} OR 
+				a.REFUND_TIME BETWEEN #{startDate} AND  #{endDate}
+			GROUP BY a.BRANCH_ID,a.PAY_STATUS,a.CLINIC_STATUS,BIZ_MODE,a.IS_QR,MEDICARE_PAYMENTS
+			) AS r1 GROUP BY BRANCH_ID,PAY_STATUS,CLINIC_STATUS,BIZ_MODE,PAY_MODE,MEDICARE_PAYMENTS
+	</select>
+	
+	<!-- 批量插入 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		 INSERT INTO 
+		 SYS_CLINIC_STATISTICAL_1(
+		 ID,
+		 DATE,
+		 HOSPITAL_ID,
+		 BRANCH_ID,
+		 NO_PAYMENT,
+		 PAYMENT,
+		 REFUND,
+		 CLINIC_PAY_FEE,
+		 CLINIC_REFUND_FEE,
+		 PART_REFUND,
+		 BIZ_MODE,
+		 
+		 NO_PAYMENT_WECHAT,
+		 PAYMENT_WECHAT,
+		 REFUND_WECHAT,
+		 CLINIC_PAY_FEE_WECHAT,
+		 CLINIC_REFUND_FEE_WECHAT,
+		 PART_REFUND_WECHAT,
+		 
+		 NO_PAYMENT_ALIPAY,
+		 PAYMENT_ALIPAY,
+		 REFUND_ALIPAY,
+		 CLINIC_PAY_FEE_ALIPAY,
+		 CLINIC_REFUND_FEE_ALIPAY,
+		 PART_REFUND_ALIPAY,
+		 PAY_MODE,
+		 MEDICARE_PAYMENTS
+		 )
+		 VALUES
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (#{item.id},
+	        #{item.date},
+	        #{item.hospitalId},
+	        #{item.branchId},
+	        #{item.noPayment},
+	        #{item.payment},
+	        #{item.refund},
+	        #{item.clinicPayFee},
+	        #{item.clinicRefundFee},
+	        #{item.partRefund},
+	        #{item.bizMode},
+	        
+	        #{item.noPaymentByWechat},
+	        #{item.paymentByWechat},
+	        #{item.refundByWechat},
+	        #{item.clinicPayFeeByWechat},
+	        #{item.clinicRefundFeeByWechat},
+	        #{item.partRefundByWechat},
+	        
+	        #{item.noPaymentByAlipay},
+	        #{item.paymentByAlipay},
+	        #{item.refundByAlipay},
+	        #{item.clinicPayFeeByAlipay},
+	        #{item.clinicRefundFeeByAlipay},
+	        #{item.partRefundByAlipay},
+	        #{item.payMode},
+	        #{item.medicarePayments}
+	        
+	        
+	        )
+	    </foreach>  
+	</insert>
+	
+</mapper>

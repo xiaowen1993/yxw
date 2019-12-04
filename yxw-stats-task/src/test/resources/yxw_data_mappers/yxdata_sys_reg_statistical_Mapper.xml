@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.stats.entity.stats.YxDataSysRegStatistical">
+
+  <resultMap id="BaseResultMap" type="com.yxw.stats.entity.stats.YxDataSysRegStatistical" >
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DATE" property="date" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_ID" property="hospitalId" jdbcType="VARCHAR" />
+    <result column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
+    <result column="RESERVATION_PAYMENT" property="reservationPayment" jdbcType="INTEGER" />
+    <result column="RESERVATION_NO_PAYMENT" property="reservationNoPayment" jdbcType="INTEGER" />
+    <result column="RESERVATION_REFUND" property="reservationRefund" jdbcType="INTEGER" />
+    <result column="DUTY_PAYMENT" property="dutyPayment" jdbcType="INTEGER" />
+    <result column="DUTY_NO_PAYMENT" property="dutyNoPayment" jdbcType="INTEGER" />
+    <result column="DUTY_REFUND" property="dutyRefund" jdbcType="INTEGER" />
+    <result column="REG_PAY_FEE" property="regPayFee" jdbcType="DOUBLE" />
+    <result column="REG_REFUND_FEE" property="regRefundFee" jdbcType="DOUBLE" />
+    <result column="BIZ_MODE" property="bizMode" jdbcType="INTEGER" />
+    <result column="RESERVATION_PAYMENT_WECHAT" property="reservationPaymentWechat" jdbcType="INTEGER" />
+    <result column="RESERVATION_NO_PAYMENT_WECHAT" property="reservationNoPaymentWechat" jdbcType="INTEGER" />
+    <result column="RESERVATION_REFUND_WECHAT" property="reservationRefundWechat" jdbcType="INTEGER" />
+    <result column="DUTY_PAYMENT_WECHAT" property="dutyPaymentWechat" jdbcType="INTEGER" />
+    <result column="DUTY_NO_PAYMENT_WECHAT" property="dutyNoPaymentWechat" jdbcType="INTEGER" />
+    <result column="DUTY_REFUND_WECHAT" property="dutyRefundWechat" jdbcType="INTEGER" />
+    <result column="REG_PAY_FEE_WECHAT" property="regPayFeeWechat" jdbcType="DOUBLE" />
+    <result column="REG_REFUND_FEE_WECHAT" property="regRefundFeeWechat" jdbcType="DOUBLE" />
+    <result column="RESERVATION_PAYMENT_ALIPAY" property="reservationPaymentAlipay" jdbcType="INTEGER" />
+    <result column="RESERVATION_NO_PAYMENT_ALIPAY" property="reservationNoPaymentAlipay" jdbcType="INTEGER" />
+    <result column="RESERVATION_REFUND_ALIPAY" property="reservationRefundAlipay" jdbcType="INTEGER" />
+    <result column="DUTY_PAYMENT_ALIPAY" property="dutyPaymentAlipay" jdbcType="INTEGER" />
+    <result column="DUTY_NO_PAYMENT_ALIPAY" property="dutyNoPaymentAlipay" jdbcType="INTEGER" />
+    <result column="DUTY_REFUND_ALIPAY" property="dutyRefundAlipay" jdbcType="INTEGER" />
+    <result column="REG_PAY_FEE_ALIPAY" property="regPayFeeAlipay" jdbcType="DOUBLE" />
+    <result column="REG_REFUND_FEE_ALIPAY" property="regRefundFeeAlipay" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, DATE, HOSPITAL_ID, BRANCH_ID, RESERVATION_PAYMENT, RESERVATION_NO_PAYMENT, RESERVATION_REFUND, 
+    DUTY_PAYMENT, DUTY_NO_PAYMENT, DUTY_REFUND, REG_PAY_FEE, REG_REFUND_FEE, BIZ_MODE, 
+    RESERVATION_PAYMENT_WECHAT, RESERVATION_NO_PAYMENT_WECHAT, RESERVATION_REFUND_WECHAT, 
+    DUTY_PAYMENT_WECHAT, DUTY_NO_PAYMENT_WECHAT, DUTY_REFUND_WECHAT, REG_PAY_FEE_WECHAT, 
+    REG_REFUND_FEE_WECHAT, RESERVATION_PAYMENT_ALIPAY, RESERVATION_NO_PAYMENT_ALIPAY, 
+    RESERVATION_REFUND_ALIPAY, DUTY_PAYMENT_ALIPAY, DUTY_NO_PAYMENT_ALIPAY, DUTY_REFUND_ALIPAY, 
+    REG_PAY_FEE_ALIPAY, REG_REFUND_FEE_ALIPAY
+  </sql>
+
+
+	<select id="findCurrRegisterStatsMaxDate" resultType="java.lang.String" parameterType="java.lang.String">
+		select max(DATE) as maxDate from SYS_REG_STATISTICAL
+		where HOSPITAL_ID = #{hospitalId, jdbcType=VARCHAR}
+	</select>
+
+	<insert id="batchInsertRegisterStatsData" parameterType="java.util.Map" >
+		INSERT INTO 
+			SYS_REG_STATISTICAL
+			(<include refid="Base_Column_List"></include>)
+			VALUES
+		<foreach collection="sysRegisterStatistical" item="item" index="index" separator=",">
+			 (
+				 #{item.id},#{item.date},#{item.hospitalId},#{item.branchId},#{item.reservationPayment},#{item.reservationNoPayment},#{item.reservationRefund},#{item.dutyPayment},
+			 	 #{item.dutyNoPayment},#{item.dutyRefund},#{item.regPayFee},#{item.regRefundFee},#{item.bizMode},
+			 	 #{item.reservationPaymentWechat}, #{item.reservationNoPaymentWechat}, #{item.reservationRefundWechat}, #{item.dutyPaymentWechat}, #{item.dutyNoPaymentWechat}, #{item.dutyRefundWechat}, #{item.regPayFeeWechat}, #{item.regRefundFeeWechat}, 
+			 	 #{item.reservationPaymentAlipay}, #{item.reservationNoPaymentAlipay}, #{item.reservationRefundAlipay}, #{item.dutyPaymentAlipay}, #{item.dutyNoPaymentAlipay}, #{item.dutyRefundAlipay}, #{item.regPayFeeAlipay}, #{item.regRefundFeeAlipay}
+		 	 )
+		</foreach>
+	</insert>
+	
+</mapper>

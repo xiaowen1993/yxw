@@ -1,0 +1,17 @@
+{is_subscribe=Y
+appid=wx7245e798af225271
+fee_type=CNY
+nonce_str=25BD99353A58B0CA08256B9C490FCAF6
+out_trade_no=Y21212017072721093919990377
+transaction_id=4003192001201707272999056708
+trade_type=JSAPI
+sign=D8BC8D3C2911A524FEA5A4FE27A99C77
+result_code=SUCCESS
+mch_id=1227059102
+total_fee=1
+attach={"tradeMode":"21","hospitalCode":"zsdxdsfsyy"}
+time_end=20170727212222
+openid=o9ymntzFKpxrueMiYC81NAzTKg_8
+bank_type=CFT
+return_code=SUCCESS
+cash_fee=1}

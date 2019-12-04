@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxw.commons.dto.outside.PaidMZDetailReuslt">
+
+   <!-- 商保接口服务-获取缴费记录 -->
+	<resultMap id="paidMZDetailReusltMap"  type="PaidMZDetailReuslt">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="patName" jdbcType="VARCHAR" />
+		<result column="SEX" property="patSex" jdbcType="VARCHAR" />
+		<result column="ID_TYPE" property="patIdType" jdbcType="VARCHAR" />
+		<result column="ID_NO" property="patIdNo" jdbcType="VARCHAR" />
+		<result column="MZFEE_ID" property="mzFeeId" jdbcType="VARCHAR" />
+		<result column="CLINIC_TIME" property="time" jdbcType="VARCHAR" />
+		<result column="MOBILE" property="patMobile" jdbcType="VARCHAR" />
+		<result column="ADDRESS" property="patAddress" jdbcType="VARCHAR" />
+		<result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
+		<result column="DOCTOR_NAME" property="doctorName" jdbcType="VARCHAR" />
+		<result column="BIRTH" property="birthDay" jdbcType="VARCHAR" />
+		<result column="IS_CLAIM" property="isClaim" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="Choose_Hash_Table_Name">
+		<choose>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_1'">
+				BIZ_CLINIC_RECORD_1
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_2'">
+				BIZ_CLINIC_RECORD_2
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_3'">
+				BIZ_CLINIC_RECORD_3
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_4'">
+				BIZ_CLINIC_RECORD_4
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_5'">
+				BIZ_CLINIC_RECORD_5
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_6'">
+				BIZ_CLINIC_RECORD_6
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_7'">
+				BIZ_CLINIC_RECORD_7
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_8'">
+				BIZ_CLINIC_RECORD_8
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_9'">
+				BIZ_CLINIC_RECORD_9
+			</when>
+			<when test="hashTableName == 'BIZ_CLINIC_RECORD_10'">
+				BIZ_CLINIC_RECORD_10
+			</when>
+		</choose>
+	</sql>
+	
+	<sql id="Choose_Hash_Table_Name2">
+		<choose>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_1'">
+				BIZ_MEDICAL_CARD_1
+			</when>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_2'">
+				BIZ_MEDICAL_CARD_2
+			</when>
+			<when test="hashTableName2== 'BIZ_MEDICAL_CARD_3'">
+				BIZ_MEDICAL_CARD_3
+			</when>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_4'">
+				BIZ_MEDICAL_CARD_4
+			</when>
+			<when test="hashTableName2== 'BIZ_MEDICAL_CARD_5'">
+				BIZ_MEDICAL_CARD_5
+			</when>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_6'">
+				BIZ_MEDICAL_CARD_6
+			</when>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_7'">
+				BIZ_MEDICAL_CARD_7
+			</when>
+			<when test="hashTableName2 == 'BIZ_MEDICAL_CARD_8'">
+				BIZ_MEDICAL_CARD_8
+			</when>
+		</choose>
+	</sql>
+
+	<select id="getPaidMZDetail"  parameterType="com.yxw.commons.dto.inside.PaidMZDetailCommParams"  resultMap="paidMZDetailReusltMap" >
+		select DISTINCT m.`NAME`,m.SEX,m.BIRTH,m.ID_TYPE,m.ID_NO,m.MOBILE,m.ADDRESS,c.MZFEE_ID, d.CLINIC_TIME,d.DOCTOR_NAME,d.DEPT_NAME,c.IS_CLAIM
+		from 
+		<include refid="Choose_Hash_Table_Name" /> c
+		left join
+		<include refid="Choose_Hash_Table_Name2" /> 
+		 m 
+		 on c.CARD_NO=m.CARD_NO left join DATA_MZ_FEE d on d.MZ_FEE_ID=c.MZFEE_ID
+		where   c.APP_CODE=#{appCode} and c.OPEN_ID=#{openId} and  c.HOSPITAL_CODE=#{hospitalCode} and c.ORDER_NO=#{orderNo} and c.MZFEE_ID=#{mzFeeId}
+	</select>
+
+</mapper>

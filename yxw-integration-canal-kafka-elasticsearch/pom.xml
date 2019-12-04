@@ -1,0 +1,205 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.yxw.web</groupId>
+		<artifactId>yxw</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	
+	<groupId>com.yxw.integration</groupId>
+	<artifactId>yxw-integration-canal-kafka-elasticsearch</artifactId>
+	<packaging>jar</packaging>
+	<name>yxw-integration-canal-kafka-elasticsearch</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+		<canal.version>1.0.25</canal.version>
+		<kafka.version>1.0.0</kafka.version>
+		<elasticsearch.version>5.6.5</elasticsearch.version>
+		<gson.version>2.4</gson.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>transport</artifactId>
+			<version>${elasticsearch.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka_2.12</artifactId>
+			<version>${kafka.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-log4j12</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba.otter</groupId>
+			<artifactId>canal.client</artifactId>
+			<version>${canal.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>${gson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.9.1</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+	<finalName>yxw-integration-canal-kafka-elasticsearch</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<!-- 项目依赖插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<configuration>
+					<outputDirectory>${project.build.directory}/yxw-integration-canal-kafka-elasticsearch/lib</outputDirectory>
+					<excludeTransitive>false</excludeTransitive> <!-- 表示是否不包含间接依赖的包 -->
+					<stripVersion>false</stripVersion> <!-- 去除版本信息 -->
+				</configuration>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<!-- 拷贝项目依赖包到lib/目录下 -->
+							<outputDirectory>${project.build.directory}/yxw-integration-canal-kafka-elasticsearch/lib</outputDirectory>
+							<excludeTransitive>false</excludeTransitive>
+							<stripVersion>false</stripVersion>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- 项目资源插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<!-- 拷贝项目src/main/resources/下，除.bat以外的所有文件到yxw-integration-canal-kafka-elasticsearch/目录下 -->
+							<outputDirectory>${project.build.directory}/yxw-integration-canal-kafka-elasticsearch</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/resources/</directory>
+									<filtering>true</filtering>
+									<excludes>
+										<exclude>*.bat</exclude>
+										<exclude>*.sh</exclude>
+									</excludes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-command</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<!-- 只拷贝项目src/main/resources/目录下的.bat文件到输出目录下 -->
+							<outputDirectory>${project.build.directory}/yxw-integration-canal-kafka-elasticsearch</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/resources/</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>*.bat</include>
+										<include>*.sh</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- 打包插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<!-- 生成MANIFEST.MF的设置 -->
+						<manifest>
+							<!-- 为依赖包添加路径, 这些路径会写在MANIFEST文件的Class-Path下 -->
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+							<!-- jar启动入口类 -->
+							<mainClass>com.yxw.integration.bin.StartUpSyncIndex</mainClass>
+						</manifest>
+						<!-- <manifestEntries> 在Class-Path下添加配置文件的路径 <Class-Path>conf/</Class-Path> </manifestEntries> -->
+					</archive>
+					<includes>
+						<!-- 打jar包时，只打包class文件 -->
+						<include>**/*.class</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/*Test.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+</project>
