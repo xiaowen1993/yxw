@@ -46,7 +46,7 @@
 
 		<mysql-connector-java.version>5.1.38</mysql-connector-java.version>
 		<netty.version>3.2.10.Final</netty.version>
-		<netty-all.version>4.1.0.CR4</netty-all.version>
+		<netty-all.version>4.1.42.Final</netty-all.version>
 		<commons-pool2.version>2.3</commons-pool2.version>
 		<oscache.version>2.4.1</oscache.version>
 
