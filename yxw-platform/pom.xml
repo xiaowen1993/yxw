@@ -25,7 +25,7 @@
 		<commons.version>3.3.2</commons.version>
 		<mybatis.version>3.2.8</mybatis.version>
 		<mybatis-spring.version>1.2.2</mybatis-spring.version>
-		<httpclient.version>4.3.4</httpclient.version>
+		<httpclient.version>4.5.10</httpclient.version>
 		<commons-httpclient.version>3.1</commons-httpclient.version>
 		<shiro.version>1.2.3</shiro.version>
 		<json-lib.version>2.4</json-lib.version>
