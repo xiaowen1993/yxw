@@ -18,7 +18,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<servlet.version>3.0.1</servlet.version>
-		<spring.version>4.1.6.RELEASE</spring.version>
+		<spring.version>5.2.2.RELEASE</spring.version>
 		<slf4j.version>1.7.10</slf4j.version>
 		<log4j-over-slf4j.version>1.7.10</log4j-over-slf4j.version>
 		<pagehelper.version>3.7.4</pagehelper.version>
