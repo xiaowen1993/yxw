@@ -18,7 +18,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<solr.version>5.3.2</solr.version>
 		<!-- 应用3.4.6 -->
-		<zookeeper.version>3.4.7</zookeeper.version>
+		<zookeeper.version>3.4.14</zookeeper.version>
 		<noggit.version>0.6</noggit.version>
 		<slf4j.version>1.7.10</slf4j.version>
 		<quartz.version>2.2.1</quartz.version>
